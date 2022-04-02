@@ -1,13 +1,16 @@
+import { AuthProvider } from '../contexts/AuthContext';
 import './App.css';
 import GoogleAuth from './GoogleAuth';
 
 function App() {
   return (
-    <div className="App">
-      <div className="SmallContainer">
-        <GoogleAuth />
+    <AuthProvider>
+      <div className="App">
+        <div className="SmallContainer">
+          <GoogleAuth />
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }
 

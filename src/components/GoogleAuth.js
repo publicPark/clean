@@ -1,9 +1,14 @@
+import  { useAuth } from '../contexts/AuthContext'
 
 const GoogleAuth = () => {
+  const { googleAuth } = useAuth()
+  const handleGoogleAuth = (e) => {
+    googleAuth()
+  }
   return (
     <div>
       <div>
-        <button>구글로긴</button>
+        <button onClick={handleGoogleAuth}>구글로긴</button>
       </div>
     </div>
   )
