@@ -2,7 +2,7 @@
   --bg: #000;
   --bg-accent: #333;
   --text-color: #eee;
-  --accent: tomato;
+  --accent: #ff4400cc;
   --accent-opposite: #fff;
 
   --height-nav: 60px;
@@ -29,9 +29,9 @@
   --text-color: #333;
 }
 .App.dark {
-  --bg: #000;
-  --bg-accent: #333;
-  --text-color: #ddd;
+  --bg: #121212;
+  --bg-accent: #555;
+  --text-color: #eee;
 }
 
 button {
@@ -43,9 +43,13 @@ button {
   color: var(--bg);
   transition: 0.3s;
   &:hover {
-    border: 2px solid var(--accent);
+    // border: 2px solid var(--accent);
     background-color: var(--accent);
     color: var(--accent-opposite);
     font-weight: bold;
   }
+}
+
+a {
+  text-decoration: none;
 }

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import styles from './Profile.module.scss'
+import { useTheme } from '../contexts/ThemeContext'
 
 const GoogleAuth = () => {
+  const { darkTheme, toggleTheme } = useTheme()
   const { currentUser, googleAuth, userSignOut } = useAuth()
   const [openSlide, setOpenSlide] = useState(false)
   const handleGoogleAuth = (e) => {
@@ -29,6 +31,7 @@ const GoogleAuth = () => {
           <div className={`${styles.Slide} ${openSlide && styles.Open}`}>
             <div><b>{currentUser.displayName}</b> 하이</div>
             <div>
+              <button className={styles.ButtonTheme} onClick={toggleTheme}>{ darkTheme? '🌜':'🌻' }</button>
               <button onClick={handleSignOut}>로그아웃</button>
               <button onClick={toggleSlide}>닫기</button>
             </div>

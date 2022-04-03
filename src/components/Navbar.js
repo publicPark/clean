@@ -1,13 +1,12 @@
-import GoogleAuth from "./GoogleAuth";
-import { useTheme } from '../contexts/ThemeContext'
+import GoogleAuth from "./Profile";
 import styles from './Navbar.module.scss'
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const { darkTheme, toggleTheme } = useTheme()
   return (
     <div className={styles.Navbar}>
       <div className={styles.NavbarContent}>
-        <button className={styles.ButtonTheme} onClick={toggleTheme}>{ darkTheme? '🌜':'🌻' }</button>
+        <Link to='/'><button className={styles.ButtonTheme}>🏠</button></Link>
         <GoogleAuth/>
       </div>
     </div>

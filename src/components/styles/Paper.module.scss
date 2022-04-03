@@ -1,10 +1,9 @@
-.WrappersWrapper {
-  padding: 1rem;
-}
 .Wrapper {
+  margin: 1rem;
   position: relative;
   color: var(--text-color);
   transition: 0.3s;
+  text-align: center;
 }
 .Wrapper:before {
   border-radius: 5px;
