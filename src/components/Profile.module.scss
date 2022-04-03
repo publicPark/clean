@@ -35,7 +35,7 @@
   position: fixed;
   right: -100%;
   top: 0;
-  width: 100px;
+  width: 130px;
   padding: 1rem;
   transition: 0.3s;
   margin-top: var(--height-nav);
@@ -43,14 +43,8 @@
   z-index: 22;
 
   button {
-    background: var(--text-color);
-    color: var(--bg);
     margin-top: 10px;
     margin-left: 10px;
-    border: 2px solid var(--text-color);
-    &:hover {
-      font-weight: bold;
-    }
   }
 }
 .Open {

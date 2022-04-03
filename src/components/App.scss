@@ -7,6 +7,9 @@
 
   --height-nav: 60px;
 }
+* {
+  box-sizing: border-box;
+}
 
 .App {
   width: 100%;
@@ -18,7 +21,6 @@
   background-color: var(--bg);
   color: var(--text-color);
   transition: 0.3s;
-  box-sizing: border-box;
   word-break: break-all;
 }
 .App {
@@ -34,4 +36,16 @@
 
 button {
   cursor: pointer;
+  border-radius: 0;
+  padding: 0.5em;
+  border: 2px solid var(--bg);
+  background-color: var(--text-color);
+  color: var(--bg);
+  transition: 0.3s;
+  &:hover {
+    border: 2px solid var(--accent);
+    background-color: var(--accent);
+    color: var(--accent-opposite);
+    font-weight: bold;
+  }
 }
