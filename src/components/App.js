@@ -1,16 +1,18 @@
-import { AuthProvider } from '../contexts/AuthContext';
+
 import './App.css';
-import GoogleAuth from './GoogleAuth';
+import Dashboard from './Dashboard';
+import Navbar from './Navbar';
+import {useTheme} from '../contexts/ThemeContext'
 
 function App() {
+  const {darkTheme} = useTheme()
   return (
-    <AuthProvider>
-      <div className="App">
-        <div className="SmallContainer">
-          <GoogleAuth />
-        </div>
+    <div className={`App ${darkTheme&&'dark'}`}>
+      <div className="">
+        <Navbar />
       </div>
-    </AuthProvider>
+      <Dashboard />
+    </div>
   );
 }
 
