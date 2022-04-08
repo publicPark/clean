@@ -18,7 +18,7 @@ const Places = ({ currentUser }) => {
       let arr = []
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}`);
-        arr.push(doc.data())
+        arr.push({ ...doc.data(), id: doc.id })
       });
       setList(arr)
     }
@@ -35,11 +35,11 @@ const Places = ({ currentUser }) => {
         {JSON.stringify(list)}
         {list.map((p, i) => <div key={ i }>
           <h4>{p.name} ({p.members.length}명) - 최대 {p.days}일</h4>
-          <Button variant="outlined">수정</Button>
+          <Link to={ "/placeform/"+p.id }><Button variant="outlined">수정</Button></Link>
         </div>)}
       </div>
       <div>
-        <Link to="/place"><Button variant="contained">청소 구역 생성</Button></Link>
+        <Link to="/placeform"><Button variant="contained">청소 구역 생성</Button></Link>
       </div>
     </>
   )

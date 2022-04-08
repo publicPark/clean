@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 
 import { db } from '../../firebase'
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDoc, doc } from "firebase/firestore"; 
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
-import { useNavigate } from "react-router-dom";
+
 
 const PlaceForm = ({ currentUser }) => {
+  let { id } = useParams();
+
   let navigate = useNavigate();
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false)
@@ -45,8 +48,22 @@ const PlaceForm = ({ currentUser }) => {
       setLoading(false)
       console.error("Error adding document: ", e);
     }
-
   }
+
+  const getPlace = async () => {
+    const docRef = doc(db, "places", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+  useEffect(() => {
+    getPlace()
+  }, [])
 
   return (
     <div className={stylesPaper.Wrapper}>
@@ -54,7 +71,7 @@ const PlaceForm = ({ currentUser }) => {
         <form className={styles.Form} onSubmit={ onSubmit }>
           <div className={styles.Title}>
             <h1>{ currentUser.displayName },</h1>
-            <h2>청소 구역 생성</h2>
+            <h2>청소 구역 { id ? <>수정</> : <>생성</> }</h2>
           </div>
 
           <div className={styles.Row}>

@@ -29,7 +29,8 @@ function App({ user }) {
         </div>
         <Routes>
           <Route path="/" element={<Dashboard currentUser={currentUser} />} />
-          <Route path="place" element={<PlaceForm currentUser={ currentUser }/>} />
+          <Route path="placeform" element={<PlaceForm currentUser={ currentUser }/>} />
+          <Route path="placeform/:id" element={<PlaceForm currentUser={currentUser}/>} />
           <Route path="clean" element={<CleanForm currentUser={ currentUser }/>} />
         </Routes>
         
