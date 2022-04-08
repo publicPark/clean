@@ -39,7 +39,7 @@ const Places = ({ currentUser }) => {
   }, [currentUser])
 
   useEffect(() => {
-    if (list.length > 0) setShowButton(false)
+    if (list && list.length > 0) setShowButton(false)
     else setShowButton(true)
   }, [list])
 
@@ -55,14 +55,14 @@ const Places = ({ currentUser }) => {
         {showButton && 
         <div>
           <Link to="/placeform"><Button sx={{ mr: 1 }} variant="contained">청소 구역 생성</Button></Link>
-          <Link to="/placeform"><Button variant="contained" color="secondary">참가하기</Button></Link>
+          <Link to="/placejoin"><Button variant="contained" color="secondary">참가하기</Button></Link>
         </div>}
         
         {/* {JSON.stringify(list)} */}
         <Stack direction="row" spacing={1} mt={2}
           justifyContent="center"
           alignItems="center">
-          {list.map((p, i) => <Place {...p} key={i} />)}
+          {list.map((p, i) => <Place {...p} key={i} currentUser={ currentUser} />)}
         </Stack>
       </div>
     </>

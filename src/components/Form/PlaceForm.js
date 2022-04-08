@@ -10,10 +10,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
+import Members from './Members';
 
 const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
   let { id } = useParams();
+
+  const [place, setPlace] = useState()
+  const [amIFirst, setAmIFirst] = useState(false)
 
   const [loadingData, setLoadingData] = useState(false); // 수정일때 데이터 로딩
   const [text, setText] = useState('');
@@ -85,11 +89,16 @@ const PlaceForm = ({ currentUser }) => {
     const docSnap = await getDoc(docRef);
     setLoadingData(false)
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       let data = docSnap.data()
+      console.log("Document data:", data);
       setText(data.name)
       setText2(data.description)
       setDays(data.days)
+
+      setPlace(data)
+      if (data.members && data.members.length && data.members[0].id === currentUser.uid) {
+        setAmIFirst(true)
+      }
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -100,7 +109,12 @@ const PlaceForm = ({ currentUser }) => {
   const handleDelete = async () => {
     const docRef = doc(db, "places", id);
     setLoading(true)
-    await deleteDoc(docRef);
+    if (amIFirst) {
+      await deleteDoc(docRef);
+    } else {
+      // 빼기
+    }
+    
     navigate("/", { replace: true });
   }
 
@@ -117,7 +131,10 @@ const PlaceForm = ({ currentUser }) => {
           <form className={styles.Form} onSubmit={ onSubmit }>
             <div className={styles.Title}>
               {/* <h1>{ currentUser.displayName },</h1> */}
-              <h2>청소 구역 { id ? <>수정</> : <>생성</> }</h2>
+              <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
+              { place && <div>
+                <Members members={ place.members } currentUser={currentUser} />
+              </div>}
             </div>
 
             <div className={styles.Row}>
@@ -150,30 +167,32 @@ const PlaceForm = ({ currentUser }) => {
                 <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
               }
             </div>
-            { id && 
+            { id && place &&
               <>
                 <div className={styles.Row}>
                   <Divider variant="middle" />
                 </div>
                 <div className={ styles.FormGroup }>
-                  <div>To delete, 입력하세요 <span className={styles.Italic}>{ text }</span> </div>
-                  <TextField 
-                  value={textForDelete} onChange={handleChangeTextForDelete}
-                  hiddenLabel
-                  id="filled-hidden-label-small"
-                  variant="filled"
-                  size="small"
-                  placeholder={ text }
-                  />
+                  <div>나가는 것은 신중하게 생각하세요.<br/> 그리고 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
                   <div>
-                    { loading ?
-                    <LoadingButton loading variant="contained">
-                      ...
-                    </LoadingButton>
-                    :
-                    <Button onClick={ handleDelete }
-                      variant="contained" disabled={textForDelete !== text}>DELETE</Button>
-                    }
+                    <TextField 
+                    value={textForDelete} onChange={handleChangeTextForDelete}
+                    hiddenLabel
+                    id="filled-hidden-label-small"
+                    variant="filled"
+                    size="small"
+                    placeholder={place.name}
+                    />
+                    <div>
+                      { loading ?
+                      <LoadingButton loading variant="contained">
+                        ...
+                      </LoadingButton>
+                      :
+                      <Button onClick={ handleDelete } sx={{mt:1}}
+                        variant="contained" disabled={textForDelete !== place.name}>DELETE</Button>
+                      }
+                    </div>
                   </div>
                 </div>
               </>

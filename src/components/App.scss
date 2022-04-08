@@ -13,7 +13,7 @@
 
 .App {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url(../../public/logo512.png);
   background-repeat: no-repeat;
   background-position: bottom;
@@ -22,6 +22,7 @@
   color: var(--text-color);
   transition: 0.3s;
   word-break: break-all;
+  padding-bottom: 1rem;
 }
 .App {
   --bg: #eee;

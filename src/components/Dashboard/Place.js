@@ -12,8 +12,9 @@ import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Members from '../Form/Members';
 
-const Place = ({ id, name, days, members, description }) => {
+const Place = ({ id, name, days, members, description, currentUser }) => {
   let navigate = useNavigate();
   const [open, setOpen] = useState(false)
   const handleClick = () => {
@@ -32,18 +33,18 @@ const Place = ({ id, name, days, members, description }) => {
 
   return (
     <>
-      <Chip label={name} onClick={handleClick} />
+      <Chip label={name} onClick={handleClick} color="primary" />
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>{name}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {description}<br/><br/>
-            Limit days: { days }일<br/>
-            Members:
-            <Stack direction="row" spacing={1} mt={1}>
-              {members.map(((m, i) => <Chip key={i} label={m.name} variant="outlined" />))}
-            </Stack>
+            {description}<br /><br />
           </DialogContentText>
+          <div>
+            Limit days: <b>{days}일</b><br />
+            Code: <b>{id}</b><br />
+            Members: <Members members={ members } currentUser={currentUser} />
+          </div>
         </DialogContent>
         <List sx={{ pt: 0 }}>
           <ListItem autoFocus button onClick={() => handleListItemClick('Edit')}>

@@ -7,6 +7,7 @@ import CleanForm from './Form/CleanForm';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import  { useAuth } from '../contexts/AuthContext'
 import PlaceForm from './Form/PlaceForm';
+import JoinForm from './Form/JoinForm';
 
 function App({ user }) {
   const { currentUser } = useAuth()
@@ -31,7 +32,9 @@ function App({ user }) {
           <Route path="/" element={<Dashboard currentUser={currentUser} />} />
           <Route path="placeform" element={<PlaceForm currentUser={ currentUser }/>} />
           <Route path="placeform/:id" element={<PlaceForm currentUser={currentUser}/>} />
+          <Route path="placejoin" element={<JoinForm currentUser={ currentUser }/>} />
           <Route path="cleaned/:id" element={<CleanForm currentUser={ currentUser }/>} />
+          <Route path="*" element={<div>page djqtdma</div>} />
         </Routes>
         
       </div>
