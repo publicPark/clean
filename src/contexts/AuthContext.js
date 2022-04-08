@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
+import { setDoc, doc } from "firebase/firestore"; 
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 
@@ -24,11 +25,6 @@ export const AuthProvider = ({ children }) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
     });
   }
   
@@ -41,12 +37,21 @@ export const AuthProvider = ({ children }) => {
     });
   }
 
+  const writeUser = async (u) => {
+    const docRef = doc(db, "users", u.uid);
+    const docRefNew = await setDoc(docRef, {
+      name: u.displayName,
+      photoURL: u.photoURL
+    });
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("onAuthStateChanged", user)
       setLoading(false)
       if (user) {
         setCurrentUser(user)
+        writeUser(user)
       }
     });
     return unsubscribe

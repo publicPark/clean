@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import styles from './Profile.module.scss'
 import { useTheme } from '../contexts/ThemeContext'
 
-const GoogleAuth = () => {
+const Profile = () => {
   const { darkTheme, toggleTheme } = useTheme()
   const { currentUser, googleAuth, userSignOut } = useAuth()
   const [openSlide, setOpenSlide] = useState(false)
@@ -46,4 +46,4 @@ const GoogleAuth = () => {
   )
 }
 
-export default GoogleAuth;
+export default Profile

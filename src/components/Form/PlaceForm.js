@@ -11,18 +11,25 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 
-
 const PlaceForm = ({ currentUser }) => {
-  let { id } = useParams();
-  const docRef = doc(db, "places", id);
-
   let navigate = useNavigate();
+  let { id } = useParams();
+
+  const [loadingData, setLoadingData] = useState(false); // 수정일때 데이터 로딩
   const [text, setText] = useState('');
+  const [text2, setText2] = useState('');
+  const [days, setDays] = useState();
   const [textForDelete, setTextForDelete] = useState('');
   const [loading, setLoading] = useState(false)
 
   const handleChangeText = (event) => {
     setText(event.target.value);
+  };
+  const handleChangeText2 = (event) => {
+    setText2(event.target.value);
+  };
+  const handleChangeDays = (event) => {
+    setDays(event.target.value);
   };
   const handleChangeTextForDelete = (event) => {
     setTextForDelete(event.target.value);
@@ -40,14 +47,24 @@ const PlaceForm = ({ currentUser }) => {
     try {
       setLoading(true)
       if (id) {
+        const docRef = doc(db, "places", id);
         await updateDoc(docRef, {
-          name: text
+          name: text,
+          days: days,
+          description: text2,
         });
       } else {
+        let d = days
+        if(!d) d = 14
         const docRefNew = await addDoc(collection(db, "places"), {
           name: text,
-          days: 14,
-          members: [currentUser.uid],
+          days: d,
+          description: text2,
+          members: [{
+            id: currentUser.uid,
+            name: currentUser.displayName,
+            photoURL: currentUser.photoURL
+          }],
           created: new Date()
         });
         console.log("Document written with ID: ", docRefNew.id);
@@ -63,11 +80,16 @@ const PlaceForm = ({ currentUser }) => {
 
   // 수정일때 정보 불러오기
   const getPlace = async () => {
+    const docRef = doc(db, "places", id);
+    setLoadingData(true)
     const docSnap = await getDoc(docRef);
+    setLoadingData(false)
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
       let data = docSnap.data()
       setText(data.name)
+      setText2(data.description)
+      setDays(data.days)
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -76,6 +98,7 @@ const PlaceForm = ({ currentUser }) => {
 
   // 삭제하기
   const handleDelete = async () => {
+    const docRef = doc(db, "places", id);
     setLoading(true)
     await deleteDoc(docRef);
     navigate("/", { replace: true });
@@ -90,59 +113,73 @@ const PlaceForm = ({ currentUser }) => {
   return (
     <div className={stylesPaper.Wrapper}>
       <div className={stylesPaper.Content}>
-        <form className={styles.Form} onSubmit={ onSubmit }>
-          <div className={styles.Title}>
-            <h1>{ currentUser.displayName },</h1>
-            <h2>청소 구역 { id ? <>수정</> : <>생성</> }</h2>
-          </div>
+        { loadingData ? '...' : 
+          <form className={styles.Form} onSubmit={ onSubmit }>
+            <div className={styles.Title}>
+              {/* <h1>{ currentUser.displayName },</h1> */}
+              <h2>청소 구역 { id ? <>수정</> : <>생성</> }</h2>
+            </div>
 
-          <div className={styles.Row}>
-            <TextField id="outlined-basic" label="이름" variant="outlined"
-            value={text} onChange={handleChangeText}/>
-          </div>
+            <div className={styles.Row}>
+              <TextField id="outlined-basic" label="구역 이름" variant="outlined"
+              value={text} onChange={handleChangeText}/>
+            </div>
+            <div className={styles.Row}>
+              <TextField id="outlined-basic" label="구역 설명" variant="outlined"
+              value={text2} onChange={handleChangeText2}/>
+            </div>
+            <div className={styles.Row}>
+              <TextField
+                value={days} onChange={handleChangeDays}
+                id="outlined-number"
+                label="limit days"
+                placeholder='default: 14'
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
 
-          <div className={styles.Row}>
-            <Divider variant="middle" />
-          </div>
-
-          <div className={styles.Row}>
-            {loading ?
-              <LoadingButton loading variant="contained">
-                ...
-              </LoadingButton>
-              :
-              <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
-            }
-          </div>
-          { id && 
-            <>
-              <div className={styles.Row}>
-                <Divider variant="middle" />
-              </div>
-              <div className={ styles.FormGroup }>
-                <div>To delete, <span className={styles.Italic}>{ text }</span> 입력하세요.</div>
-                <TextField 
+            <div className={styles.Row}>
+              {loading ?
+                <LoadingButton loading variant="contained">
+                  ...
+                </LoadingButton>
+                :
+                <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
+              }
+            </div>
+            { id && 
+              <>
+                <div className={styles.Row}>
+                  <Divider variant="middle" />
+                </div>
+                <div className={ styles.FormGroup }>
+                  <div>To delete, 입력하세요 <span className={styles.Italic}>{ text }</span> </div>
+                  <TextField 
                   value={textForDelete} onChange={handleChangeTextForDelete}
                   hiddenLabel
                   id="filled-hidden-label-small"
-                  defaultValue="Small"
                   variant="filled"
                   size="small"
-                />
-                <div>
-                  { loading ?
-                  <LoadingButton loading variant="contained">
-                    ...
-                  </LoadingButton>
-                  :
-                  <Button onClick={ handleDelete }
-                    variant="contained" disabled={textForDelete !== text}>DELETE</Button>
-                  }
+                  placeholder={ text }
+                  />
+                  <div>
+                    { loading ?
+                    <LoadingButton loading variant="contained">
+                      ...
+                    </LoadingButton>
+                    :
+                    <Button onClick={ handleDelete }
+                      variant="contained" disabled={textForDelete !== text}>DELETE</Button>
+                    }
+                  </div>
                 </div>
-              </div>
-            </>
-          }
-        </form>
+              </>
+            }
+          </form>
+        }
       </div>
     </div>
   )

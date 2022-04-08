@@ -10,15 +10,16 @@ const Dashboard = ({ currentUser }) => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>청소를 하면 깨끗해집니다!</h2>
-          {currentUser? <>
-            <div>
-              <Link to="/clean"><Button variant="contained">청소했습니까? 여기를 클릭하세요</Button></Link>
-            </div>
-          </>
-          :<>
+          {currentUser ?
+            <>
+              <p>{currentUser.displayName} 하이</p>
+            </>
+            :
+            <>
               <p>ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁ</p>
               <p>당신은 로그인을 해서 우리집을 청소해야만 해요.</p>
-          </>}
+            </>
+          }
         </div>
       </div>
 

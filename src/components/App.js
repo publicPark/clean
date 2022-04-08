@@ -25,13 +25,13 @@ function App({ user }) {
     <ThemeProvider theme={themeMui}>
       <div className={`App ${darkTheme&&'dark'}`}>
         <div className="">
-          <Navbar />
+          <Navbar currentUser={currentUser} />
         </div>
         <Routes>
           <Route path="/" element={<Dashboard currentUser={currentUser} />} />
           <Route path="placeform" element={<PlaceForm currentUser={ currentUser }/>} />
           <Route path="placeform/:id" element={<PlaceForm currentUser={currentUser}/>} />
-          <Route path="clean" element={<CleanForm currentUser={ currentUser }/>} />
+          <Route path="cleaned/:id" element={<CleanForm currentUser={ currentUser }/>} />
         </Routes>
         
       </div>

@@ -1,13 +1,13 @@
-import GoogleAuth from "./Profile";
+import Profile from "./Profile";
 import styles from './Navbar.module.scss'
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ currentUser }) => {
   return (
     <div className={styles.Navbar}>
       <div className={styles.NavbarContent}>
         <Link to='/'><button className={styles.ButtonTheme}>🏠</button></Link>
-        <GoogleAuth/>
+        <Profile/>
       </div>
     </div>
   )
