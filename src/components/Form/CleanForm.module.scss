@@ -8,3 +8,17 @@
 .Row {
   margin-bottom: 2rem;
 }
+
+.FormGroup {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  > div {
+    margin-bottom: 1em;
+  }
+}
+
+.Italic {
+  font-style: italic;
+  color: var(--accent);
+}

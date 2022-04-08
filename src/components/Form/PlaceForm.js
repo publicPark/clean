@@ -4,7 +4,7 @@ import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 
 import { db } from '../../firebase'
-import { collection, addDoc, getDoc, doc } from "firebase/firestore"; 
+import { collection, addDoc, getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"; 
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -14,13 +14,18 @@ import Divider from '@mui/material/Divider';
 
 const PlaceForm = ({ currentUser }) => {
   let { id } = useParams();
+  const docRef = doc(db, "places", id);
 
   let navigate = useNavigate();
   const [text, setText] = useState('');
+  const [textForDelete, setTextForDelete] = useState('');
   const [loading, setLoading] = useState(false)
 
   const handleChangeText = (event) => {
     setText(event.target.value);
+  };
+  const handleChangeTextForDelete = (event) => {
+    setTextForDelete(event.target.value);
   };
 
   // submit
@@ -34,15 +39,21 @@ const PlaceForm = ({ currentUser }) => {
     
     try {
       setLoading(true)
-      const docRef = await addDoc(collection(db, "places"), {
-        name: text,
-        days: 14,
-        members: [currentUser.uid],
-        created: new Date()
-      });
+      if (id) {
+        await updateDoc(docRef, {
+          name: text
+        });
+      } else {
+        const docRefNew = await addDoc(collection(db, "places"), {
+          name: text,
+          days: 14,
+          members: [currentUser.uid],
+          created: new Date()
+        });
+        console.log("Document written with ID: ", docRefNew.id);
+      }
 
       setLoading(false)
-      console.log("Document written with ID: ", docRef.id);
       navigate("/", { replace: true });
     } catch (e) {
       setLoading(false)
@@ -50,19 +61,30 @@ const PlaceForm = ({ currentUser }) => {
     }
   }
 
+  // 수정일때 정보 불러오기
   const getPlace = async () => {
-    const docRef = doc(db, "places", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
+      let data = docSnap.data()
+      setText(data.name)
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
     }
   }
 
+  // 삭제하기
+  const handleDelete = async () => {
+    setLoading(true)
+    await deleteDoc(docRef);
+    navigate("/", { replace: true });
+  }
+
   useEffect(() => {
-    getPlace()
+    if (id) {
+      getPlace()
+    }
   }, [])
 
   return (
@@ -83,12 +105,42 @@ const PlaceForm = ({ currentUser }) => {
             <Divider variant="middle" />
           </div>
 
-          {loading ?
-            <LoadingButton loading variant="contained">
-              ...
-            </LoadingButton>
-            :
-            <Button type="submit" variant="contained">CREATE!</Button>
+          <div className={styles.Row}>
+            {loading ?
+              <LoadingButton loading variant="contained">
+                ...
+              </LoadingButton>
+              :
+              <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
+            }
+          </div>
+          { id && 
+            <>
+              <div className={styles.Row}>
+                <Divider variant="middle" />
+              </div>
+              <div className={ styles.FormGroup }>
+                <div>To delete, <span className={styles.Italic}>{ text }</span> 입력하세요.</div>
+                <TextField 
+                  value={textForDelete} onChange={handleChangeTextForDelete}
+                  hiddenLabel
+                  id="filled-hidden-label-small"
+                  defaultValue="Small"
+                  variant="filled"
+                  size="small"
+                />
+                <div>
+                  { loading ?
+                  <LoadingButton loading variant="contained">
+                    ...
+                  </LoadingButton>
+                  :
+                  <Button onClick={ handleDelete }
+                    variant="contained" disabled={textForDelete !== text}>DELETE</Button>
+                  }
+                </div>
+              </div>
+            </>
           }
         </form>
       </div>
