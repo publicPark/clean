@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
-
 import { db } from '../../firebase'
-import { collection, addDoc, getDocs, query, where, getDoc, doc } from "firebase/firestore"; 
+import { collection, addDoc, getDoc, doc } from "firebase/firestore"; 
 
 import TextField from '@mui/material/TextField';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -89,60 +88,70 @@ const CleanForm = ({ currentUser }) => {
     }
   }
 
+  function disablePrevDates(startDate) {
+    const startSeconds = Date.parse(startDate);
+    return (date) => {
+      return Date.parse(date) < startSeconds;
+    }
+  }
+  const startDate = new Date();
   return (
-    <div className={stylesPaper.Wrapper}>
-      <div className={stylesPaper.Content}>
-        <form className={styles.Form} onSubmit={ onSubmit }>
-          <div className={styles.Title}>
-            {place && <h1>{ place.name }</h1>}
-            <h2>깨끗해!</h2>
-          </div>
+    <div className={ stylesPaper.Center }>
+      <div className={stylesPaper.Wrapper}>
+        <div className={stylesPaper.Content}>
+          <form className={styles.Form} onSubmit={ onSubmit }>
+            <div className={styles.Title}>
+              {place && <h1>{ place.name }</h1>}
+              <h2>깨끗해!</h2>
+            </div>
 
-          <div className={styles.Row}>
-            <LocalizationProvider dateAdapter={DateAdapter}>
-              <MobileDatePicker
-                label="When"
-                value={value}
-                onChange={(newValue) => {
-                  setValue(newValue);
-                }}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </div>
+            <div className={styles.Row}>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <MobileDatePicker
+                  shouldDisableDate={ disablePrevDates(startDate) }
+                  label="When"
+                  value={value}
+                  onChange={(newValue) => {
+                    setValue(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
 
-          <div className={styles.Row}>
-            <TextField id="outlined-basic" label="메모" variant="outlined"
-            value={text} onChange={handleChangeText}/>
-          </div>
-          
-          <div className={styles.Row}>
-            <Divider variant="middle" />
-          </div>
-          
-          <div className={styles.Row}>
-            <FormControl sx={{ minWidth: 150 }}>
-              <InputLabel id="demo-simple-select-label">Next Player</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={next}
-                label="Next Player"
-                onChange={handleChangeNext}
-              >
-                {players.map((u, i) => <MenuItem key={i} value={u.id}>{u.name}</MenuItem>)}
-              </Select>
-            </FormControl>
-          </div>
-          
-          {loading ?
-            <LoadingButton loading variant="contained">
-              ...
-            </LoadingButton>
-            :
-            <Button type="submit" variant="contained">TOUCH!</Button>
-          }
-        </form>
+            <div className={styles.Row}>
+              <TextField id="outlined-basic" label="메모" variant="outlined"
+              value={text} onChange={handleChangeText}/>
+            </div>
+            
+            <div className={styles.Row}>
+              <Divider variant="middle" />
+            </div>
+            
+            <div className={styles.Row}>
+              <FormControl sx={{ minWidth: 150 }}>
+                <InputLabel id="demo-simple-select-label">Next Player</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={next}
+                  label="Next Player"
+                  onChange={handleChangeNext}
+                >
+                  {players.map((u, i) => <MenuItem key={i} value={u.id}>{u.name}</MenuItem>)}
+                </Select>
+              </FormControl>
+            </div>
+            
+            {loading ?
+              <LoadingButton loading variant="contained">
+                ...
+              </LoadingButton>
+              :
+              <Button type="submit" variant="contained">TOUCH!</Button>
+            }
+          </form>
+        </div>
       </div>
     </div>
   )

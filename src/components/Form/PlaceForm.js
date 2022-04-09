@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
+import Members from './Members';
 
 import { db } from '../../firebase'
 import { collection, addDoc, getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"; 
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
-import Members from './Members';
 
 const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
@@ -132,9 +133,9 @@ const PlaceForm = ({ currentUser }) => {
             <div className={styles.Title}>
               {/* <h1>{ currentUser.displayName },</h1> */}
               <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
-              { place && <div>
+              {/* { place && <div>
                 <Members members={ place.members } currentUser={currentUser} />
-              </div>}
+              </div>} */}
             </div>
 
             <div className={styles.Row}>
@@ -142,8 +143,15 @@ const PlaceForm = ({ currentUser }) => {
               value={text} onChange={handleChangeText}/>
             </div>
             <div className={styles.Row}>
-              <TextField id="outlined-basic" label="구역 설명" variant="outlined"
-              value={text2} onChange={handleChangeText2}/>
+              {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
+                value={text2} onChange={handleChangeText2} /> */}
+              <TextareaAutosize
+                aria-label="description"
+                minRows={3}
+                placeholder="description"
+                style={{ width: 200, resize: 'none' }}
+                value={text2} onChange={handleChangeText2}
+              />
             </div>
             <div className={styles.Row}>
               <TextField

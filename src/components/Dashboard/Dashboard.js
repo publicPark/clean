@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import stylesPaper from '../styles/Paper.module.scss'
-import Button from '@mui/material/Button';
 import News from "./News";
 import Places from "./Places";
 const Dashboard = ({ currentUser }) => {
 
   return (
-    <>
+    <div className={ stylesPaper.Flex }>
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>청소를 하면 깨끗해집니다!</h2>
@@ -34,7 +33,7 @@ const Dashboard = ({ currentUser }) => {
           <News/>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 export default Dashboard

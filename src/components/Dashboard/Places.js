@@ -3,8 +3,9 @@ import styles from './Place.module.scss'
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
 import { db } from '../../firebase'
 import { collection, getDocs, query, where } from "firebase/firestore"; 
@@ -14,6 +15,7 @@ import Place from "./Place";
 const placesRef = collection(db, "places");
 
 const Places = ({ currentUser }) => {
+  const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
   const [showButton, setShowButton] = useState(false)
   
@@ -24,7 +26,9 @@ const Places = ({ currentUser }) => {
         name: currentUser.displayName,
         photoURL: currentUser.photoURL
       }));
+      setLoading(true)
       const querySnapshot = await getDocs(q);
+      setLoading(false)
       let arr = []
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}`);
@@ -45,26 +49,31 @@ const Places = ({ currentUser }) => {
 
   return (
     <>
-      <div>
-        <h2>내 구역들 
-          <IconButton sx={{ mb: 1, ml: 1 }} 
+      {loading ? '...' : <div>
+        <h2 className={styles.Flex}>내 구역들
+          <IconButton sx={{ ml: 1 }}
             aria-label="show" onClick={() => setShowButton((cur) => !cur)}>
-            { showButton?<RemoveIcon />:<AddIcon /> }
+            {showButton ? <CloseIcon /> : <AddIcon />}
           </IconButton>
         </h2>
-        {showButton && 
-        <div>
-          <Link to="/placeform"><Button sx={{ mr: 1 }} variant="contained">청소 구역 생성</Button></Link>
-          <Link to="/placejoin"><Button variant="contained" color="secondary">참가하기</Button></Link>
-        </div>}
+        {showButton &&
+          <>
+            <div>
+              <Link to="/placeform"><Button sx={{ mr: 1, mb: 1 }} variant="contained" color="warning">청소 구역 생성</Button></Link>
+              <Link to="/placejoin"><Button sx={{ mb: 1 }} variant="contained" color="success">참가하기</Button></Link>
+            </div>
+            <Divider sx={{ mt: 2, mb: 3 }} variant="middle" />
+          </>
+        }
         
         {/* {JSON.stringify(list)} */}
-        <Stack direction="row" spacing={1} mt={2}
+        <Stack direction="row" spacing={1}
           justifyContent="center"
           alignItems="center">
-          {list.map((p, i) => <Place {...p} key={i} currentUser={ currentUser} />)}
+          {list.map((p, i) => <Place {...p} key={i} currentUser={currentUser} />)}
         </Stack>
       </div>
+      }
     </>
   )
 }
