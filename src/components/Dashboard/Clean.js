@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import Chip from '@mui/material/Chip';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -29,7 +30,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const Clean = ({ place }) => {
+const Clean = ({ place, now }) => {
   const [loading, setLoading] = useState(false)
   const [clean, setClean] = useState()
   
@@ -54,6 +55,7 @@ const Clean = ({ place }) => {
       let doomsday = addDays(theday, place.days)
       // console.log(data.text + "test: ", theday, doomsday, place.days)
       data.doomsday = format(doomsday, "yyyy-MM-dd' 'HH:mm:ss")
+      data.howmany = differenceInDays(now, doomsday)
 
       setClean(data)
     });
@@ -64,8 +66,8 @@ const Clean = ({ place }) => {
   },[])
 
   useEffect(() => {
-    
-  })
+    // 
+  }, [now])
 
   return (
     <div className={styles.Space}>
@@ -74,10 +76,24 @@ const Clean = ({ place }) => {
           <Place {...place} />
         </div>
         {clean? <div>
-          <div>has been cleaned {clean.distance} by { place.membersMap[clean.who].name }</div>
+          <div className={styles.Blur}>was cleaned {clean.distance} by { place.membersMap[clean.who].name }</div>
+          <div>{ clean.text }</div>
           <div className={styles.MarginTop}>
-            <b className={styles.ColorAccent}>☄️ Dies irae:</b> {clean.doomsday}
-            <div>😀 { clean.text }</div>
+            <div>
+              <b className={styles.ColorAccent}>☄️ Dies irae:</b> {clean.doomsday}
+            </div>
+            <div>
+              <b className={styles.ColorAccent3}>{ place.membersMap[clean.next].name }</b>'s 차례
+              {clean.howmany <= 0 ?
+                clean.howmany <= -3 ?
+                <Chip sx={{ m:1 }} label={ `😎 ${clean.howmany*-1}일 남음` } color="success" />
+                :
+                <Chip sx={{ m:1 }} label={ clean.howmany===0? `🚨 오늘 당장!` : `😨 ${clean.howmany*-1}일 남음` } color="error" />
+                
+              :
+                <Chip sx={{ m:1 }} label={ `💩 ${clean.howmany}일 지남` } color="neutral" />
+              }
+            </div>
           </div>
           
           {/* <div className={styles.MarginTop}>
@@ -105,7 +121,7 @@ const Clean = ({ place }) => {
           </div> */}
           
         </div>
-        :<div>
+        :<div className={styles.Blur}>
           청소한 적이 없음
         </div>}
       </>

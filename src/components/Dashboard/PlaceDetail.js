@@ -33,7 +33,11 @@ const PlaceDetail = ({ currentUser }) => {
     if (id) {
       getPlace(id)
     }
-  },[])
+  }, [])
+  
+  const getOut = () => {
+    alert("아직 못나가")
+  }
 
   return (
     <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
@@ -51,11 +55,13 @@ const PlaceDetail = ({ currentUser }) => {
               <h5>CODE: {id}</h5>
               <div className={styles.Description}>{place.description}</div>
               <div>
+                - Members -
                 <Members members={place.members} membersMap={place.membersMap} currentUser={currentUser} />
               </div>
               <div>Limit days: <b>{place.days}일</b><br /></div>
               <div>
                 <Link to={`/placeform/${id}`}><Button variant="outlined" color="secondary">Edit</Button></Link>
+                <Button sx={{ ml: 2 }} variant="outlined" color="warning" onClick={ getOut }>GET OUT</Button>
               </div>
             </div>
           </>

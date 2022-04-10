@@ -83,7 +83,7 @@ const Places = ({ currentUser, now }) => {
               </ListItem>
               { i<list.length-1 && <Divider component="li" />}
             </div>)}
-          </List>
+            </List>
         </div>
         }  
       </>

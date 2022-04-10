@@ -8,7 +8,6 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import Contact from './Contact';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -48,20 +47,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 const list = [
   {
-    title: '계획이란걸',
-    content: '각 구역마다 사건 목록, 사건 수정, 사건 삭제, 구역 나가기, 초대 기능, 프로필 수정, 심판하기'
+    title: 'Dies irae',
+    content: '최후의 심판. 이 날까지 청소를 안하면 심판이 내려진다.'
   },
-  {
-    title: '11, April, 2022',
-    content: '디에스이레가 몇일 남았는지 알려주기, 다음 차례 누구인지 알려주기, '
-  },
-  {
-    title: '10, April, 2022',
-    content: '본격 개발 시작'
-  }
 ]
 
-const About = () => {
+const Questions = () => {
   const [expanded, setExpanded] = useState('panel1');
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -72,13 +63,7 @@ const About = () => {
     <>
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
         <div className={stylesPaper.Content}>
-          <h1>ABOUT</h1>
-          <h2>사이좋게 즐겁게 청소하자고!</h2>
-          <h3>since April, 2022</h3>
-        </div>
-      </div>
-      <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
-        <div className={stylesPaper.Content}>
+          <h1>QUESTIONS?</h1>
           <div>
             {list.map((l, i) => {
               return <Accordion key={i}
@@ -97,10 +82,8 @@ const About = () => {
           </div>
         </div>
       </div>
-
-      <Contact />
     </>
   )
 }
 
-export default About
+export default Questions

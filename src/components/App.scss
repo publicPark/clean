@@ -3,7 +3,8 @@
   --bg-accent: #333;
   --text-color: #eee;
   --accent: #ff4400cc;
-  --accent2: #f50057cc;
+  --accent2: #5393ff;
+  --accent3: #f50057;
   --accent-opposite: #fff;
 
   --height-nav: 60px;
@@ -54,7 +55,8 @@ button {
 
 a {
   text-decoration: none;
-  color: var(--accent);
+  color: var(--accent2);
+  // color: var(--text-color);
 }
 a:visited {
   color: var(--accent2);

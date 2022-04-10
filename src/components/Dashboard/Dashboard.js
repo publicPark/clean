@@ -20,7 +20,7 @@ const Dashboard = ({ currentUser }) => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>즐거운 청소!</h2>
-          <h3>{format(now, "yyyy-MM-dd")}</h3>
+          <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3>
           <h2 className={ stylesPaper.ColorAccent2 }>{format(now, 'HH:mm:ss')}</h2>
           {currentUser ?
             <>

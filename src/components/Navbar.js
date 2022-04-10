@@ -16,13 +16,17 @@ import { useState } from "react";
 
 const pages = [
   {
-    name: 'Dashboard',
+    name: '= Dashboard',
     link: '/'
   },
   {
+    name: 'Questions?',
+    link: '/questions'
+  },
+  {
     name: 'About',
-    link: 'about'
-  }
+    link: '/about'
+  },
 ];
 
 const Navbar = ({ currentUser }) => {

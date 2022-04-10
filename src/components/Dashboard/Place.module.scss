@@ -5,7 +5,8 @@
 }
 
 .Description {
-  white-space: pre;
+  white-space: pre-line;
+  word-break: keep-all;
   color: var(--text-color);
   padding: 1em;
 }

@@ -11,6 +11,8 @@ import JoinForm from './Form/JoinForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
 import PlaceDetail from './Dashboard/PlaceDetail';
+import Questions from './pages/Questions';
+import Contact from './pages/Contact';
 
 function App({ user }) {
   const { currentUser } = useAuth()
@@ -21,19 +23,25 @@ function App({ user }) {
       primary: {
         main: '#ff4400',
       },
+      neutral: {
+        main: '#64748B',
+        contrastText: '#fff',
+      },
       mode: darkTheme ? 'dark' : 'light',
     },
   });
 
   return (
     <ThemeProvider theme={themeMui}>
-      <div className={`App ${darkTheme&&'dark'}`}>
+      <div className={`App ${darkTheme?'dark':undefined}`}>
         <div className="">
           <Navbar currentUser={currentUser} />
         </div>
         <Routes>
           <Route path="/" element={<Dashboard currentUser={currentUser} />} />
+          <Route path="/questions" element={<Questions />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
           {currentUser ?
             <>

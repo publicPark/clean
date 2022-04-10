@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import format from 'date-fns/format'
 import { useNavigate } from "react-router-dom";
 
+import Button from '@mui/material/Button';
+
 const News = ({ currentUser, maxCount=3 }) => {
   let navigate = useNavigate();
   const [cleans, setCleans] = useState([])
@@ -26,8 +28,9 @@ const News = ({ currentUser, maxCount=3 }) => {
   }, [])
 
   const handleClick = (data) => {
-    console.log("??", data)
-    handleDelete(data.id)
+    if (window.confirm("Do you really want to delete?")) {
+      handleDelete(data.id)
+    }
   }
 
   // 삭제하기
@@ -48,9 +51,8 @@ const News = ({ currentUser, maxCount=3 }) => {
           <div>memo: {c.text}</div>
           <div>date: {format(new Date(c.date.seconds*1000), "yyyy-MM-dd")}</div>
           <div>created: {format(new Date(c.created.seconds * 1000), "yyyy-MM-dd hh:mm:ss")}</div>
-          <div>who: {c.who}</div>
           {currentUser && currentUser.uid === c.who && !loading &&
-            <button onClick={() => handleClick(c)}>귀찮아</button>
+            <Button sx={{ mt: 1 }} variant="outlined" color="warning" onClick={() => handleClick(c)}>귀찮아</Button>
           }
         </div>
       })}
