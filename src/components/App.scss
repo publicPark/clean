@@ -4,7 +4,7 @@
   --text-color: #eee;
   --accent: #ff4400cc;
   --accent2: #5393ff;
-  --accent3: #f50057;
+  --accent3: #00e676;
   --accent-opposite: #fff;
 
   --height-nav: 60px;
@@ -30,11 +30,15 @@
   --bg: #eee;
   --bg-accent: #ccc;
   --text-color: #333;
+  --accent2: #2979ff;
+  --accent3: #00a152;
 }
 .App.dark {
   --bg: #121212;
   --bg-accent: #555;
   --text-color: #eee;
+  --accent2: #5393ff;
+  --accent3: #00e676;
 }
 
 button {

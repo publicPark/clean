@@ -30,7 +30,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const Clean = ({ place, now }) => {
+const Clean = ({ place, now, currentUser }) => {
   const [loading, setLoading] = useState(false)
   const [clean, setClean] = useState()
   
@@ -83,7 +83,11 @@ const Clean = ({ place, now }) => {
               <b className={styles.ColorAccent}>☄️ Dies irae:</b> {clean.doomsday}
             </div>
             <div>
-              <b className={styles.ColorAccent3}>{ place.membersMap[clean.next].name }</b>'s 차례
+              <b className={place.membersMap[clean.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
+                {place.membersMap[clean.next].name}
+              </b>
+              { place.membersMap[clean.next].id === currentUser.uid && '(나)'}
+              <span className={styles.Blur}>'s 차례</span>
               {clean.howmany <= 0 ?
                 clean.howmany <= -3 ?
                 <Chip sx={{ m:1 }} label={ `😎 ${clean.howmany*-1}일 남음` } color="success" />

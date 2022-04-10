@@ -79,7 +79,7 @@ const Places = ({ currentUser, now }) => {
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', mt: 3 }}>
             {list.map((p, i) => <div key={i}>
               <ListItem alignItems="flex-start">
-                <Clean place={p} now={ now } />
+                <Clean place={p} now={now} currentUser={ currentUser} />
               </ListItem>
               { i<list.length-1 && <Divider component="li" />}
             </div>)}
