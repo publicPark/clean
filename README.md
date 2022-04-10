@@ -1,2 +1,2 @@
-# CLEAN RELAY 아직 뭐가 안됐어
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# 즐거운 청소
+Open [https://publicpark.github.io/clean](https://publicpark.github.io/clean) to view it in your browser.
