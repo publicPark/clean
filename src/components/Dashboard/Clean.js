@@ -76,17 +76,17 @@ const Clean = ({ place, now, currentUser }) => {
           <Place {...place} />
         </div>
         {clean? <div>
-          <div className={styles.Blur}>was cleaned {clean.distance} by { place.membersMap[clean.who].name }</div>
+          <div className={styles.Blur}>was cleaned {clean.distance} by { place.membersMap[clean.who]? place.membersMap[clean.who].name : '???' }</div>
           <div>{ clean.text }</div>
           <div className={styles.MarginTop}>
             <div>
               <b className={styles.ColorAccent}>☄️ Dies irae:</b> {clean.doomsday}
             </div>
             <div>
-              <b className={place.membersMap[clean.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
-                {place.membersMap[clean.next].name}
+              <b className={currentUser && place.membersMap[clean.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
+                {place.membersMap[clean.next]? place.membersMap[clean.next].name : '???'}
               </b>
-              { place.membersMap[clean.next].id === currentUser.uid && '(나)'}
+              { currentUser && place.membersMap[clean.next].id === currentUser.uid && '(나)'}
               <span className={styles.Blur}>'s 차례</span>
               {clean.howmany <= 0 ?
                 clean.howmany <= -3 ?
