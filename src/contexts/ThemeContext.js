@@ -7,9 +7,17 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }) {
-  const [darkTheme, setDarkTheme] = useState(true)
+  const storedTheme = window.localStorage.getItem('theme');
+  let initialState = true
+  if (storedTheme) {
+    if (storedTheme === "true") initialState = true
+    else if(storedTheme==="false") initialState = false
+  }
+
+  const [darkTheme, setDarkTheme] = useState(initialState)
 
   function toggleTheme() {
+    window.localStorage.setItem('theme', !darkTheme);
     setDarkTheme(prevDarkTheme => !prevDarkTheme)
   }
   

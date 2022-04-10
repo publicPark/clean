@@ -2,18 +2,19 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
-.Center {
-  text-align: center;
+  align-items: flex-start;
 }
 .Wrapper {
-  min-width: 200px;
+  min-width: 250px;
   max-width: 500px;
   margin: 1rem;
   position: relative;
   color: var(--text-color);
   transition: 0.3s;
   text-align: center;
+}
+.WrapperWide {
+  max-width: 100%;
 }
 .Wrapper:before {
   border-radius: 5px;
@@ -34,4 +35,8 @@
   > div {
     margin-bottom: 1em;
   }
+}
+
+.ColorAccent2 {
+  color: var(--accent2);
 }

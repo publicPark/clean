@@ -27,25 +27,26 @@ const JoinForm = ({ currentUser }) => {
     const docRef = doc(db, "places", text);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      let myData = {
-        id: currentUser.uid,
-        name: currentUser.displayName,
-        photoURL: currentUser.photoURL
-      }
       let data = docSnap.data()
       console.log("Document data:", data);
-      let res = false
+      let isIn = false
       for (let i = 0; i < data.members.length; i++){
-        if (data.members[i].id === currentUser.uid) {
-          res = true
+        if (data.members[i] === currentUser.uid) { // 이미 있으면
+          isIn = true
           break
         }
       }
-      if (res) {
+      if (isIn) {
         alert("이미 join")
       } else {
+        data.membersMap[currentUser.uid] = {
+          id: currentUser.uid,
+          name: currentUser.displayName,
+          photoURL: currentUser.photoURL
+        }
         await updateDoc(docRef, {
-          members: arrayUnion(myData)
+          members: arrayUnion(currentUser.uid),
+          membersMap: data.membersMap
         });
         navigate("/", { replace: true });
       }
@@ -55,7 +56,7 @@ const JoinForm = ({ currentUser }) => {
     }
   }
   return (
-    <div className={stylesPaper.Wrapper}>
+    <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
       <div className={stylesPaper.Content}>
         <form className={styles.Form} onSubmit={onSubmit}>
           <div className={styles.Title}>

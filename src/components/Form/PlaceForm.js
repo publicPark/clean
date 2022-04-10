@@ -60,18 +60,22 @@ const PlaceForm = ({ currentUser }) => {
         });
       } else {
         let d = days
-        if(!d) d = 14
-        const docRefNew = await addDoc(collection(db, "places"), {
+        if (!d) d = 14
+        let newData = {
           name: text,
           days: d,
           description: text2,
-          members: [{
-            id: currentUser.uid,
-            name: currentUser.displayName,
-            photoURL: currentUser.photoURL
-          }],
+          members: [currentUser.uid],
           created: new Date()
-        });
+        }
+        const map = {} // 맵이 지원이 안되네? 그럼 그냥 Dictionary
+        map[currentUser.uid] = {
+          id: currentUser.uid,
+          name: currentUser.displayName,
+          photoURL: currentUser.photoURL
+        }
+        newData.membersMap = map
+        const docRefNew = await addDoc(collection(db, "places"), newData);
         console.log("Document written with ID: ", docRefNew.id);
       }
 
@@ -97,7 +101,7 @@ const PlaceForm = ({ currentUser }) => {
       setDays(data.days)
 
       setPlace(data)
-      if (data.members && data.members.length && data.members[0].id === currentUser.uid) {
+      if (data.members && data.members.length && data.members[0] === currentUser.uid) {
         setAmIFirst(true)
       }
     } else {
@@ -112,11 +116,11 @@ const PlaceForm = ({ currentUser }) => {
     setLoading(true)
     if (amIFirst) {
       await deleteDoc(docRef);
+      navigate("/", { replace: true });
     } else {
       // 빼기
+      alert("you are not the first")
     }
-    
-    navigate("/", { replace: true });
   }
 
   useEffect(() => {
@@ -126,7 +130,7 @@ const PlaceForm = ({ currentUser }) => {
   }, [])
 
   return (
-    <div className={stylesPaper.Wrapper}>
+    <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
       <div className={stylesPaper.Content}>
         { loadingData ? '...' : 
           <form className={styles.Form} onSubmit={ onSubmit }>
@@ -134,7 +138,7 @@ const PlaceForm = ({ currentUser }) => {
               {/* <h1>{ currentUser.displayName },</h1> */}
               <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
               {/* { place && <div>
-                <Members members={ place.members } currentUser={currentUser} />
+                <Members members={ place.members } membersMap={ place.membersMap } currentUser={currentUser} />
               </div>} */}
             </div>
 
@@ -146,9 +150,9 @@ const PlaceForm = ({ currentUser }) => {
               {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
                 value={text2} onChange={handleChangeText2} /> */}
               <TextareaAutosize
-                aria-label="description"
+                aria-label="구역 설명"
                 minRows={3}
-                placeholder="description"
+                placeholder="구역 설명"
                 style={{ width: 200, resize: 'none' }}
                 value={text2} onChange={handleChangeText2}
               />
@@ -181,7 +185,7 @@ const PlaceForm = ({ currentUser }) => {
                   <Divider variant="middle" />
                 </div>
                 <div className={ styles.FormGroup }>
-                  <div>나가는 것은 신중하게 생각하세요.<br/> 그리고 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
+                  <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
                   <div>
                     <TextField 
                     value={textForDelete} onChange={handleChangeTextForDelete}
@@ -193,7 +197,7 @@ const PlaceForm = ({ currentUser }) => {
                     />
                     <div>
                       { loading ?
-                      <LoadingButton loading variant="contained">
+                      <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
                         ...
                       </LoadingButton>
                       :

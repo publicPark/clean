@@ -3,6 +3,7 @@ import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
 import { collection, addDoc, getDoc, doc } from "firebase/firestore"; 
+import endOfDay from 'date-fns/endOfDay'
 
 import TextField from '@mui/material/TextField';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -46,13 +47,15 @@ const CleanForm = ({ currentUser }) => {
       return
     }
     
+    // console.log('value test', value)
+    // return
     try {
       setLoading(true)
       const docRef = await addDoc(collection(db, "cleans"), {
         who: currentUser.uid,
         where: id,
         next: next,
-        date: value,
+        date: endOfDay(value),
         text: text,
         created: new Date()
       });
@@ -96,62 +99,60 @@ const CleanForm = ({ currentUser }) => {
   }
   const startDate = new Date();
   return (
-    <div className={ stylesPaper.Center }>
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <form className={styles.Form} onSubmit={ onSubmit }>
-            <div className={styles.Title}>
-              {place && <h1>{ place.name }</h1>}
-              <h2>깨끗해!</h2>
-            </div>
+    <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
+      <div className={stylesPaper.Content}>
+        <form className={styles.Form} onSubmit={ onSubmit }>
+          <div className={styles.Title}>
+            {place && <h1>{ place.name } 청소했다!</h1>}
+            <h2>깨끗해!</h2>
+          </div>
 
-            <div className={styles.Row}>
-              <LocalizationProvider dateAdapter={DateAdapter}>
-                <MobileDatePicker
-                  shouldDisableDate={ disablePrevDates(startDate) }
-                  label="When"
-                  value={value}
-                  onChange={(newValue) => {
-                    setValue(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </div>
+          <div className={styles.Row}>
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <MobileDatePicker
+                // shouldDisableDate={ disablePrevDates(startDate) }
+                label="When did you clean?"
+                value={value}
+                onChange={(newValue) => {
+                  setValue(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </div>
 
-            <div className={styles.Row}>
-              <TextField id="outlined-basic" label="메모" variant="outlined"
-              value={text} onChange={handleChangeText}/>
-            </div>
-            
-            <div className={styles.Row}>
-              <Divider variant="middle" />
-            </div>
-            
-            <div className={styles.Row}>
-              <FormControl sx={{ minWidth: 150 }}>
-                <InputLabel id="demo-simple-select-label">Next Player</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={next}
-                  label="Next Player"
-                  onChange={handleChangeNext}
-                >
-                  {players.map((u, i) => <MenuItem key={i} value={u.id}>{u.name}</MenuItem>)}
-                </Select>
-              </FormControl>
-            </div>
-            
-            {loading ?
-              <LoadingButton loading variant="contained">
-                ...
-              </LoadingButton>
-              :
-              <Button type="submit" variant="contained">TOUCH!</Button>
-            }
-          </form>
-        </div>
+          <div className={styles.Row}>
+            <TextField id="outlined-basic" label="메모" variant="outlined"
+            value={text} onChange={handleChangeText}/>
+          </div>
+          
+          <div className={styles.Row}>
+            <Divider variant="middle" />
+          </div>
+          
+          <div className={styles.Row}>
+            <FormControl sx={{ minWidth: 150 }}>
+              <InputLabel id="demo-simple-select-label">Next Player</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={next}
+                label="Next Player"
+                onChange={handleChangeNext}
+              >
+                {players.map((u, i) => <MenuItem key={i} value={u}>{place.membersMap[u].name}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </div>
+          
+          {loading ?
+            <LoadingButton loading variant="contained">
+              ...
+            </LoadingButton>
+            :
+            <Button type="submit" variant="contained">TOUCH!</Button>
+          }
+        </form>
       </div>
     </div>
   )

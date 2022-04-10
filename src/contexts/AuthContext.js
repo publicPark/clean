@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   const writeUser = async (u) => {
     const docRef = doc(db, "users", u.uid);
     const docRefNew = await setDoc(docRef, {
+      id: u.uid,
       name: u.displayName,
       photoURL: u.photoURL
     });

@@ -10,7 +10,8 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    {/* <BrowserRouter> */}
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ThemeProvider>
         <AuthProvider>
           <App tab="home" />

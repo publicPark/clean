@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const Profile = () => {
+const Profile = ({}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const { darkTheme, toggleTheme } = useTheme()
@@ -41,7 +41,7 @@ const Profile = () => {
             <Avatar alt={currentUser.displayName} src={currentUser.photoURL} />
           </IconButton>
           :
-          <Button variant="contained" onClick={handleOpenUserMenu}>여기</Button>
+          <Button variant="contained" onClick={handleOpenUserMenu} color="success">클릭!</Button>
         }
       </Tooltip>
         

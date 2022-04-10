@@ -1,6 +1,6 @@
 import Profile from "./Profile";
 import styles from './Navbar.module.scss'
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,10 +14,26 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from "react";
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [
+  {
+    name: 'Dashboard',
+    link: '/'
+  },
+  {
+    name: 'About',
+    link: 'about'
+  }
+];
 
 const Navbar = ({ currentUser }) => {
+  const { pathname } = useLocation();
+  console.log("pathname", pathname)
+  let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const moveTo = (link) => {
+    navigate(link)
+    handleCloseNavMenu()
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -35,10 +51,10 @@ const Navbar = ({ currentUser }) => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <Link to='/' className={ styles.Now }>🏠</Link>
+            <Link to='/' className={ pathname==='/' && styles.Now }>🏠</Link>
           </Typography>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -67,34 +83,34 @@ const Navbar = ({ currentUser }) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page,i) => (
+                <MenuItem key={i} onClick={()=>moveTo(page.link)}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
-          </Box> */}
+          </Box>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <Link to='/' className={ styles.Now }>🏠</Link>
+            <Link to='/' className={ pathname==='/' && styles.Now }>🏠</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {/* {pages.map((page) => (
+            {pages.map((page,i) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={i}
+                onClick={() => moveTo(page.link)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.name}
               </Button>
-            ))} */}
+            ))}
           </Box>
 
-          <Profile/>
+          <Profile currentUser={ currentUser }/>
 
         </Toolbar>
       </Container>

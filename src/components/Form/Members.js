@@ -1,7 +1,7 @@
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 
-const Members = ({ members, currentUser }) => {
+const Members = ({ members, membersMap, currentUser }) => {
   return (
     <>
       <Stack direction="row" spacing={1} mt={1}
@@ -9,8 +9,8 @@ const Members = ({ members, currentUser }) => {
         alignItems="center">
         {members.map(((m, i) =>
           <Chip key={i}
-            label={m.name}
-            color={currentUser&&currentUser.uid===m.id?"primary":"default"} 
+            label={membersMap[m].name}
+            color={currentUser&&currentUser.uid===membersMap[m].id?"primary":"default"} 
             variant="outlined" />
         ))}
       </Stack>

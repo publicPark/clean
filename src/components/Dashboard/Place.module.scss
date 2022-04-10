@@ -3,3 +3,27 @@
   align-items: center;
   justify-content: center;
 }
+
+.Description {
+  white-space: pre;
+  color: var(--text-color);
+  padding: 1em;
+}
+.Paper {
+  padding: 2rem;
+  // background-color: var(--bg);
+  border: 2px dotted var(--text-color);
+  border-radius: 1em;
+  > * + * {
+    margin-top: 1rem;
+  }
+}
+
+.Link {
+  text-decoration: underline;
+  margin-bottom: 0.2em;
+}
+
+.Accent {
+  color: var(--accent);
+}
