@@ -50,8 +50,8 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("onAuthStateChanged", user)
       setLoading(false)
+      setCurrentUser(user)
       if (user) {
-        setCurrentUser(user)
         writeUser(user)
       }
     });

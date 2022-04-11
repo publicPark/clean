@@ -60,7 +60,6 @@ const Questions = () => {
   };
 
   return (
-    <>
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
         <div className={stylesPaper.Content}>
           <h1>QUESTIONS?</h1>
@@ -82,7 +81,6 @@ const Questions = () => {
           </div>
         </div>
       </div>
-    </>
   )
 }
 

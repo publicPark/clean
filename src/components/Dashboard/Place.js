@@ -9,7 +9,7 @@ const Place = ({ id, name, days, members, description, test }) => {
       <Link to={`/place/${id}`} className={ styles.Link }>
         <b>{name}</b>
       </Link>
-      { test? ' (테스트용 공개)' : '' }
+      { test? ' (공개 구역)' : '' }
       {/* ({members.length}명) */}
     </div>
   )

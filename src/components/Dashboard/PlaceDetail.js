@@ -22,6 +22,7 @@ const PlaceDetail = ({ currentUser }) => {
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
       let data = docSnap.data()
+
       setPlace(data)
     } else {
       // doc.data() will be undefined in this case
@@ -30,6 +31,7 @@ const PlaceDetail = ({ currentUser }) => {
   }
 
   useEffect(() => {
+    console.log("place detail")
     if (id) {
       getPlace(id)
     }
@@ -54,15 +56,16 @@ const PlaceDetail = ({ currentUser }) => {
               <h1>{place.name}</h1>
               <h5>CODE: {id}</h5>
               <div className={styles.Description}>{place.description}</div>
+              <div>Limit days: <b>{place.days}일</b><br /></div>
               <div>
                 - Members -
                 <Members members={place.members} membersMap={place.membersMap} currentUser={currentUser} />
               </div>
-              <div>Limit days: <b>{place.days}일</b><br /></div>
-              <div>
-                <Link to={`/placeform/${id}`}><Button variant="outlined" color="secondary">Edit</Button></Link>
-                <Button sx={{ ml: 2 }} variant="outlined" color="warning" onClick={ getOut }>GET OUT</Button>
-              </div>
+
+              { currentUser && place.members.includes(currentUser.uid) && <div>
+                <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">Edit</Button></Link>
+                <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={ getOut }>GET OUT</Button>
+              </div>}
             </div>
           </>
           :

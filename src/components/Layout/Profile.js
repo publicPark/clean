@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import { useTheme } from '../contexts/ThemeContext'
+import { useAuth } from '../../contexts/AuthContext'
+import { useTheme } from '../../contexts/ThemeContext'
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
