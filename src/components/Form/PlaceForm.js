@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
-import Members from './Members';
 
 import { db } from '../../firebase'
 import { collection, addDoc, getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"; 
@@ -12,6 +11,7 @@ import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
@@ -132,14 +132,11 @@ const PlaceForm = ({ currentUser }) => {
   return (
     <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
       <div className={stylesPaper.Content}>
-        { loadingData ? '...' : 
+        { loadingData ? <CircularProgress color="primary" /> : 
           <form className={styles.Form} onSubmit={ onSubmit }>
             <div className={styles.Title}>
               {/* <h1>{ currentUser.displayName },</h1> */}
               <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
-              {/* { place && <div>
-                <Members members={ place.members } membersMap={ place.membersMap } currentUser={currentUser} />
-              </div>} */}
             </div>
 
             <div className={styles.Row}>

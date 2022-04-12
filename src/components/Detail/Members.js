@@ -1,5 +1,7 @@
-import Chip from '@mui/material/Chip';
+import styles from './Place.module.scss'
+
 import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 
 const ListItem = styled('li')(({ theme }) => ({
@@ -9,18 +11,7 @@ const ListItem = styled('li')(({ theme }) => ({
 const Members = ({ members, membersMap, currentUser }) => {
   return (
     <>
-      <Paper
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          listStyle: 'none',
-          p: 0.5,
-          m: 0,
-          mt: 1,
-        }}
-        component="ul"
-      >
+      <div className={`${styles.Flex} ${styles.ListMember}`}>
         {members.map(((m, i) =>
           <ListItem key={i}>
             <Chip
@@ -29,7 +20,7 @@ const Members = ({ members, membersMap, currentUser }) => {
               variant="outlined" />
           </ListItem>
         ))}
-      </Paper>
+      </div>
     </>
   )
 }

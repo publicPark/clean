@@ -34,11 +34,8 @@ const Dashboard = ({ currentUser }) => {
         </div>
       </div>
 
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <Places currentUser={currentUser} now={ now } />
-        </div>
-      </div>
+      
+      <Places currentUser={currentUser} />
 
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>

@@ -13,7 +13,7 @@ const getBrowserName = () => {
     } else if(userAgent.match(/edg/i)){
       browserName = "edge";
     }else{
-      browserName = ""
+      browserName = userAgent
   }
   return browserName;
 }

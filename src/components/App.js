@@ -10,7 +10,7 @@ import PlaceForm from './Form/PlaceForm';
 import JoinForm from './Form/JoinForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
-import PlaceDetail from './Dashboard/PlaceDetail';
+import PlaceDetail from './Detail/PlaceDetail';
 import Questions from './pages/Questions';
 import Contact from './pages/Contact';
 import BrowserDetect from './Layout/BrowserDetect';

@@ -110,7 +110,7 @@ const CleanForm = ({ currentUser }) => {
           <div className={styles.Row}>
             <LocalizationProvider dateAdapter={DateAdapter}>
               <MobileDatePicker
-                // shouldDisableDate={ disablePrevDates(startDate) }
+                shouldDisableDate={ disablePrevDates(startDate) }
                 label="When did you clean?"
                 value={value}
                 onChange={(newValue) => {

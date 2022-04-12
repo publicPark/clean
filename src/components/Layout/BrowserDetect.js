@@ -5,11 +5,11 @@ const br = getBrowserName()
 let msg = ""
 let nono = false
 if (br === "chrome") {
-  msg = ("크롬은 합격이지. 😎👌")
+  msg = ("크롬은 합격 😎👌")
 } else if (br === "safari") {
-  msg = ("사파리도 뭐 합격이지. 🥱")
+  msg = ("사파리도 합격 🥱")
 } else {
-  msg = ("이 브라우저는 불합격 😨 다른 데서 열어주세요")
+  msg = ("이 브라우저는 불합격 😨 다른 데서 열어주세요 " + br)
   nono = true
 }
 
