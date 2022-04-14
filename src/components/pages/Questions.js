@@ -50,6 +50,10 @@ const list = [
     title: 'Dies irae',
     content: '최후의 심판. 이 날까지 청소를 안하면 심판이 내려진다.'
   },
+  {
+    title: 'Days limit',
+    content: '제한 시간 아니고 제한 기간(일). 내 차례가 되면 이 기간 안에 청소하면 된다.'
+  },
 ]
 
 const Questions = () => {
@@ -62,7 +66,7 @@ const Questions = () => {
   return (
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
         <div className={stylesPaper.Content}>
-          <h1>QUESTIONS?</h1>
+          <h1>?</h1>
           <div>
             {list.map((l, i) => {
               return <Accordion key={i}

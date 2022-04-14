@@ -14,7 +14,7 @@ const Dies = ({ clean, place }) => {
   const [data, setData] = useState()
 
   useEffect(() => {
-    if (clean) {
+    if (clean && place) {
       let newData = {...clean}
       let theday = new Date(clean.date.seconds * 1000)
 

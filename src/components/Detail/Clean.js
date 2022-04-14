@@ -3,9 +3,8 @@ import styles from './Clean.module.scss'
 import format from 'date-fns/format'
 
 import { useEffect, useState } from 'react';
-import Dies from './Dies'
 
-const Clean = ({ clean, place, isRecord }) => {
+const Clean = ({ clean, place }) => {
   const [data, setData] = useState()
 
   useEffect(() => {
@@ -32,8 +31,6 @@ const Clean = ({ clean, place, isRecord }) => {
     <>
       { data &&
         <div onDoubleClick={printData}>
-          {!isRecord && <Dies clean={clean} place={place} />}
-          
           <div className={styles.Memo}>{data.text}</div>
 
           <div className={styles.MarginTop}>

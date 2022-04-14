@@ -11,6 +11,7 @@ import { useState } from 'react';
 import Contact from './Contact';
 import imgA from './asdf.png';
 import { note } from '../../data/note'
+import Questions from './Questions';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -59,13 +60,12 @@ const About = () => {
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
         <div className={stylesPaper.Content}>
           <h1>ABOUT</h1>
-          <h2>CLEAN RELAY</h2>
-          <h2>청소당번 바톤터치!</h2>
+          <h3>CLEAN RELAY: 청소당번 바톤터치!</h3>
           <p>같이 사는 공간에서 <br />
             즐겁게 청소하기는 쉽지 않지. <br />
             우리는 규칙을 만들었다. <br /><br />
-            일정기간 안에 청소를 해야하고, <br />
-            기간이 지나면 <br />
+            제한 기간 안에 청소를 해야하고, <br />
+            기간이 지나면? <br />
             하루 당 1만원씩 벌금을 내기로 했다. <br /><br />
             그걸 관리하도록 만든 곳이다 여긴.
           </p>
@@ -74,6 +74,11 @@ const About = () => {
           <h3>since April, 2022</h3>
         </div>
       </div>
+
+      <Questions />
+
+      <Contact />
+
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
         <div className={stylesPaper.Content}>
           <div>
@@ -94,8 +99,6 @@ const About = () => {
           </div>
         </div>
       </div>
-
-      <Contact />
     </>
   )
 }

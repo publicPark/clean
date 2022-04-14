@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
 import Clean from './Clean';
+import Dies from './Dies'
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -35,14 +36,22 @@ const Cleans = ({ place }) => {
   return (
     <>
       {loading ? <CircularProgress color="primary" />
-      : cleans && cleans.length > 0 ?
+        : cleans && cleans.length > 0 ?
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {cleans.map((c, i) => <div key={i}>
-            <ListItem alignItems="flex-start">
-              <Clean clean={c} place={place} isRecord={ i!==0 } />
-            </ListItem>
-            {i < cleans.length - 1 && <Divider component="li" />}
-          </div>)}
+            {cleans.map((c, i) => <div key={i}>
+              {i === 0 && 
+                <>
+                  <ListItem>
+                    <Dies clean={c} place={place} />
+                  </ListItem> <Divider component="li" />
+                </>
+              }
+              <ListItem alignItems="flex-start">
+                <Clean clean={c} place={place} />
+              </ListItem>
+              {i < cleans.length - 1 && <Divider component="li" sx={{ mt:1 }}/>}
+            </div>
+            )}
           </List>
         :
         <div>여기는 청소한 적이 없음.</div>

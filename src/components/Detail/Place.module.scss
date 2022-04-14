@@ -18,6 +18,7 @@
   }
 }
 .Paper {
+  margin: 0.5em;
   background-color: var(--bg);
   color: var(--text-color);
   font-weight: 500;
@@ -52,7 +53,7 @@
   word-break: keep-all;
   padding: 1em;
   border-radius: 0.5em;
-  margin: 0.4em;
+  margin: 0.5em;
   background-color: var(--bg-accent);
   color: var(--text-color);
   border: 2px dotted var(--text-color2);

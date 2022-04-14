@@ -43,7 +43,7 @@ const CleanForm = ({ currentUser }) => {
   const [clean, setClean] = useState()
 
   const [next, setNext] = useState('');
-  const [penalty, setPenalty] = useState(0)
+  const [judgement, setJudgement] = useState(0)
 
   const [pending, setPending] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -83,7 +83,7 @@ const CleanForm = ({ currentUser }) => {
         next: next,
         date: endOfDay(value),
         text: text,
-        penalty: penalty,
+        judgement: judgement,
         created: new Date()
       });
 
@@ -108,11 +108,11 @@ const CleanForm = ({ currentUser }) => {
         
       if (clean && place) {
         // 날짜 바뀔때 패널티 계산
-        let penalty = 0;
+        let judgement = 0;
         let lastday = new Date(clean.date.seconds * 1000)
         let doomsday = addDays(lastday, place.days)
-        penalty = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
-        setPenalty(penalty)
+        judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
+        setJudgement(judgement)
       }
     }
   }, [clean, value])
@@ -204,15 +204,13 @@ const CleanForm = ({ currentUser }) => {
           {loading ? <CircularProgress color="primary" /> : 
             <>
               <div className={styles.Result}>
-                { penalty > 0 ? /* 벌점 */
-                  <>
-                    <div>벌칙의 무게<br /><b className={ styles.Penalty }>{penalty}</b></div>
-                    <div className={styles.PenaltyContent}>
-                      {place.penalty}
-                    </div>
-                  </>
+                { judgement > 0 ? /* 벌점 */
+                  <div className={styles.Penalty}>
+                    <div>심판 결과<br /><b className={ styles.Judgement }>{judgement}</b></div>
+                    <div>{place.penalty}</div>
+                  </div>
                   :
-                  <div><b className={ styles.Penalty }>잘했어요!</b></div>
+                  <div><b className={ styles.Judgement }>잘했어요!</b></div>
                 }
               </div>
               

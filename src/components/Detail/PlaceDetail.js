@@ -60,9 +60,11 @@ const PlaceDetail = ({ currentUser }) => {
                   {showCode? <><span>Copied! </span><span className={styles.Code}>{id}</span></> : 'CODE?'}
                 </code>
                 
-                <div className={styles.Label}>멤버들에게 알립니다 </div>
-                <div className={styles.Paper}>
-                  {place.description}
+                <div>
+                  <div className={styles.Label}>멤버들에게 알립니다: </div>
+                  <div className={styles.Paper}>
+                    {place.description}
+                  </div>
                 </div>
                 <div><span className={styles.Label}>Days Limit: </span><b>{place.days}일</b><br /></div>
                 <div>
