@@ -55,7 +55,7 @@ const Navbar = ({ currentUser }) => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <Link to='/' className={ pathname==='/' && styles.Now }>🏠</Link>
+            <Link to='/' className={ pathname==='/' ? styles.Now : undefined }>🏠</Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -100,7 +100,7 @@ const Navbar = ({ currentUser }) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <Link to='/' className={ pathname==='/' && styles.Now }>🏠</Link>
+            <Link to='/' className={ pathname==='/' ? styles.Now : undefined }>🏠</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page,i) => (

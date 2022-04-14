@@ -56,16 +56,23 @@ const PlaceDetail = ({ currentUser }) => {
             <>
               <div className={styles.Content}>
                 <div className={ styles.Title }>{place.name}</div>
-                <code onClick={onShowCode}>
-                  CODE{showCode ? <><span>! </span><span className={styles.Code}>{id}</span></> : '?'}
+                <code onClick={onShowCode} className={styles.Label}>
+                  {showCode? <><span>Copied! </span><span className={styles.Code}>{id}</span></> : 'CODE?'}
                 </code>
                 
+                <div className={styles.Label}>멤버들에게 알립니다 </div>
                 <div className={styles.Paper}>
                   {place.description}
                 </div>
-                <div>Limit days: <b>{place.days}일</b><br /></div>
+                <div><span className={styles.Label}>Days Limit: </span><b>{place.days}일</b><br /></div>
                 <div>
-                  - Members -
+                  <div className={styles.Label}>지났을 때 벌칙: </div>
+                  <div className={styles.Penalty}>
+                    {place.penalty}
+                  </div>
+                </div>
+                <div>
+                  <div className={styles.Label}>- Members -</div>
                   <Members members={place.members} membersMap={place.membersMap} currentUser={currentUser} />
                 </div>
 
@@ -89,7 +96,7 @@ const PlaceDetail = ({ currentUser }) => {
             </Link>
           </div>
           
-          <div clasName={ styles.List }>
+          <div className={ styles.List }>
             <Cleans place={{...place, id:id}} />
           </div>
         </div>

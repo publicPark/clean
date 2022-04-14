@@ -12,11 +12,11 @@ root.render(
   <React.StrictMode>
     {/* <BrowserRouter basename={process.env.PUBLIC_URL}> */}
     <HashRouter>
-      <ThemeProvider>
-        <AuthProvider>
+      <AuthProvider>  
+        <ThemeProvider>
           <App tab="home" />
-        </AuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </HashRouter>
   </React.StrictMode>
 );

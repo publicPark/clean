@@ -23,6 +23,7 @@ const PlaceForm = ({ currentUser }) => {
   const [loadingData, setLoadingData] = useState(false); // 수정일때 데이터 로딩
   const [text, setText] = useState('');
   const [text2, setText2] = useState('');
+  const [text3, setText3] = useState('');
   const [days, setDays] = useState();
   const [textForDelete, setTextForDelete] = useState('');
   const [loading, setLoading] = useState(false)
@@ -32,6 +33,9 @@ const PlaceForm = ({ currentUser }) => {
   };
   const handleChangeText2 = (event) => {
     setText2(event.target.value);
+  };
+  const handleChangeText3 = (event) => {
+    setText3(event.target.value);
   };
   const handleChangeDays = (event) => {
     setDays(event.target.value);
@@ -44,7 +48,7 @@ const PlaceForm = ({ currentUser }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!text) {
+    if (!text || !text2 || !text3) {
       alert("다 채워야함")
       return
     }
@@ -57,6 +61,7 @@ const PlaceForm = ({ currentUser }) => {
           name: text,
           days: days,
           description: text2,
+          penalty: text3,
         });
       } else {
         let d = days
@@ -65,6 +70,7 @@ const PlaceForm = ({ currentUser }) => {
           name: text,
           days: d,
           description: text2,
+          penalty: text3,
           members: [currentUser.uid],
           created: new Date()
         }
@@ -80,7 +86,7 @@ const PlaceForm = ({ currentUser }) => {
       }
 
       setLoading(false)
-      navigate("/", { replace: true });
+      navigate(-1, { replace: true });
     } catch (e) {
       setLoading(false)
       console.error("Error adding document: ", e);
@@ -98,6 +104,7 @@ const PlaceForm = ({ currentUser }) => {
       console.log("Document data:", data);
       setText(data.name)
       setText2(data.description)
+      setText3(data.penalty)
       setDays(data.days)
 
       setPlace(data)
@@ -115,8 +122,10 @@ const PlaceForm = ({ currentUser }) => {
     const docRef = doc(db, "places", id);
     setLoading(true)
     if (amIFirst) {
-      await deleteDoc(docRef);
-      navigate("/", { replace: true });
+      if (window.confirm("Do you really want to delete?")) {
+        await deleteDoc(docRef);
+        navigate("/", { replace: true });
+      }
     } else {
       // 빼기
       alert("you are not the first")
@@ -130,85 +139,111 @@ const PlaceForm = ({ currentUser }) => {
   }, [])
 
   return (
-    <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
-      <div className={stylesPaper.Content}>
-        { loadingData ? <CircularProgress color="primary" /> : 
-          <form className={styles.Form} onSubmit={ onSubmit }>
-            <div className={styles.Title}>
-              {/* <h1>{ currentUser.displayName },</h1> */}
-              <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
-            </div>
-
-            <div className={styles.Row}>
-              <TextField id="outlined-basic" label="구역 이름" variant="outlined"
-              value={text} onChange={handleChangeText}/>
-            </div>
-            <div className={styles.Row}>
-              {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
-                value={text2} onChange={handleChangeText2} /> */}
-              <TextareaAutosize
-                aria-label="구역 설명"
-                minRows={3}
-                placeholder="구역 설명"
-                style={{ width: 200, resize: 'none' }}
-                value={text2} onChange={handleChangeText2}
-              />
-            </div>
-            <div className={styles.Row}>
-              <TextField
-                value={days} onChange={handleChangeDays}
-                id="outlined-number"
-                label="limit days"
-                placeholder='default: 14'
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-
-            <div className={styles.Row}>
-              {loading ?
-                <LoadingButton loading variant="contained">
-                  ...
-                </LoadingButton>
-                :
-                <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
-              }
-            </div>
-            { id && place &&
-              <>
-                <div className={styles.Row}>
-                  <Divider variant="middle" />
-                </div>
-                <div className={ styles.FormGroup }>
-                  <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
-                  <div>
-                    <TextField 
-                    value={textForDelete} onChange={handleChangeTextForDelete}
-                    hiddenLabel
-                    id="filled-hidden-label-small"
-                    variant="filled"
-                    size="small"
-                    placeholder={place.name}
-                    />
-                    <div>
-                      { loading ?
-                      <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
-                        ...
-                      </LoadingButton>
-                      :
-                      <Button onClick={ handleDelete } sx={{mt:1}}
-                        variant="contained" disabled={textForDelete !== place.name}>DELETE</Button>
-                      }
+    <div>
+      {loadingData ? <CircularProgress color="primary" /> : 
+        <form className={styles.Form} onSubmit={ onSubmit }>
+          <div className={stylesPaper.Flex}>
+            <div className={stylesPaper.Wrapper}>
+              <div className={stylesPaper.Content}>
+                    <div className={styles.Title}>
+                      {/* <h1>{ currentUser.displayName },</h1> */}
+                      <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
                     </div>
-                  </div>
+
+                    <div className={styles.Row}>
+                      <TextField id="outlined-basic" label="구역 이름" variant="outlined"
+                      value={text} onChange={handleChangeText}/>
+                    </div>
+
+                    <div className={styles.Label}>멤버들에게 알립니다</div>
+                    <div className={styles.Row}>
+                      {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
+                        value={text2} onChange={handleChangeText2} /> */}
+                      <TextareaAutosize className={styles.Textarea}
+                        aria-label="Notice for members"
+                        minRows={3}
+                        placeholder="Notice for members"
+                        style={{ width: 200, resize: 'none' }}
+                        value={text2} onChange={handleChangeText2}
+                      />
+                    </div>
+                    
+                    { id && place &&
+                      <>
+                        <div className={styles.Row}>
+                          <Divider variant="middle" />
+                        </div>
+                        <div className={ styles.FormGroup }>
+                          <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
+                          <div>
+                            <TextField 
+                            value={textForDelete} onChange={handleChangeTextForDelete}
+                            hiddenLabel
+                            id="filled-hidden-label-small"
+                            variant="filled"
+                            size="small"
+                            placeholder={place.name}
+                            />
+                            <div>
+                              { loading ?
+                              <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
+                                ...
+                              </LoadingButton>
+                              :
+                              <Button onClick={ handleDelete } sx={{mt:1}}
+                                variant="contained" disabled={textForDelete !== place.name}>DELETE</Button>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    }
+              </div>
+            </div>
+
+            <div className={stylesPaper.Wrapper}>
+              <div className={stylesPaper.Content}>
+                <div className={styles.Title}></div>
+                <div className={styles.Row}>
+                  <TextField
+                    value={days} onChange={handleChangeDays}
+                    id="outlined-number"
+                    label="Days Limit"
+                    placeholder='default: 14'
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
                 </div>
-              </>
-            }
-          </form>
-        }
-      </div>
+
+                <div className={styles.Label}>위 기간이 지났을 때 벌칙</div>
+                <div className={styles.Row}>
+                  {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
+                    value={text2} onChange={handleChangeText2} /> */}
+                  <TextareaAutosize className={styles.Textarea}
+                    aria-label="penalty"
+                    minRows={3}
+                    placeholder="벌칙 내용 예) 1일이 지나면 1만원, N일이 지나면 N만원을 회비로 입금"
+                    style={{ width: 200, resize: 'none' }}
+                    value={text3} onChange={handleChangeText3}
+                  />
+                </div>
+
+                <div className={styles.Row}>
+                  {loading ?
+                    <LoadingButton loading variant="contained">
+                      ...
+                    </LoadingButton>
+                    :
+                    <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
     </div>
   )
 }

@@ -9,7 +9,7 @@ if (br === "chrome") {
 } else if (br === "safari") {
   msg = ("사파리도 합격 🥱")
 } else {
-  msg = ("이 브라우저는 불합격 😨 다른 데서 열어주세요 " + br)
+  msg = ("이 브라우저는 지원하지 않아요 😨 다른 데서 열어주세요 " + br)
   nono = true
 }
 

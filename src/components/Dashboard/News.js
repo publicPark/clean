@@ -48,7 +48,7 @@ const News = ({ currentUser, maxCount=3 }) => {
       {cleans.map((c, i) => {
         return <div key={i}>
           {/* {JSON.stringify(c)} */}
-          <div>memo: {c.text}</div>
+          <div>memo: <b>{c.text}</b></div>
           <div>date: {format(new Date(c.date.seconds*1000), "yyyy-MM-dd")}</div>
           <div>created: {format(new Date(c.created.seconds * 1000), "yyyy-MM-dd hh:mm:ss")}</div>
           {currentUser && currentUser.uid === c.who && !loading &&

@@ -69,8 +69,8 @@ const About = () => {
             하루 당 1만원씩 벌금을 내기로 했다. <br /><br />
             그걸 관리하도록 만든 곳이다 여긴.
           </p>
-          <img className={stylesPaper.Image} src={imgA} alt="" />
-          <p>이걸..</p>
+          {/* <img className={stylesPaper.Image} src={imgA} alt="" />
+          <p>이걸..</p> */}
           <h3>since April, 2022</h3>
         </div>
       </div>

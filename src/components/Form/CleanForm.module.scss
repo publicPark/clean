@@ -22,3 +22,30 @@
   font-style: italic;
   color: var(--accent);
 }
+
+.Result {
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: var(--text-color2);
+}
+.Penalty {
+  font-size: 1.5em;
+  color: var(--text-color);
+}
+
+.Label {
+  color: var(--text-color2);
+  margin-bottom: 0.5em;
+  font-size: 0.8em;
+}
+.Textarea {
+  background: var(--bg);
+  color: var(--text-color);
+}
+
+.Inline {
+  display: inline-block;
+}

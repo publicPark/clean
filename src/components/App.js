@@ -34,7 +34,7 @@ function App({ user }) {
 
   return (
     <ThemeProvider theme={themeMui}>
-      <div className={`App ${darkTheme?'dark':undefined}`}>
+      <div className={`App ${darkTheme?'dark':''}`}>
         <div className="">
           <Navbar currentUser={currentUser} />
         </div>
@@ -49,7 +49,8 @@ function App({ user }) {
           
           <Route path="place/:id" element={<PlaceDetail currentUser={currentUser} />} />
           
-          <Route path="cleaned/:id" element={currentUser? <CleanForm currentUser={currentUser}/> : <NotFound status='auth' />} />
+          <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser}/>} />
+          {/* <Route path="cleaned/:id" element={currentUser? <CleanForm currentUser={currentUser}/> : <NotFound status='auth' />} /> */}
 
           {currentUser?
             <>

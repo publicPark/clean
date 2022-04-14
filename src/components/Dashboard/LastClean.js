@@ -6,9 +6,8 @@ import { db } from '../../firebase'
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 
-import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
-import Clean from '../Detail/Clean';
+import Dies from '../Detail/Dies';
 
 const LastClean = ({ place, currentUser }) => {
   const [loading, setLoading] = useState(false)
@@ -41,11 +40,14 @@ const LastClean = ({ place, currentUser }) => {
           { place.test && ' (공개 구역)' }
         </div>
 
-        {
-          clean ? <Clean clean={clean} place={place} />
-          :<div className={styles.Blur}>
-            청소한 적이 없음
-          </div>}
+        <div className={styles.MarginTop}>
+          {
+            clean ? <Dies clean={clean} place={place} />
+            :<div className={styles.Blur}>
+              청소한 적이 없음
+            </div>
+          }
+        </div>
       </>
       }
     </div>

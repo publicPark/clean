@@ -24,6 +24,7 @@ const Cleans = ({ place }) => {
       console.log(`CLEANs: ${doc.id} => ${data}`);
       arr.push({...data, id: doc.id})
     });
+    
     setCleans(arr)
   }
 
@@ -33,7 +34,8 @@ const Cleans = ({ place }) => {
   
   return (
     <>
-      {loading ? <CircularProgress color="primary" /> : cleans &&
+      {loading ? <CircularProgress color="primary" />
+      : cleans && cleans.length > 0 ?
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
           {cleans.map((c, i) => <div key={i}>
             <ListItem alignItems="flex-start">
@@ -41,7 +43,9 @@ const Cleans = ({ place }) => {
             </ListItem>
             {i < cleans.length - 1 && <Divider component="li" />}
           </div>)}
-        </List>
+          </List>
+        :
+        <div>여기는 청소한 적이 없음.</div>
       }
     </>
   )
