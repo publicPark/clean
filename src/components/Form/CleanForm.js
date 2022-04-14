@@ -205,7 +205,12 @@ const CleanForm = ({ currentUser }) => {
             <>
               <div className={styles.Result}>
                 { penalty > 0 ? /* 벌점 */
-                  <div>벌칙의 무게<br /><b className={ styles.Penalty }>{penalty}</b></div>
+                  <>
+                    <div>벌칙의 무게<br /><b className={ styles.Penalty }>{penalty}</b></div>
+                    <div className={styles.PenaltyContent}>
+                      {place.penalty}
+                    </div>
+                  </>
                   :
                   <div><b className={ styles.Penalty }>잘했어요!</b></div>
                 }

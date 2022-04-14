@@ -24,16 +24,23 @@
 }
 
 .Result {
-  padding: 0.5rem;
   margin-bottom: 2rem;
   display: inline-block;
-  font-weight: bold;
-  font-size: 1.2em;
   color: var(--text-color2);
 }
 .Penalty {
   font-size: 1.5em;
   color: var(--text-color);
+}
+.PenaltyContent {
+  white-space: pre-line;
+  word-break: keep-all;
+  padding: 1em;
+  border-radius: 0.5em;
+  margin: 0.4em;
+  background-color: var(--bg-accent);
+  color: var(--text-color);
+  border: 2px dotted var(--text-color2);
 }
 
 .Label {

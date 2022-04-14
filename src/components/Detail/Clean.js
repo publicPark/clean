@@ -49,8 +49,8 @@ const Clean = ({ clean, place, isRecord }) => {
           </div>
 
           {data.penalty > 0 &&
-            <div className={styles.MarginTop}>
-              벌칙: { data.penalty }
+            <div className={styles.Penalty}>
+              <b><span className={ styles.ColorAccent }>💰 벌칙:</span> { data.penalty }</b>
             </div>
           }
         </div>
