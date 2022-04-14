@@ -145,59 +145,28 @@ const PlaceForm = ({ currentUser }) => {
           <div className={stylesPaper.Flex}>
             <div className={stylesPaper.Wrapper}>
               <div className={stylesPaper.Content}>
-                    <div className={styles.Title}>
-                      {/* <h1>{ currentUser.displayName },</h1> */}
-                      <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
-                    </div>
+                  <div className={styles.Title}>
+                    {/* <h1>{ currentUser.displayName },</h1> */}
+                    <h2>청소 구역 {id ? <>수정</> : <>생성</>}</h2>
+                  </div>
 
-                    <div className={styles.Row}>
-                      <TextField id="outlined-basic" label="구역 이름" variant="outlined"
-                      value={text} onChange={handleChangeText}/>
-                    </div>
+                  <div className={styles.Row}>
+                    <TextField id="outlined-basic" label="구역 이름" variant="outlined"
+                    value={text} onChange={handleChangeText}/>
+                  </div>
 
-                    <div className={styles.Label}>멤버들에게 알립니다</div>
-                    <div className={styles.Row}>
-                      {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
-                        value={text2} onChange={handleChangeText2} /> */}
-                      <TextareaAutosize className={styles.Textarea}
-                        aria-label="Notice for members"
-                        minRows={3}
-                        placeholder="Notice for members"
-                        style={{ width: 200, resize: 'none' }}
-                        value={text2} onChange={handleChangeText2}
-                      />
-                    </div>
-                    
-                    { id && place &&
-                      <>
-                        <div className={styles.Row}>
-                          <Divider variant="middle" />
-                        </div>
-                        <div className={ styles.FormGroup }>
-                          <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
-                          <div>
-                            <TextField 
-                            value={textForDelete} onChange={handleChangeTextForDelete}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            variant="filled"
-                            size="small"
-                            placeholder={place.name}
-                            />
-                            <div>
-                              { loading ?
-                              <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
-                                ...
-                              </LoadingButton>
-                              :
-                              <Button onClick={ handleDelete } sx={{mt:1}}
-                                variant="contained" disabled={textForDelete !== place.name}>DELETE</Button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    }
+                  <div className={styles.Label}>멤버들에게 알립니다</div>
+                  <div className={styles.Row}>
+                    {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
+                      value={text2} onChange={handleChangeText2} /> */}
+                    <TextareaAutosize className={styles.Textarea}
+                      aria-label="Notice for members"
+                      minRows={3}
+                      placeholder="Notice for members"
+                      style={{ width: 200, resize: 'none' }}
+                      value={text2} onChange={handleChangeText2}
+                    />
+                  </div>
               </div>
             </div>
 
@@ -239,6 +208,37 @@ const PlaceForm = ({ currentUser }) => {
                     <Button type="submit" variant="contained">{ id? "EDIT!": "CREATE!"}</Button>
                   }
                 </div>
+                
+                { id && place &&
+                  <>
+                    <div className={styles.Row}>
+                      <Divider variant="middle" />
+                    </div>
+                    <div className={ styles.FormGroup }>
+                      <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
+                      <div>
+                        <TextField 
+                        value={textForDelete} onChange={handleChangeTextForDelete}
+                        hiddenLabel
+                        id="filled-hidden-label-small"
+                        variant="filled"
+                        size="small"
+                        placeholder={place.name}
+                        />
+                        <div>
+                          { loading ?
+                          <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
+                            ...
+                          </LoadingButton>
+                          :
+                          <Button onClick={ handleDelete } sx={{mt:1}}
+                            variant="contained" disabled={textForDelete !== place.name}>DELETE</Button>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                }
               </div>
             </div>
           </div>
