@@ -42,8 +42,8 @@ const Cleans = ({ place }) => {
               {i === 0 && 
                 <>
                   <ListItem>
-                    <Dies clean={c} place={place} />
-                  </ListItem> <Divider component="li" />
+                  {place && <Dies clean={c} place={place} />}
+                  </ListItem> <Divider component="li" sx={{ mt:1 }} />
                 </>
               }
               <ListItem alignItems="flex-start">

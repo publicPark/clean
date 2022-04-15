@@ -34,6 +34,8 @@ function App({ user }) {
 
   return (
     <ThemeProvider theme={themeMui}>
+      <div className="Back">
+      </div>
       <div className={`App ${darkTheme?'dark':''}`}>
         <div className="">
           <Navbar currentUser={currentUser} />

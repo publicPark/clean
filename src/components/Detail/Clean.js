@@ -45,9 +45,9 @@ const Clean = ({ clean, place }) => {
             </div>
           </div>
 
-          {data.penalty > 0 &&
+          {data.judgement > 0 &&
             <div className={styles.Penalty}>
-              <b><span className={ styles.ColorAccent }>💰 벌칙:</span> { data.penalty }</b>
+              <b><span className={ styles.ColorAccent }>💰 심판의 무게:</span> { data.judgement }</b>
             </div>
           }
         </div>

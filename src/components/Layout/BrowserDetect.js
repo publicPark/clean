@@ -1,5 +1,6 @@
 import getBrowserName from "../../apis/getBrowserName"
 import Alert from '@mui/material/Alert';
+import styles from './Navbar.module.scss'
 
 const br = getBrowserName()
 let msg = ""
@@ -16,9 +17,9 @@ if (br === "chrome") {
 const BrowserDetect = () => {
   return (
     // nono &&
-    <>
+    <div className={styles.Padding0}>
       <Alert severity={ nono?"error":"success" }>{ msg }</Alert>
-    </>
+    </div>
   )
 }
 

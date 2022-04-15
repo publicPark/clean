@@ -16,7 +16,7 @@ const Dies = ({ clean, place }) => {
   useEffect(() => {
     if (clean && place) {
       let newData = {...clean}
-      let theday = new Date(clean.date.seconds * 1000)
+      let theday = endOfDay(new Date(clean.date.seconds * 1000))
 
       let doomsday = addDays(theday, place.days)
       newData.doomsday = doomsday // 심판의 날 날짜
@@ -32,9 +32,6 @@ const Dies = ({ clean, place }) => {
   return data && ( 
     <div>
       <div>
-        <b className={styles.ColorAccent}>☄️ Dies irae:</b> <span> <b>{ data.doomsdayFormat1 }</b> { data.doomsdayFormat2 }</span>
-      </div>
-      <div>
         <b className={currentUser && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
           {place.membersMap[data.next]? place.membersMap[data.next].name : '???'}
         </b>
@@ -49,6 +46,9 @@ const Dies = ({ clean, place }) => {
         :
           <Chip sx={{ m:1 }} label={ `💩 ${data.howmany}일 지남` } color="neutral" />
         }
+      </div>
+      <div>
+        <b className={styles.ColorAccent}>☄️ Dies irae:</b> <span> <b>{ data.doomsdayFormat1 }</b> { data.doomsdayFormat2 }</span>
       </div>
     </div>
   )

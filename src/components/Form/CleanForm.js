@@ -109,7 +109,7 @@ const CleanForm = ({ currentUser }) => {
       if (clean && place) {
         // 날짜 바뀔때 패널티 계산
         let judgement = 0;
-        let lastday = new Date(clean.date.seconds * 1000)
+        let lastday = endOfDay(new Date(clean.date.seconds * 1000))
         let doomsday = addDays(lastday, place.days)
         judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
         setJudgement(judgement)

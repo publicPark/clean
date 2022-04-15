@@ -40,7 +40,7 @@ const LastClean = ({ place, currentUser }) => {
           { place.test && ' (공개 구역)' }
         </div>
 
-        <div className={styles.MarginTop}>
+        <div>
           {
             clean ? <Dies clean={clean} place={place} />
             :<div className={styles.Blur}>
