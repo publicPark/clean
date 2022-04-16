@@ -14,7 +14,7 @@ const Cleans = ({ place }) => {
   const [cleans, setCleans] = useState()
   
   const getLastCleans = async (id) => {
-    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), limit(10));
+    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), orderBy("created", "desc"), limit(10));
     setLoading(true)
     const querySnapshot = await getDocs(q);
     setLoading(false)

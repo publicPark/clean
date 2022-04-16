@@ -10,10 +10,13 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from "react-router-dom";
 
 const JoinForm = ({ currentUser }) => {
+  let [searchParams, setSearchParams] = useSearchParams();
+
   let navigate = useNavigate();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(searchParams.get("code") || '');
   const [loading, setLoading] = useState(false)
 
   const onSubmit = async (e) => {

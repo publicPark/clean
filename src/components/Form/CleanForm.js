@@ -135,7 +135,7 @@ const CleanForm = ({ currentUser }) => {
   }
 
   const getLastClean = async () => {
-    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), limit(1));
+    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), orderBy("created", "desc"), limit(1));
     setLoading(true)
     const querySnapshot = await getDocs(q);
     setLoading(false)

@@ -57,7 +57,17 @@ const PlaceDetail = ({ currentUser }) => {
               <div className={styles.Content}>
                 <div className={ styles.Title }>{place.name}</div>
                 <code onClick={onShowCode} className={styles.Label}>
-                  {showCode? <><span>Copied! </span><span className={styles.Code}>{id}</span></> : 'CODE?'}
+                  {showCode ?
+                    <>
+                      <span>Copied! </span><span className={styles.Code}>{id}</span>
+                      { currentUser && !place.members.includes(currentUser.uid) &&
+                        <Link to={ `/placejoin?code=${id}` }>
+                          <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
+                        </Link>
+                      }
+                    </>
+                    : 'CODE?'
+                  }
                 </code>
                 
                 <div>

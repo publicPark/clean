@@ -21,37 +21,47 @@ const Dies = ({ clean, place }) => {
       let doomsday = addDays(theday, place.days)
       newData.doomsday = doomsday // 심판의 날 날짜
       newData.howmany = differenceInDays(endOfDay(new Date()), doomsday) // 심판의 날이 얼마나 남았는지
-
-      newData.doomsdayFormat1 = format(doomsday, "yyyy-MM-dd")
-      newData.doomsdayFormat2 = format(doomsday, "HH:mm:ss")
+      
+      try {
+        newData.doomsdayFormat1 = format(doomsday, "yyyy-MM-dd")
+        newData.doomsdayFormat2 = format(doomsday, "HH:mm:ss")
+      } catch (err) {
+        console.log(err)
+      }
 
       setData(newData)
       // console.log("test: ", theday, doomsday, place.days)
     }
   }, [clean])
-  return data && ( 
-    <div>
+  return (
+    <> 
+    {data && 
       <div>
-        <b className={currentUser && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
-          {place.membersMap[data.next]? place.membersMap[data.next].name : '???'}
-        </b>
-        <b>{ currentUser && place.membersMap[data.next].id === currentUser.uid && '(나)'}</b>
-        <span className={styles.Blur}>'s 차례</span>
-        {data.howmany <= 0 ?
-          data.howmany <= -3 ?
-          <Chip sx={{ m:1 }} label={ `😎 ${data.howmany*-1}일 남음` } color="success" />
+        <div>
+          <b className={currentUser && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
+            {place.membersMap[data.next]? place.membersMap[data.next].name : '???'}
+          </b>
+          <b>{ currentUser && place.membersMap[data.next].id === currentUser.uid && '(나)'}</b>
+          <span className={styles.Blur}>'s 차례</span>
+          {data.howmany <= 0 ?
+            data.howmany <= -3 ?
+            <Chip sx={{ m:1 }} label={ `😎 ${data.howmany*-1}일 남음` } color="success" />
+            :
+            <Chip sx={{ m:1 }} label={ data.howmany===0? `🚨 오늘 당장!` : `😨 ${data.howmany*-1}일 남음` } color="error" />
+            
           :
-          <Chip sx={{ m:1 }} label={ data.howmany===0? `🚨 오늘 당장!` : `😨 ${data.howmany*-1}일 남음` } color="error" />
-          
-        :
-          <Chip sx={{ m:1 }} label={ `💩 ${data.howmany}일 지남` } color="neutral" />
-        }
+            <Chip sx={{ m:1 }} label={ `💩 ${data.howmany}일 지남` } color="neutral" />
+          }
+        </div>
+        <div>
+          <b className={styles.ColorAccent}>☄️ Dies irae:</b>
+          <span> <b>{data.doomsdayFormat1}</b> <span className={ styles.Blur }>{data.doomsdayFormat2}</span></span>
+        </div>
       </div>
-      <div>
-        <b className={styles.ColorAccent}>☄️ Dies irae:</b> <span> <b>{ data.doomsdayFormat1 }</b> { data.doomsdayFormat2 }</span>
-      </div>
-    </div>
+    }
+    </>
   )
+    
 }
 
 export default Dies

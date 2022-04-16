@@ -52,6 +52,11 @@ const PlaceForm = ({ currentUser }) => {
       alert("다 채워야함")
       return
     }
+
+    if (days <= 0) { 
+      alert("Days Limit 청소할 시간을 주세요")
+      return
+    }
     
     try {
       setLoading(true)
