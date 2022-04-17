@@ -84,6 +84,7 @@ const CleanForm = ({ currentUser }) => {
         date: endOfDay(value),
         text: text,
         judgement: judgement,
+        target: clean.next,
         created: new Date()
       });
 
@@ -206,8 +207,24 @@ const CleanForm = ({ currentUser }) => {
               <div className={styles.Result}>
                 { judgement > 0 ? /* 벌점 */
                   <div className={styles.Penalty}>
-                    <div>심판 결과<br /><b className={ styles.Judgement }>{judgement}</b></div>
-                    <div>{place.penalty}</div>
+                    <div>
+                      <div className={styles.Label}>심판 결과</div>
+                      <div>
+                        <b className={styles.Judgement}>{judgement}일</b>
+                      </div>
+                    </div>
+                    <div>
+                      <div className={styles.Label}>심판 대상</div>
+                      <div className={styles.Value}>
+                        <b>{place.membersMap[clean.next].name}</b>
+                        { currentUser && place.membersMap[clean.next].id === currentUser.uid && '(나)' }
+                      </div>
+                    </div>
+                    <div>
+                      <div className={styles.Label}>벌칙</div>
+                      <div>{place.penalty}</div>
+                    </div>
+                    
                   </div>
                   :
                   <div><b className={ styles.Judgement }>잘했어요!</b></div>

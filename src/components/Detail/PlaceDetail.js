@@ -107,13 +107,11 @@ const PlaceDetail = ({ currentUser }) => {
               <Button variant="contained">I've cleaned</Button>
             </Link>
           </div>
-          
-          <div className={ styles.List }>
-            <Cleans place={{...place, id:id}} />
-          </div>
+        </div>
+        <div className={ styles.List }>
+          <Cleans place={{...place, id:id}} />
         </div>
       </div>
-      
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { db } from '../../firebase'
 import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
 import Clean from './Clean';
 import Dies from './Dies'
+import styles from './Clean.module.scss'
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -13,8 +14,13 @@ const Cleans = ({ place }) => {
   const [loading, setLoading] = useState(false)
   const [cleans, setCleans] = useState()
   
-  const getLastCleans = async (id) => {
-    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), orderBy("created", "desc"), limit(10));
+  const getCleans = async () => {
+    const q = query(collection(db, "cleans"),
+      where("where", "==", place.id),
+      orderBy("date", "desc"),
+      orderBy("created", "desc"),
+      limit(10)
+    );
     setLoading(true)
     const querySnapshot = await getDocs(q);
     setLoading(false)
@@ -22,7 +28,7 @@ const Cleans = ({ place }) => {
     let arr = []
     querySnapshot.forEach((doc) => {
       const data = doc.data()
-      console.log(`CLEANs: ${doc.id} => ${data}`);
+      // console.log(`CLEANs: ${doc.id} => ${data}`);
       arr.push({...data, id: doc.id})
     });
     
@@ -30,7 +36,7 @@ const Cleans = ({ place }) => {
   }
 
   useEffect(() => {
-    getLastCleans(place.id)
+    getCleans()
   }, [])
   
   return (
@@ -47,7 +53,9 @@ const Cleans = ({ place }) => {
                 </>
               }
               <ListItem alignItems="flex-start">
-                <Clean clean={c} place={place} />
+                <div className={ styles.Wrapper }>
+                  <Clean clean={c} place={place} getCleans={getCleans} index={ i }/>
+                </div>
               </ListItem>
               {i < cleans.length - 1 && <Divider component="li" sx={{ mt:1 }}/>}
             </div>

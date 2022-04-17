@@ -40,8 +40,12 @@
   > * + * {
     margin-top: 1em;
   }
-  > div:first-child {
+  .Label {
     color: var(--text-color2);
+    margin-bottom: 0.5em;
+  }
+  .Value {
+    margin-bottom: 2em;
   }
 }
 .Judgement {
