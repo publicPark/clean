@@ -4,7 +4,7 @@ import ListItem from '@mui/material/ListItem';
 
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore"; 
+import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import PlaceButtons from "./PlaceButtons";
 import LastClean from "./LastClean";
@@ -32,7 +32,7 @@ const Places = ({ currentUser, now }) => {
   
   // 구역 가져오기
   const getData = async () => {
-    const q = query(placesRef, where("members", "array-contains", currentUser.uid));
+    const q = query(placesRef, where("members", "array-contains", currentUser.uid), limit(5));
     setLoading(true)
     const querySnapshot = await getDocs(q);
     setLoading(false)
@@ -55,14 +55,16 @@ const Places = ({ currentUser, now }) => {
   return (
     <>
       <div className={stylesPaper.Wrapper}>
-          <div className={stylesPaper.Content}>
-            {loading ?
-              <CircularProgress color="primary" />
-              :
+        <div className={stylesPaper.Content}>
+          {loading ?
+            <CircularProgress color="primary" />
+            :
+            <>
               <PlaceButtons currentUser={currentUser} list={list} />
-            }
+              {list.length >= 5 && '최대 5개만 표시됩니다.'}
+            </>
+          }
         </div>
-      
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
           {list.map((p, i) => <div key={i}>
             <ListItem alignItems="flex-start">

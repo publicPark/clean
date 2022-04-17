@@ -4,6 +4,7 @@ import { setDoc, doc } from "firebase/firestore";
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 
+console.log('AuthContext')
 const AuthContext = createContext()
 
 export const useAuth = () => {
@@ -66,7 +67,8 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {/* {!loading && children} */}
+      {children}
     </AuthContext.Provider>
   )
 }

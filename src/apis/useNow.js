@@ -15,7 +15,7 @@ const useNow = () => {
   }
 
   useEffect(() => {
-    if (thatTime && format(now, "yyyy-MM-dd") === format(thatTime, "yyyy-MM-dd")) {
+    if (thatTime) {
       setNowDistance(formatDistance(now, thatTime))
     }
   }, [thatTime, now])

@@ -41,7 +41,7 @@ const Dies = ({ clean, place }) => {
 
   useEffect(() => {
     if (data) {
-      console.log("nowDistance", nowDistance)
+      // console.log("nowDistance", nowDistance)
       let newData = { ...data }
       let howmany = differenceInDays(data.doomsday, endOfDay(new Date())) // 심판의 날이 얼마나 남았는지
       newData.howmany = howmany
@@ -54,14 +54,14 @@ const Dies = ({ clean, place }) => {
 
   return (
     <> 
-      {data && place.membersMap[data.next] &&
+      {data && 
         <div>
           <div className={styles.Flex}>
             <div className={ styles.Who}>
-              <b className={currentUser && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
+              <b className={currentUser && place.membersMap[data.next] && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
                 {place.membersMap[data.next]? place.membersMap[data.next].name : '???'}
               </b>
-              <b>{ currentUser && place.membersMap[data.next].id === currentUser.uid && '(나)'}</b>
+              <b>{ currentUser && place.membersMap[data.next] && place.membersMap[data.next].id === currentUser.uid && '(나)'}</b>
               <span className={styles.Blur}>'s 차례 </span>
             </div>
               {data.howmany === 0 &&
@@ -69,25 +69,25 @@ const Dies = ({ clean, place }) => {
                   <Chip sx={{ mr: 1, mb: 1, mt: 1 }} label={`🚨 오늘 당장!`} color="error" />
                 </>
               }
-              {data.howmany > 0 && 
-                <Chip sx={{ mr: 1, mb: 1, mt: 1 }}
-                  label={ data.howmany > 3?`😎 ${data.howmany}일 남음`:`😨 ${data.howmany}일 남음`}
-                  color="success"
+            {data.howmany > 0 &&
+              <Chip sx={{ mr: 1, mb: 1, mt: 1 }}
+                label={data.howmany > 3 ? `😎 ${data.howmany}일 남음` : `😨 ${data.howmany}일 남음`}
+                color={data.howmany > 3 ? "success" : "warning"}
                 />
               }
               {data.howmany < 0 &&
-                <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `💩 ${data.howmany * -1}일 지남` } color="neutral" />
+                <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `💩 ${data.howmany * -1}일 지남` } color="error" />
               }
           </div>
           <div>
             <b className={styles.ColorAccent}>☄️ Dies irae:</b>
             <span> <b>{data.doomsdayFormat1}</b> <span className={styles.Blur}>{data.doomsdayFormat2}</span></span>
           </div>
-          {data.howmanyFormat &&
+          {/* {data.howmanyFormat &&
             <div className={styles.ColorAccent}>
               <b>{`in ${data.howmanyFormat}!!`}</b>
             </div>
-          }
+          } */}
         </div>
       }
     </>

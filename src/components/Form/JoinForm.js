@@ -28,7 +28,9 @@ const JoinForm = ({ currentUser }) => {
     
     // update
     const docRef = doc(db, "places", text);
+    setLoading(true)
     const docSnap = await getDoc(docRef);
+    setLoading(false)
     if (docSnap.exists()) {
       let data = docSnap.data()
       console.log("Document data:", data);
@@ -47,11 +49,13 @@ const JoinForm = ({ currentUser }) => {
           name: currentUser.displayName,
           photoURL: currentUser.photoURL
         }
+        setLoading(true)
         await updateDoc(docRef, {
           members: arrayUnion(currentUser.uid),
           membersMap: data.membersMap
         });
-        navigate("/", { replace: true });
+        setLoading(false)
+        navigate(-1, { replace: true });
       }
       
     } else {

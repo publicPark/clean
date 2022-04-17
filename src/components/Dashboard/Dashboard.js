@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import stylesPaper from '../styles/Paper.module.scss'
 import News from "./News";
 import Places from "./Places";
+import Voices from "./Voices";
 import format from 'date-fns/format'
 import useNow from "../../apis/useNow";
 
@@ -30,12 +31,19 @@ const Dashboard = ({ currentUser }) => {
 
       
       <Places currentUser={currentUser} now={ now }/>
-
+      
       <div className={stylesPaper.Wrapper}>
+        <div className={stylesPaper.Content}>
+          <h2>청소 애호가들의 한마디</h2>
+          <Voices />
+        </div>
+      </div>
+
+      {/* <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <News currentUser={ currentUser } />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

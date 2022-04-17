@@ -12,6 +12,7 @@ if (storedTheme) {
   if (storedTheme === "true") initialState = true
   else if(storedTheme==="false") initialState = false
 }
+
 export function ThemeProvider({ children }) {
   const [darkTheme, setDarkTheme] = useState(initialState)
 

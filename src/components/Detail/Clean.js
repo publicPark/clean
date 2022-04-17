@@ -114,9 +114,9 @@ const Clean = ({ clean, place, getCleans, index }) => {
             }
             <div>
               {index === 0 && data.amIWriter &&
-                <IconButton aria-label="delete" size="small" sx={{ m: 1 }}
+                <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}
                   onClick={handleClick}
-                  disable={ loadingClean?true:false }
+                  disabled={ loadingClean?true:false }
                 >
                   <DeleteIcon fontSize="inherit" />
                 </IconButton>
@@ -150,10 +150,10 @@ const Clean = ({ clean, place, getCleans, index }) => {
               </div>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
                 {data.amITarget && !data.regret &&
-                  <Button variant="contained" onClick={ ()=>handleRegret(true) } disable={ loadingClean?'true':'false' }>벌칙을 수행하고 반성합니다</Button>
+                  <Button variant="contained" onClick={ ()=>handleRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
                 }
                 {data.amITarget && data.regret && 
-                  <Button variant="outlined" color="neutral" onClick={ ()=>handleRegret(false) } disable={ loadingClean?'true':'false' }>벌칙을 수행하고 반성했습니다</Button>
+                  <div className={ styles.Blur } onClick={ ()=>handleRegret(false) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성했습니다</div>
                 }
                 {!data.amITarget && data.regret &&
                   <Button variant="contained" disabled>이 자는 벌칙을 수행하고 반성했습니다</Button>
