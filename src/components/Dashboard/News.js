@@ -1,4 +1,5 @@
 import { db } from '../../firebase'
+import styles from './Common.module.scss'
 import { collection, getDocs, query, orderBy, limit, doc, deleteDoc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import format from 'date-fns/format'
@@ -46,7 +47,7 @@ const News = ({ currentUser, maxCount=3 }) => {
     <>
       <h2>최근 최대 {maxCount}개의 사건 (테스트)</h2>
       {cleans.map((c, i) => {
-        return <div key={i}>
+        return <div key={i} className={ styles.Left }>
           {/* {JSON.stringify(c)} */}
           <div>memo: <b>{c.text}</b></div>
           <div>date: {format(new Date(c.date.seconds*1000), "yyyy-MM-dd")}</div>

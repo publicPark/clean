@@ -19,14 +19,17 @@
   width: 100%;
   height: 100vh;
   position: fixed;
-  background-image: url(../../public/logo512.png);
+  background-image: url(../assets/jc.png);
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: cover;
   background-color: var(--bg);
 }
-.App {
+.Front {
   position: relative;
+}
+
+.App {
   background-color: transparent;
   // background-attachment: fixed; // 모바일에서 안됨
   color: var(--text-color);
@@ -50,6 +53,9 @@
   --text-color2: #ccc;
   --accent2: #5393ff;
   --accent3: #00e676;
+  .Back {
+    background-image: url(../assets/jc.png);
+  }
 }
 
 button {
@@ -75,4 +81,8 @@ a {
 }
 a:visited {
   color: var(--accent2);
+}
+
+.accent {
+  color: var(--accent);
 }

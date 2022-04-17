@@ -5,11 +5,21 @@
 .MarginTop {
   margin-top: 0.5em;
 }
-.Flex {
+.FlexSpace {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+.Flex {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.Who {
+  margin: 0.5em;
+  margin-left: 0;
 }
 .ColorAccent {
   color: var(--accent);
@@ -27,6 +37,7 @@
   margin-top: 0.5em;
   font-size: 0.9em;
   background-color: var(--bg-accent);
+  color: var(--text-color);
   padding: 0.1em;
 }
 

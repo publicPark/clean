@@ -12,7 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const placesRef = collection(db, "places");
 
-const Places = ({ currentUser }) => {
+const Places = ({ currentUser, now }) => {
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
   const [showButton, setShowButton] = useState(false)
@@ -54,23 +54,24 @@ const Places = ({ currentUser }) => {
 
   return (
     <>
-      {loading ? <CircularProgress color="primary" /> : <>
-        <div className={stylesPaper.Wrapper}>
+      <div className={stylesPaper.Wrapper}>
           <div className={stylesPaper.Content}>
-            <PlaceButtons currentUser={currentUser} list={ list } />
-          </div>
-        
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {list.map((p, i) => <div key={i}>
-              <ListItem alignItems="flex-start">
-                <LastClean place={p} currentUser={ currentUser} />
-              </ListItem>
-              { i<list.length-1 && <Divider component="li" />}
-            </div>)}
-          </List>
+            {loading ?
+              <CircularProgress color="primary" />
+              :
+              <PlaceButtons currentUser={currentUser} list={list} />
+            }
         </div>
-      </>
-      }  
+      
+        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          {list.map((p, i) => <div key={i}>
+            <ListItem alignItems="flex-start">
+              <LastClean place={p} currentUser={currentUser} now={ now }/>
+            </ListItem>
+            { i<list.length-1 && <Divider component="li" />}
+          </div>)}
+        </List>
+      </div>
     </>
   )
 }

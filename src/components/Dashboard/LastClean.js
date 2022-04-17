@@ -42,9 +42,9 @@ const LastClean = ({ place, currentUser }) => {
 
         <div>
           {
-            clean ? <Dies clean={clean} place={place} />
+            clean ? <Dies clean={clean} place={place}/>
             :<div className={styles.Blur}>
-              청소한 적이 없음
+              <div className={styles.Who}>청소한 적이 없음</div>
             </div>
           }
         </div>

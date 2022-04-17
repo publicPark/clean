@@ -4,6 +4,7 @@ import { collection, getDocs, query, where, orderBy, limit } from "firebase/fire
 import Clean from './Clean';
 import Dies from './Dies'
 import styles from './Clean.module.scss'
+import stylesPaper from '../styles/Paper.module.scss'
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -62,7 +63,9 @@ const Cleans = ({ place }) => {
             )}
           </List>
         :
-        <div>여기는 청소한 적이 없음.</div>
+        <div className={ stylesPaper.Content }>
+          <div>여기는 청소한 적이 없음.</div>
+        </div>
       }
     </>
   )

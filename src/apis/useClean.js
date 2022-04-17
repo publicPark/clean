@@ -21,7 +21,16 @@ const useClean = () => {
     setLoading(false)
   }
 
-  return { loading, deleteClean, regret }
+  const editText = async (id, val) => {
+    const docRef = doc(db, "cleans", id);
+    setLoading(true)
+    await updateDoc(docRef, {
+      text: val,
+    });
+    setLoading(false)
+  }
+
+  return { loading, deleteClean, regret, editText }
 }
 
 export default useClean

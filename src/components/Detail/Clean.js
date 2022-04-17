@@ -6,6 +6,9 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import TextField from '@mui/material/TextField';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
@@ -13,7 +16,9 @@ import { useAuth } from '../../contexts/AuthContext';
 const Clean = ({ clean, place, getCleans, index }) => {
   const { currentUser } = useAuth()
   const [data, setData] = useState()
-  const { loading: loadingClean, deleteClean, regret, forgive } = useClean()
+  const [memoForm, setMemoForm] = useState(false)
+  const [memo, setMemo] = useState('')
+  const { loading: loadingClean, deleteClean, regret, editText } = useClean()
 
   useEffect(() => {
     if (clean) {
@@ -33,15 +38,20 @@ const Clean = ({ clean, place, getCleans, index }) => {
         newData.targetText = '???'
       }
 
-      if (currentUser && place) {
-        newData.amIWriter = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
-        if (clean.target) {
-          newData.amITarget = place.membersMap[clean.target] && place.membersMap[clean.target].id === currentUser.uid
-        } else {
-          newData.amITarget = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
+      try {
+        if (currentUser && place) {
+          newData.amIWriter = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
+          if (clean.target) {
+            newData.amITarget = place.membersMap[clean.target] && place.membersMap[clean.target].id === currentUser.uid
+          } else {
+            newData.amITarget = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
+          }
         }
+      } catch (err) {
+        console.log(err)
       }
       
+      setMemo(clean.text)
       setData(newData)
     }
   }, [clean, place])
@@ -66,17 +76,47 @@ const Clean = ({ clean, place, getCleans, index }) => {
     }
   }
 
+  const handleEdit = async () => {
+    await editText(data.id, memo)
+    setMemoForm(false)
+    getCleans()
+  }
+
   return (
     <>
       { data &&
         <div onDoubleClick={printData}>
-          <div className={styles.Flex}>
-            <div className={styles.Memo}>{data.text}</div>
+          <div className={styles.FlexSpace}>
+            {memoForm && !loadingClean ?
+              <div className={styles.Flex}>
+                <TextField id="standard-basic" variant="standard"
+                value={memo} onChange={(e)=>{setMemo(e.target.value)}}
+                />
+                {data.amIWriter && <>
+                  <IconButton aria-label="delete" size="small"
+                    onClick={ ()=>setMemoForm((cur)=>!cur) }
+                  >
+                    <CancelIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton aria-label="delete" size="small"
+                    onClick={ handleEdit }
+                  >
+                    <SaveIcon fontSize="inherit" />
+                  </IconButton>
+                </>
+                }
+              </div>
+              :
+              <div className={styles.Memo}
+                onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}>
+                {data.text}
+              </div>
+            }
             <div>
               {index === 0 && data.amIWriter &&
                 <IconButton aria-label="delete" size="small" sx={{ m: 1 }}
                   onClick={handleClick}
-                  disable={ loadingClean?'true':'false' }
+                  disable={ loadingClean?true:false }
                 >
                   <DeleteIcon fontSize="inherit" />
                 </IconButton>
@@ -105,7 +145,7 @@ const Clean = ({ clean, place, getCleans, index }) => {
                     { data.target? data.targetText : data.whoText }
                     { data.amITarget && '(나)'}
                   </span>
-                  <span>에게 내려진 심판:</span> {data.judgement}일
+                  <span>에게 내려진 심판의 무게:</span> {data.judgement}
                 </b>
               </div>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>

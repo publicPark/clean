@@ -1,7 +1,11 @@
 export const note = [
   {
     title: '계획이란걸',
-    content: '사건 수정, 사건 삭제, 구역 나가기, 초대 기능, 프로필 수정, 핀'
+    content: '구역 나가기, 초대 기능, 프로필 수정, 핀'
+  },
+  {
+    title: '17 April, 2022',
+    content: '사건 삭제, 반성하기(사건 수정)'
   },
   {
     title: '15 April, 2022 (이 정도면 쓸만해)',

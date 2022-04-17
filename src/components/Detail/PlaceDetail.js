@@ -10,7 +10,7 @@ import Members from './Members';
 import Button from '@mui/material/Button';
 import Cleans from './Cleans';
 
-const PlaceDetail = ({ currentUser }) => {
+const PlaceDetail = ({ currentUser, now }) => {
   const {id} = useParams() 
   const [place, setPlace] = useState()
   const [loading, setLoading] = useState(false)
@@ -108,8 +108,8 @@ const PlaceDetail = ({ currentUser }) => {
             </Link>
           </div>
         </div>
-        <div className={ styles.List }>
-          <Cleans place={{...place, id:id}} />
+        <div className={styles.List}>
+          {place && <Cleans place={{ ...place, id: id }} now={ now }/>}
         </div>
       </div>
     </div>

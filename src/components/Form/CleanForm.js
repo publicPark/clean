@@ -23,7 +23,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import Collapse from '@mui/material/Collapse';
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -49,6 +48,7 @@ const CleanForm = ({ currentUser }) => {
   const [loading, setLoading] = useState(false)
 
   const [err, setErr] = useState('');
+  const [err2, setErr2] = useState('');
 
   const handleChangeNext = (event) => {
     setNext(event.target.value);
@@ -77,16 +77,19 @@ const CleanForm = ({ currentUser }) => {
     // return
     try {
       setPending(true)
-      const docRef = await addDoc(collection(db, "cleans"), {
+      let obj = {
         who: currentUser.uid,
         where: id,
         next: next,
         date: endOfDay(value),
         text: text,
         judgement: judgement,
-        target: clean.next,
         created: new Date()
-      });
+      }
+      if (clean) {
+        obj.target = clean.next
+      }
+      const docRef = await addDoc(collection(db, "cleans"), obj);
 
       setPending(false)
       console.log("Document written with ID: ", docRef.id);
@@ -115,8 +118,15 @@ const CleanForm = ({ currentUser }) => {
         judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
         setJudgement(judgement)
       }
+
+      if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
+        let msg = '청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요!'
+        setErr2(msg);
+      } else {
+        setErr2('')
+      }
     }
-  }, [clean, value])
+  }, [clean, value, place])
   
   const getPlace = async () => {
     if (id) {
@@ -208,16 +218,16 @@ const CleanForm = ({ currentUser }) => {
                 { judgement > 0 ? /* 벌점 */
                   <div className={styles.Penalty}>
                     <div>
-                      <div className={styles.Label}>심판 결과</div>
+                      <div className={styles.Label}>심판 결과(심판의 무게)</div>
                       <div>
-                        <b className={styles.Judgement}>{judgement}일</b>
+                        <b className={styles.Judgement}>{judgement}</b>
                       </div>
                     </div>
                     <div>
                       <div className={styles.Label}>심판 대상</div>
                       <div className={styles.Value}>
-                        <b>{place.membersMap[clean.next].name}</b>
-                        { currentUser && place.membersMap[clean.next].id === currentUser.uid && '(나)' }
+                        <b>{place.membersMap[clean.next].name} </b>
+                        <b className="accent">{ currentUser && place.membersMap[clean.next].id === currentUser.uid && '(나)' }</b>
                       </div>
                     </div>
                     <div>
@@ -227,7 +237,9 @@ const CleanForm = ({ currentUser }) => {
                     
                   </div>
                   :
-                  <div><b className={ styles.Judgement }>잘했어요!</b></div>
+                  <>
+                    <div><b className={ styles.Judgement2 }>잘했어요!</b></div>
+                  </>
                 }
               </div>
               
@@ -271,6 +283,25 @@ const CleanForm = ({ currentUser }) => {
                     }
                     sx={{ mb: 2 }}
                   >{ err }</Alert>
+                </Collapse>
+              </div>
+              <div>
+                <Collapse in={err2?true:false} className={ styles.Inline }>
+                  <Alert variant="filled" severity="warning"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          handleClose(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >{ err2 }</Alert>
                 </Collapse>
               </div>
               

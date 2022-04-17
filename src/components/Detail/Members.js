@@ -2,7 +2,6 @@ import styles from './Place.module.scss'
 
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -16,8 +15,8 @@ const Members = ({ members, membersMap, currentUser }) => {
           <ListItem key={i}>
             <Chip
               label={membersMap[m].name}
-              color={currentUser&&currentUser.uid===membersMap[m].id?"primary":"default"} 
-              variant="outlined" />
+              color={currentUser&&currentUser.uid===membersMap[m].id?"success":"default"} 
+              variant={currentUser&&currentUser.uid===membersMap[m].id?"contained":"outlined"}  />
           </ListItem>
         ))}
       </div>
