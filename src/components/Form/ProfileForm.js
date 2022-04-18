@@ -45,10 +45,9 @@ const ProfileForm = () => {
     
     let obj = {
       displayName: newName,
-      photoURL: url,
     }
-    if (!user.originalURL) {
-      obj.originalURL = user.photoURL
+    if (url) {
+      obj.photoURL = url
     }
     await userUpdate(obj)
     onClearFile()
@@ -77,6 +76,9 @@ const ProfileForm = () => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           허허허허
+          <input id="fileInput" type="file" accept="image/*"
+            onChange={onFileChange} ref={fileInput} className={stylesPaper.DisplayNone}
+          />
         </div>
       </div>
       <div className={stylesPaper.Wrapper}>
@@ -87,9 +89,6 @@ const ProfileForm = () => {
               <div>...</div> : 
               <>
                 <div className={stylesPaper.FlexCenter}>
-                  <input id="fileInput" type="file" accept="image/*"
-                    onChange={onFileChange} ref={fileInput} className={stylesPaper.DisplayNone}
-                  />
                   <label htmlFor="fileInput">
                     <Avatar className={ stylesPaper.ButtonFile }
                       alt={user.displayName}
@@ -100,7 +99,7 @@ const ProfileForm = () => {
                   {imgFile && (
                     <>
                       👉 
-                      <Avatar
+                      <Avatar onClick={ onClearFile }
                         alt={user.displayName}
                         src={imgFile.dataURL}
                         sx={{ width: 64, height: 64, m:2 }}

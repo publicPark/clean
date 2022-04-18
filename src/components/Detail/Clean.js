@@ -145,7 +145,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                     { data.target? data.targetText : data.whoText }
                     { data.amITarget && '(나)'}
                   </span>
-                  <span>에게 내려진 심판의 무게:</span> {data.judgement}
+                  <span>에게 내려진 심판의 무게:</span> <span className="accent">{data.judgement}일</span>
                 </b>
               </div>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>

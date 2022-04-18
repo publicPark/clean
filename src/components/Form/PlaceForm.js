@@ -67,6 +67,8 @@ const PlaceForm = ({ currentUser }) => {
           days: days,
           description: text2,
           penalty: text3,
+          modifier: currentUser.uid,
+          modified: new Date()
         });
       } else {
         let d = days

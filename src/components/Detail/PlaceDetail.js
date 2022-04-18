@@ -9,6 +9,7 @@ import Members from './Members';
 import Voices from "../Dashboard/Voices";
 import Cleans from './Cleans';
 import usePlace from '../../apis/usePlace';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -85,7 +86,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                       <span>Copied! </span><span className={styles.Code}>{id}</span>
                       { currentUser && place.members.includes(currentUser.uid) &&
                         <Link to={ `/placejoin?code=${id}` }>
-                          <Button sx={{ m: 1 }} variant="outlined" color="success">초대</Button>
+                          <Button sx={{ m: 1.5 }} variant="outlined" color="success">초대</Button>
                         </Link>
                       }
                     </>
@@ -111,6 +112,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
+                
                 { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
                   <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">Edit</Button></Link>
                   {place.members[0] === currentUser.uid && place.members.length === 1 ?
@@ -158,6 +160,16 @@ const PlaceDetail = ({ currentUser, now }) => {
           </div>
         </div>
       }
+
+      <div className={stylesPaper.Wrapper}>
+        <div className={stylesPaper.Content}>
+          <span className={ stylesPaper.Blur }>
+            {place && place.modified &&
+              `modified by ${userMap?userMap[place.modifier].name:''} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}`
+            }
+          </span>
+        </div>
+      </div>
     </div>
   )
 }

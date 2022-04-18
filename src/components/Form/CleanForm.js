@@ -240,7 +240,7 @@ const CleanForm = ({ currentUser }) => {
                     <div>
                       <div className={styles.Label}>심판 결과(심판의 무게)</div>
                       <div>
-                        <b className={styles.Judgement}>{judgement}</b>
+                        <b className={styles.Judgement}>{judgement}일</b>
                       </div>
                     </div>
                     <div>
