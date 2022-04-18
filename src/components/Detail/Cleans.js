@@ -11,7 +11,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Cleans = ({ place }) => {
+const Cleans = ({ place, userMap }) => {
   const [loading, setLoading] = useState(false)
   const [cleans, setCleans] = useState()
   
@@ -55,7 +55,7 @@ const Cleans = ({ place }) => {
               }
               <ListItem alignItems="flex-start">
                 <div className={ styles.Wrapper }>
-                  <Clean clean={c} place={place} getCleans={getCleans} index={ i }/>
+                  <Clean clean={c} place={place} getCleans={getCleans} index={i} userMap={ userMap }/>
                 </div>
               </ListItem>
               {i < cleans.length - 1 && <Divider component="li" sx={{ mt:1 }}/>}

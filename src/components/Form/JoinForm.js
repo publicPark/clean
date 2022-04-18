@@ -2,27 +2,43 @@
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { db } from '../../firebase'
 import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore"; 
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from "react-router-dom";
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from "react-router-dom";
+import Collapse from '@mui/material/Collapse';
+import MuiAlert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
-const JoinForm = ({ currentUser }) => {
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const JoinForm = () => {
+  const { currentUser } = useAuth()
   let [searchParams, setSearchParams] = useSearchParams();
 
   let navigate = useNavigate();
   const [text, setText] = useState(searchParams.get("code") || '');
   const [loading, setLoading] = useState(false)
+  const [err, setErr] = useState('');
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!text) {
-      alert("모르십니까?")
+      setErr("모르십니까?")
+      return
+    }
+
+    if (!currentUser) {
+      setErr("로그인하고 다시")
       return
     }
     
@@ -42,7 +58,7 @@ const JoinForm = ({ currentUser }) => {
         }
       }
       if (isIn) {
-        alert("이미 join")
+        setErr("당신은 이미 join")
       } else {
         data.membersMap[currentUser.uid] = {
           id: currentUser.uid,
@@ -59,7 +75,7 @@ const JoinForm = ({ currentUser }) => {
       }
       
     } else {
-      alert("그런 구역은 없습니다.")
+      setErr("그런 구역은 없습니다.")
     }
   }
   return (
@@ -72,6 +88,28 @@ const JoinForm = ({ currentUser }) => {
           <div className={styles.Row}>
             <TextField id="outlined-basic" label="Code" variant="outlined"
             value={text} onChange={(e)=>setText(e.target.value)}/>
+          </div>
+          <div>
+            <Collapse in={err?true:false} className={ styles.Inline }>
+              {/* <Alert variant="filled" severity="error">
+                {err}
+              </Alert> */}
+              <Alert variant="filled" severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setErr('')
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >{ err }</Alert>
+            </Collapse>
           </div>
           {loading ?
             <LoadingButton loading variant="contained">

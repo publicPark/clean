@@ -13,10 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 const Profile = () => {
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const { darkTheme, toggleTheme } = useTheme()
   const { currentUser, googleAuth, userSignOut } = useAuth()
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const { darkTheme, toggleTheme } = useTheme()
 
   const handleGoogleAuth = (e) => {
     googleAuth()
@@ -64,11 +63,11 @@ const Profile = () => {
       >
         {currentUser ?
           <div>
-            {/* <Link to='/profile'>
+            <Link to='/profile'>
               <MenuItem>
                 <Typography textAlign="center">{ currentUser.displayName }</Typography>
               </MenuItem>
-            </Link> */}
+            </Link>
             <MenuItem onClick={handleSignOut}>
               <Typography textAlign="center">Logout</Typography>
             </MenuItem>

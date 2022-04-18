@@ -53,14 +53,14 @@ function App({ user }) {
             
             <Route path="place/:id" element={<PlaceDetail currentUser={currentUser} />} />
             <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser} />} />
+            <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
+
+            <Route path="profile" element={ currentUser ? <ProfileForm /> : <NotFound status="auth" />} />
             
-            {currentUser?
+            {currentUser ?
               <>
-                <Route path="profile" element={<ProfileForm />} />
                 <Route path="placeform" element={<PlaceForm currentUser={ currentUser }/>} />
                 <Route path="placeform/:id" element={<PlaceForm currentUser={currentUser}/>} />
-                <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
-                
                 <Route path="*" element={<NotFound />} />
               </>
               :

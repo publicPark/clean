@@ -60,7 +60,6 @@ const Voices = ({ type = "all" }) => {
   } 
 
   useEffect(() => {
-    console.log("voices type", type)
     setLoading(true)
     const q = query(voicesRef, where("target", "==", type), orderBy("lastDate", "desc"), limit(10));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -81,7 +80,7 @@ const Voices = ({ type = "all" }) => {
     });
 
     return () => unsubscribe() // 아놔..
-  }, [type])
+  }, [])
   
   return (
     <>

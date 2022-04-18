@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
 
-const Clean = ({ clean, place, getCleans, index }) => {
+const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const { currentUser } = useAuth()
   const [data, setData] = useState()
   const [memoForm, setMemoForm] = useState(false)
@@ -26,25 +26,25 @@ const Clean = ({ clean, place, getCleans, index }) => {
       let theday = new Date(clean.date.seconds * 1000)
       newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
       newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
-      if (place && place.membersMap && place.membersMap[clean.who]) {
-        newData.whoText = place.membersMap[clean.who].name
+      if (place && userMap && userMap[clean.who]) {
+        newData.whoText =userMap[clean.who].name
       } else {
         newData.whoText = '???'
       }
 
-      if (place && place.membersMap && place.membersMap[clean.target]) {
-        newData.targetText = place.membersMap[clean.target].name
+      if (place && userMap && userMap[clean.target]) {
+        newData.targetText = userMap[clean.target].name
       } else {
         newData.targetText = '???'
       }
 
       try {
         if (currentUser && place) {
-          newData.amIWriter = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
+          newData.amIWriter = userMap[clean.who] && userMap[clean.who].id === currentUser.uid
           if (clean.target) {
-            newData.amITarget = place.membersMap[clean.target] && place.membersMap[clean.target].id === currentUser.uid
+            newData.amITarget = clean.target === currentUser.uid
           } else {
-            newData.amITarget = place.membersMap[clean.who] && place.membersMap[clean.who].id === currentUser.uid
+            newData.amITarget = clean.who === currentUser.uid
           }
         }
       } catch (err) {
@@ -54,7 +54,7 @@ const Clean = ({ clean, place, getCleans, index }) => {
       setMemo(clean.text)
       setData(newData)
     }
-  }, [clean, place])
+  }, [clean])
 
   const printData = () => {
     console.log(data)

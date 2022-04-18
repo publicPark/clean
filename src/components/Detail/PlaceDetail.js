@@ -2,7 +2,7 @@ import styles from './Place.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
-import { getDoc, doc, onSnapshot } from "firebase/firestore"; 
+import { getDocs, doc, onSnapshot, query, where, collection } from "firebase/firestore"; 
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from 'react-router';
 import Members from './Members';
@@ -22,6 +22,18 @@ const PlaceDetail = ({ currentUser, now }) => {
   const [showCode, setShowCode] = useState(false)
   const { loading: loadingPlace, getout, deletePlace } = usePlace(id)
 
+  const [userMap, setUserMap] = useState()
+  
+  const getUsers = async (members) => {
+    const q = query(collection(db, "users"), where('id', 'in', members))
+    const querySnapshot = await getDocs(q);
+    let obj = {}
+    querySnapshot.forEach((doc) => {
+      obj[doc.id] = doc.data()
+    });
+    setUserMap(obj)
+  }
+
   const onShowCode = () => {
     navigator.clipboard.writeText(id)
     setShowCode((cur)=>!cur)
@@ -31,11 +43,8 @@ const PlaceDetail = ({ currentUser, now }) => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
-
-      // const docRef = doc(db, "users", d.who);
-      // const userDocSnap = await getDoc(docRef);
-      // d.whoData = userDocSnap.data()
       setPlace(d)
+      getUsers(d.members)
       setLoading(false)
     },
     (error) => {
@@ -74,9 +83,9 @@ const PlaceDetail = ({ currentUser, now }) => {
                   {showCode ?
                     <>
                       <span>Copied! </span><span className={styles.Code}>{id}</span>
-                      { currentUser && !place.members.includes(currentUser.uid) &&
+                      { currentUser && place.members.includes(currentUser.uid) &&
                         <Link to={ `/placejoin?code=${id}` }>
-                          <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
+                          <Button sx={{ m: 1 }} variant="outlined" color="success">초대</Button>
                         </Link>
                       }
                     </>
@@ -90,7 +99,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                     {place.description}
                   </div>
                 </div>
-                <div><span className={styles.Label}>Days Limit: </span><b>{place.days}일</b><br /></div>
+                <div><span className={styles.Label}>Days Limit: </span><b>{place.days}</b>일<br /></div>
                 <div>
                   <div className={styles.Label}>지났을 때 벌칙: </div>
                   <div className={styles.Penalty}>
@@ -98,8 +107,8 @@ const PlaceDetail = ({ currentUser, now }) => {
                   </div>
                 </div>
                 <div>
-                  <div className={styles.Label}>- Members -</div>
-                  <Members members={place.members} membersMap={place.membersMap} currentUser={currentUser} />
+                  <div className={styles.Label}>🧑‍🤝‍🧑 Members 🧑‍🤝‍🧑</div>
+                  { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
                 { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
@@ -109,7 +118,14 @@ const PlaceDetail = ({ currentUser, now }) => {
                     :
                     <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>GET OUT</Button>
                   }
-                </div>}
+                </div>
+                }
+
+                { currentUser && !place.members.includes(currentUser.uid) &&
+                  <Link to={ `/placejoin?code=${id}` }>
+                    <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
+                  </Link>
+                }
               </div>
             </>
             :
@@ -117,6 +133,8 @@ const PlaceDetail = ({ currentUser, now }) => {
           }
         </div>
       </div>
+
+
       {place && 
         <div className={stylesPaper.Wrapper}>
           <div className={stylesPaper.Content}>
@@ -127,7 +145,7 @@ const PlaceDetail = ({ currentUser, now }) => {
             </div>
           </div>
           <div className={styles.List}>
-            {place && <Cleans place={{ ...place, id: id }} now={ now }/>}
+            {place && <Cleans place={{ ...place, id: id }} now={now} userMap={userMap} />}
           </div>
         </div>
       }

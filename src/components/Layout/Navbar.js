@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
+import { useAuth } from "../../contexts/AuthContext";
 
 const pages = [
   {
@@ -32,7 +33,8 @@ const pages = [
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const Navbar = ({ currentUser }) => {
+const Navbar = () => {
+  const { currentUser } = useAuth()
   const { pathname } = useLocation();
   console.log("pathname", pathname)
   let navigate = useNavigate();

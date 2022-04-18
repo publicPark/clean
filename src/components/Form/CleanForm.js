@@ -51,6 +51,18 @@ const CleanForm = ({ currentUser }) => {
   const [err2, setErr2] = useState('');
   const [err3, setErr3] = useState('');
 
+  const [userMap, setUserMap] = useState()
+  
+  const getUsers = async (members) => {
+    const q = query(collection(db, "users"), where('id', 'in', members))
+    const querySnapshot = await getDocs(q);
+    let obj = {}
+    querySnapshot.forEach((doc) => {
+      obj[doc.id] = doc.data()
+    });
+    setUserMap(obj)
+  }
+
   const handleChangeNext = (event) => {
     setNext(event.target.value);
   };
@@ -97,7 +109,6 @@ const CleanForm = ({ currentUser }) => {
       setPending(false)
       console.error("Error adding document: ", e);
     }
-
   }
 
   const getPlace = (id) => {
@@ -106,6 +117,7 @@ const CleanForm = ({ currentUser }) => {
       let d = snap.data()
       setPlace(d)
       setPlayers(d.members)
+      getUsers(d.members)
     },
     (error) => {
       console.log("querySnapshot", error)
@@ -234,8 +246,10 @@ const CleanForm = ({ currentUser }) => {
                     <div>
                       <div className={styles.Label}>심판 대상</div>
                       <div className={styles.Value}>
-                        <b>{place.membersMap[clean.next].name} </b>
-                        <b className="accent">{ currentUser && place.membersMap[clean.next].id === currentUser.uid && '(나)' }</b>
+                        <b>{userMap && userMap[clean.next] && userMap[clean.next].name} </b>
+                        <b className="accent">
+                          {currentUser && clean.next === currentUser.uid && '(나)'}
+                        </b>
                       </div>
                     </div>
                     <div>
@@ -265,7 +279,7 @@ const CleanForm = ({ currentUser }) => {
                     label="Next Player"
                     onChange={handleChangeNext}
                   >
-                    {players.map((u, i) => <MenuItem key={i} value={u}>{place.membersMap[u].name}</MenuItem>)}
+                    {players.map((u, i) => <MenuItem key={i} value={u}>{ userMap && userMap[u] ? userMap[u].name : ''}</MenuItem>)}
                   </Select>
                 </FormControl>
               </div>
@@ -273,9 +287,6 @@ const CleanForm = ({ currentUser }) => {
 
               <div>
                 <Collapse in={err?true:false} className={ styles.Inline }>
-                  {/* <Alert variant="filled" severity="error">
-                    {err}
-                  </Alert> */}
                   <Alert variant="filled" severity="error"
                     action={
                       <IconButton
@@ -283,7 +294,7 @@ const CleanForm = ({ currentUser }) => {
                         color="inherit"
                         size="small"
                         onClick={() => {
-                          handleClose(false);
+                          setErr('');
                         }}
                       >
                         <CloseIcon fontSize="inherit" />
