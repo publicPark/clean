@@ -6,8 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { useEffect, useState } from 'react';
+import { useAuth } from "../../contexts/AuthContext";
 
-const PlaceButtons = ({ currentUser, list }) => {
+const PlaceButtons = ({ list }) => {
+  const { currentUser } = useAuth()
   const [showButton, setShowButton] = useState(false)
 
   useEffect(() => {

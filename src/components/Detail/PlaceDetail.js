@@ -2,21 +2,23 @@ import styles from './Place.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
-import { getDoc, doc } from "firebase/firestore"; 
-
+import { getDoc, doc, onSnapshot } from "firebase/firestore"; 
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from 'react-router';
 import Members from './Members';
-
-import Button from '@mui/material/Button';
+import Voices from "../Dashboard/Voices";
 import Cleans from './Cleans';
 import usePlace from '../../apis/usePlace';
+
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const PlaceDetail = ({ currentUser, now }) => {
   let navigate = useNavigate();
   const {id} = useParams() 
   const [place, setPlace] = useState()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showCode, setShowCode] = useState(false)
   const { loading: loadingPlace, getout, deletePlace } = usePlace(id)
 
@@ -25,29 +27,27 @@ const PlaceDetail = ({ currentUser, now }) => {
     setShowCode((cur)=>!cur)
   }
 
-  const getPlace = async (id) => {
+  const getPlace = (id) => {
     const docRef = doc(db, "places", id);
-    setLoading(true)
-    const docSnap = await getDoc(docRef);
-    setLoading(false)
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      let data = docSnap.data()
+    const unsubscribe = onSnapshot(docRef, (snap) => {
+      let d = snap.data()
 
-      setPlace(data)
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-      setPlace()
-    }
+      // const docRef = doc(db, "users", d.who);
+      // const userDocSnap = await getDoc(docRef);
+      // d.whoData = userDocSnap.data()
+      setPlace(d)
+      setLoading(false)
+    },
+    (error) => {
+      console.log("querySnapshot", error)
+    });
+    return unsubscribe
   }
 
   useEffect(() => {
-    console.log("place detail")
-    if (id) {
-      getPlace(id)
-    }
-  }, [])
+    const unsubscribe = getPlace(id)
+    return () => unsubscribe() // 아놔..
+  }, [id])
   
   const handleGetOut = async () => {
     if (window.confirm("Do you really want to get out? 다시 들어올 수 있어")) {
@@ -66,7 +66,7 @@ const PlaceDetail = ({ currentUser, now }) => {
     <div className={stylesPaper.Flex}>
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
-          {loading? <div>...</div> : place?
+          {loading? <CircularProgress sx={{ mt: 2 }} color="primary" /> : place?
             <>
               <div className={styles.Content}>
                 <div className={ styles.Title }>{place.name}</div>
@@ -128,6 +128,15 @@ const PlaceDetail = ({ currentUser, now }) => {
           </div>
           <div className={styles.List}>
             {place && <Cleans place={{ ...place, id: id }} now={ now }/>}
+          </div>
+        </div>
+      }
+
+      {place && 
+        <div className={stylesPaper.Wrapper}>
+          <div className={stylesPaper.Content}>
+            <h2>이 구역에서 한마디</h2>
+            <Voices type={ id }/>
           </div>
         </div>
       }

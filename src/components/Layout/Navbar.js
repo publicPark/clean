@@ -112,7 +112,7 @@ const Navbar = ({ currentUser }) => {
                 <Button
                   key={i}
                   onClick={() => moveTo(page.link)}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ color: 'white', display: 'block' }}
                 >
                   {page.name}
                 </Button>

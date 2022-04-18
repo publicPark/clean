@@ -1,6 +1,11 @@
 import getBrowserName from "../../apis/getBrowserName"
-import Alert from '@mui/material/Alert';
 import styles from './Navbar.module.scss'
+import { useState } from "react";
+
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const br = getBrowserName()
 let msg = ""
@@ -20,11 +25,28 @@ if (br === "chrome") {
 }
 
 const BrowserDetect = () => {
+  const [open, setOpen] = useState(true);
+
   return (
     // nono &&
-    <div className={styles.Padding0}>
-      <Alert severity={ nono?"error":"success" }>{ msg }</Alert>
-    </div>
+    <Collapse in={open} sx={{ p:1 }}>
+      <Alert severity={nono ? "error" : "success"}
+        action={
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+        }
+      >
+        {msg}
+      </Alert>
+    </Collapse>
   )
 }
 

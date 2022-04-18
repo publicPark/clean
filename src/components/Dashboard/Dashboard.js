@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import stylesPaper from '../styles/Paper.module.scss'
 import News from "./News";
 import Places from "./Places";
 import Voices from "./Voices";
 import format from 'date-fns/format'
 import useNow from "../../apis/useNow";
+import { useAuth } from "../../contexts/AuthContext";
 
-const Dashboard = ({ currentUser }) => {
+const Dashboard = ({ }) => {
+  const { currentUser } = useAuth()
   const { now } = useNow()
   
   return (
@@ -15,11 +15,11 @@ const Dashboard = ({ currentUser }) => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>즐거운 청소!</h2>
-          <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3>
+          {/* <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3> */}
           <h2 className={ stylesPaper.ColorAccent2 }>{format(now, 'HH:mm:ss')}</h2>
           {currentUser ?
             <>
-              <p>{currentUser.displayName} 하이.</p>
+              <p><b className="accent3">{currentUser.displayName}</b> 하이</p>
             </>
             :
             <>
@@ -30,7 +30,7 @@ const Dashboard = ({ currentUser }) => {
       </div>
 
       
-      <Places currentUser={currentUser} now={ now }/>
+      <Places />
       
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>

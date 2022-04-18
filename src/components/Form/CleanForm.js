@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, addDoc, getDoc, doc, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
+import { collection, addDoc, onSnapshot, doc, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
 
 import endOfDay from 'date-fns/endOfDay'
 import format from 'date-fns/format'
@@ -49,6 +49,7 @@ const CleanForm = ({ currentUser }) => {
 
   const [err, setErr] = useState('');
   const [err2, setErr2] = useState('');
+  const [err3, setErr3] = useState('');
 
   const handleChangeNext = (event) => {
     setNext(event.target.value);
@@ -62,13 +63,11 @@ const CleanForm = ({ currentUser }) => {
     e.preventDefault();
 
     if (!currentUser) {
-      // alert("안 돼요! 로그인 안 하면 구경만 가능!")
       handleErr("안 돼요! 로그인 안 하면 구경만 가능!")
       return
     }
 
     if (!text || !next || !value) {
-      // alert("다 채워야함")
       handleErr("다 채워야함")
       return
     }
@@ -101,61 +100,70 @@ const CleanForm = ({ currentUser }) => {
 
   }
 
-  useEffect(() => {
-    getPlace()
-    getLastClean()
-  }, [])
-
-  useEffect(() => {
-    if (clean) {
-      console.log("마지막 청소날짜", format(new Date(clean.date.seconds * 1000), "yyyy-MM-dd"))
-        
-      if (clean && place) {
-        // 날짜 바뀔때 패널티 계산
-        let judgement = 0;
-        let lastday = endOfDay(new Date(clean.date.seconds * 1000))
-        let doomsday = addDays(lastday, place.days)
-        judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
-        setJudgement(judgement)
-      }
-
-      if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
-        let msg = '청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요!'
-        setErr2(msg);
-      } else {
-        setErr2('')
-      }
-    }
-  }, [clean, value, place])
-  
-  const getPlace = async () => {
-    if (id) {
-      const docRef = doc(db, "places", id);
-      const docSnap = await getDoc(docRef);
-      setPlace()
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        let data = docSnap.data()
-        setPlace(data)
-        setPlayers(data.members)
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }
+  const getPlace = (id) => {
+    const docRef = doc(db, "places", id);
+    const unsubscribe = onSnapshot(docRef, (snap) => {
+      let d = snap.data()
+      setPlace(d)
+      setPlayers(d.members)
+    },
+    (error) => {
+      console.log("querySnapshot", error)
+    });
+    return unsubscribe
   }
 
-  const getLastClean = async () => {
-    const q = query(collection(db, "cleans"), where("where", "==", id), orderBy("date", "desc"), orderBy("created", "desc"), limit(1));
+  const getLastClean = async (id) => {
+    const q = query(collection(db, "cleans"),
+      where("where", "==", id),
+      orderBy("date", "desc"),
+      orderBy("created", "desc"),
+      limit(1)
+    );
     setLoading(true)
     const querySnapshot = await getDocs(q);
-    setLoading(false)
     querySnapshot.forEach((doc) => {
       // console.log(`CLEAN: ${doc.id} => ${doc.data()}`);
       const data = doc.data()
       setClean(data)
     });
+    setLoading(false)
   }
+
+  //
+  useEffect(() => {
+    const unsub = getPlace(id)
+    getLastClean(id)
+    return () => unsub()
+  }, [id])
+
+  useEffect(() => {
+    if (currentUser && place && !place.members.includes(currentUser.uid)){
+      setErr3("당신은 멤버가 아닌데 청소를 하신다고요? 막지 않겠어요.")
+    }
+    if (currentUser && clean && clean.next !== currentUser.uid) {
+      setErr3("당신은 차례가 아닌데 청소를 하신다고요? 청소 애호가!")
+    }
+  }, [currentUser, place, clean])
+
+  useEffect(() => {
+    if (clean && place) {
+      console.log("마지막 청소날짜", format(new Date(clean.date.seconds * 1000), "yyyy-MM-dd"))
+      // 날짜 바뀔때 패널티 계산
+      let judgement = 0;
+      let lastday = endOfDay(new Date(clean.date.seconds * 1000))
+      let doomsday = addDays(lastday, place.days)
+      judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
+      setJudgement(judgement)
+    }
+
+    if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
+      let msg = '청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요!'
+      setErr2(msg);
+    } else {
+      setErr2('')
+    }
+  }, [value, place, clean])
 
   function disablePrevDates() {
     if (clean) {
@@ -294,7 +302,7 @@ const CleanForm = ({ currentUser }) => {
                         color="inherit"
                         size="small"
                         onClick={() => {
-                          handleClose(false);
+                          setErr2('');
                         }}
                       >
                         <CloseIcon fontSize="inherit" />
@@ -302,6 +310,26 @@ const CleanForm = ({ currentUser }) => {
                     }
                     sx={{ mb: 2 }}
                   >{ err2 }</Alert>
+                </Collapse>
+              </div>
+
+              <div>
+                <Collapse in={err3?true:false} className={ styles.Inline }>
+                  <Alert variant="filled" severity="success"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setErr3('');
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >{ err3 }</Alert>
                 </Collapse>
               </div>
               

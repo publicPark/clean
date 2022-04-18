@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../contexts/ThemeContext'
+import { Link } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const Profile = ({}) => {
+const Profile = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const { darkTheme, toggleTheme } = useTheme()
@@ -62,9 +63,16 @@ const Profile = ({}) => {
         onClose={handleCloseUserMenu}
       >
         {currentUser ?
-          <MenuItem onClick={handleSignOut}>
-            <Typography textAlign="center">Logout</Typography>
-          </MenuItem>
+          <div>
+            {/* <Link to='/profile'>
+              <MenuItem>
+                <Typography textAlign="center">{ currentUser.displayName }</Typography>
+              </MenuItem>
+            </Link> */}
+            <MenuItem onClick={handleSignOut}>
+              <Typography textAlign="center">Logout</Typography>
+            </MenuItem>
+          </div>
           :
           <MenuItem onClick={handleGoogleAuth}>
             <Typography textAlign="center">구글로긴</Typography>

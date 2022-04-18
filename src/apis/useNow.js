@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import format from 'date-fns/format'
-import formatDistance from 'date-fns/formatDistance'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 const firstDate = Date.now()
 const fmStr = "yyyy-MM-dd HH:mm";
@@ -16,7 +16,7 @@ const useNow = () => {
 
   useEffect(() => {
     if (thatTime) {
-      setNowDistance(formatDistance(now, thatTime))
+      setNowDistance(formatDistanceToNow(thatTime, { addSuffix: true }))
     }
   }, [thatTime, now])
 

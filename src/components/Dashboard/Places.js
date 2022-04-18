@@ -4,52 +4,40 @@ import ListItem from '@mui/material/ListItem';
 
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
+import { collection, query, where, limit, onSnapshot } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import PlaceButtons from "./PlaceButtons";
 import LastClean from "./LastClean";
 import CircularProgress from '@mui/material/CircularProgress';
+import { useAuth } from '../../contexts/AuthContext';
 
 const placesRef = collection(db, "places");
 
-const Places = ({ currentUser, now }) => {
+const Places = () => {
+  const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
-  const [showButton, setShowButton] = useState(false)
-
-  const getTestData = async () => {
-    const q = query(placesRef, where("test", "==",  true));
-    setLoading(true)
-    const querySnapshot = await getDocs(q);
-    setLoading(false)
-    let arr = []
-    querySnapshot.forEach((doc) => {
-      // console.log(`${doc.id} => ${doc.data()}`);
-      arr.push({ ...doc.data(), id: doc.id })
-    });
-    setList(arr)
-  }
-  
-  // 구역 가져오기
-  const getData = async () => {
-    const q = query(placesRef, where("members", "array-contains", currentUser.uid), limit(5));
-    setLoading(true)
-    const querySnapshot = await getDocs(q);
-    setLoading(false)
-    let arr = []
-    querySnapshot.forEach((doc) => {
-      // console.log(`${doc.id} => ${doc.data()}`);
-      arr.push({ ...doc.data(), id: doc.id })
-    });
-    setList(arr)
-  }
 
   useEffect(() => {
+    let q = query(placesRef, where("test", "==",  true));
     if (currentUser) {
-      getData()
-    }else{
-      getTestData()
+     q = query(placesRef, where("members", "array-contains", currentUser.uid), limit(5));
     }
+    setLoading(true)
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      // console.log("querySnapshot2", querySnapshot)
+      setList([])
+      querySnapshot.forEach(async (snap) => {
+        let d = snap.data()
+        setList((cur) => [...cur, {...d, id:snap.id}])
+      });
+      setLoading(false)
+    },
+    (error) => {
+      console.log("querySnapshot2", error)
+    });
+
+    return () => unsubscribe()
   }, [currentUser])
 
   return (
@@ -60,19 +48,21 @@ const Places = ({ currentUser, now }) => {
             <CircularProgress color="primary" />
             :
             <>
-              <PlaceButtons currentUser={currentUser} list={list} />
+              <PlaceButtons list={list} />
               {list.length >= 5 && '최대 5개만 표시됩니다.'}
             </>
           }
         </div>
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {list.map((p, i) => <div key={i}>
-            <ListItem alignItems="flex-start">
-              <LastClean place={p} currentUser={currentUser} now={ now }/>
-            </ListItem>
-            { i<list.length-1 && <Divider component="li" />}
-          </div>)}
-        </List>
+        {list.length > 0 && 
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            {list.map((p, i) => <div key={i}>
+              <ListItem alignItems="flex-start">
+                <LastClean place={p} />
+              </ListItem>
+              { i<list.length-1 && <Divider component="li" />}
+            </div>)}
+          </List>
+        }
       </div>
     </>
   )

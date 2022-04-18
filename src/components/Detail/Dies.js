@@ -37,7 +37,7 @@ const Dies = ({ clean, place }) => {
       }
       setData(newData)
     }
-  }, [clean, place])
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -50,12 +50,18 @@ const Dies = ({ clean, place }) => {
       }
       setData(newData)
     }
-  }, [nowDistance])
+  }, [nowDistance, data])
+
+  const print = () => {
+    console.log("place", place)
+    console.log("data", data)
+    console.log("clean", clean)
+  }
 
   return (
     <> 
-      {data && 
-        <div>
+      {data && place &&
+        <div onDoubleClick={print}>
           <div className={styles.Flex}>
             <div className={ styles.Who}>
               <b className={currentUser && place.membersMap[data.next] && place.membersMap[data.next].id === currentUser.uid ? styles.ColorAccent3 : undefined}>
@@ -83,11 +89,11 @@ const Dies = ({ clean, place }) => {
             <b className={styles.ColorAccent}>☄️ Dies irae:</b>
             <span> <b>{data.doomsdayFormat1}</b> <span className={styles.Blur}>{data.doomsdayFormat2}</span></span>
           </div>
-          {/* {data.howmanyFormat &&
-            <div className={styles.ColorAccent}>
-              <b>{`in ${data.howmanyFormat}!!`}</b>
+          {data.howmanyFormat &&
+            <div className={styles.TimeLeft}>
+              <b>{`${data.howmanyFormat}`}</b>
             </div>
-          } */}
+          }
         </div>
       }
     </>

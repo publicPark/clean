@@ -131,7 +131,7 @@ const Clean = ({ clean, place, getCleans, index }) => {
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
             </div>
             <div className={styles.Blur}>
-              by <b>{data.whoText}</b>
+              by <b className={currentUser && currentUser.uid === data.who?'accent3':''}>{data.whoText}</b>
             </div>
           </div>
           
