@@ -167,9 +167,9 @@ const PlaceForm = ({ currentUser }) => {
                     {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
                       value={text2} onChange={handleChangeText2} /> */}
                     <TextareaAutosize className={styles.Textarea}
-                      aria-label="Notice for members"
+                      aria-label="Rules"
                       minRows={3}
-                      placeholder="Notice for members"
+                      placeholder="Rules"
                       style={{ width: 200, resize: 'none' }}
                       value={text2} onChange={handleChangeText2}
                     />

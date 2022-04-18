@@ -10,6 +10,7 @@ import Voices from "../Dashboard/Voices";
 import Cleans from './Cleans';
 import usePlace from '../../apis/usePlace';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import format from 'date-fns/format'
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -165,7 +166,13 @@ const PlaceDetail = ({ currentUser, now }) => {
         <div className={stylesPaper.Content}>
           <span className={ stylesPaper.Blur }>
             {place && place.modified &&
-              `modified by ${userMap?userMap[place.modifier].name:''} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}`
+              <>
+                <span>{ `modified by ${userMap ? userMap[place.modifier].name : ''} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}` }</span>
+                <br />
+              </>
+            }
+            {place && place.created &&
+              `created ${format(new Date(place.created.seconds * 1000), "yyyy-MM-dd")}`
             }
           </span>
         </div>
