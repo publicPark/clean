@@ -26,9 +26,6 @@ const Dies = ({ clean, place }) => {
     newData.doomsday = doomsday // 심판의 날 날짜
     let howmany = differenceInDays(doomsday, endOfDay(new Date())) // 심판의 날이 얼마나 남았는지
     newData.howmany = howmany
-    if (howmany === 0) {
-      newData.howmanyFormat = nowDistance
-    }
     
     try {
       newData.doomsdayFormat1 = format(doomsday, "yyyy-MM-dd")
@@ -56,9 +53,6 @@ const Dies = ({ clean, place }) => {
       let newData = { ...data }
       let howmany = differenceInDays(data.doomsday, endOfDay(new Date())) // 심판의 날이 얼마나 남았는지
       newData.howmany = howmany
-      if (howmany === 0) {
-        newData.howmanyFormat = nowDistance
-      }
       setData(newData)
     }
   }, [nowDistance])
@@ -100,9 +94,9 @@ const Dies = ({ clean, place }) => {
             <b className={styles.ColorAccent}>☄️ Dies irae:</b>
             <span> <b>{data.doomsdayFormat1}</b> <span className={styles.Blur}>{data.doomsdayFormat2}</span></span>
           </div>
-          {data.howmanyFormat &&
+          {data.howmany ===0 && 
             <div className={styles.TimeLeft}>
-              <b>{`${data.howmanyFormat}`}</b>
+              <b>{`${nowDistance}`}</b>
             </div>
           }
         </div>

@@ -95,10 +95,8 @@ const CleanForm = ({ currentUser }) => {
         date: endOfDay(value),
         text: text,
         judgement: judgement,
+        target: clean.next,
         created: new Date()
-      }
-      if (clean) {
-        obj.target = clean.next
       }
       const docRef = await addDoc(collection(db, "cleans"), obj);
 

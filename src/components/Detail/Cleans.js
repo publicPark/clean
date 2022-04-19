@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
-import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
+import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore"; 
 import Clean from './Clean';
 import Dies from './Dies'
 import styles from './Clean.module.scss'
@@ -10,29 +10,50 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 
 const Cleans = ({ place, userMap }) => {
   const [loading, setLoading] = useState(false)
   const [cleans, setCleans] = useState()
+  const [nextCursor, setNextCursor] = useState()
   
-  const getCleans = async () => {
-    const q = query(collection(db, "cleans"),
+  const moreCleans = async () => {
+    getCleans(nextCursor)
+  }
+
+  const getCleans = async (more) => {
+    let q;
+    let args = [
+      collection(db, "cleans"),
       where("where", "==", place.id),
       orderBy("date", "desc"),
       orderBy("created", "desc"),
-      limit(10)
-    );
-    setLoading(true)
-    const querySnapshot = await getDocs(q);
-    setLoading(false)
+    ]
+    if (more) {
+      args.push(startAfter(nextCursor))
+    }
+    args.push(limit(5))
+    q = query(...args);
 
+    setLoading(true)
+    const snapshots = await getDocs(q);
+
+    const lastVisible = snapshots.docs[snapshots.docs.length-1]
+    setNextCursor(lastVisible)
+    console.log("nextCursor lastVisible", lastVisible)
+
+    
     let arr = []
-    querySnapshot.forEach((doc) => {
+    if (more) {
+      arr = [...cleans]
+    }
+    snapshots.forEach((doc) => {
       const data = doc.data()
       // console.log(`CLEANs: ${doc.id} => ${data}`);
       arr.push({...data, id: doc.id})
     });
     
+    setLoading(false)
     setCleans(arr)
   }
 
@@ -42,9 +63,9 @@ const Cleans = ({ place, userMap }) => {
   
   return (
     <>
-      {loading ? <CircularProgress color="primary" />
-        : cleans && cleans.length > 0 ?
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      { cleans && cleans.length > 0 ?
+        <>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {cleans.map((c, i) => <div key={i}>
               {i === 0 && 
                 <>
@@ -62,11 +83,22 @@ const Cleans = ({ place, userMap }) => {
             </div>
             )}
           </List>
+
+          { nextCursor &&
+            <Button sx={{ m: 1.5 }} variant="outlined" color="neutral"
+              onClick={moreCleans}
+            >
+              more
+            </Button>
+          }
+        </>
         :
         <div className={ stylesPaper.Content }>
           <div>여기는 청소한 적이 없음.</div>
         </div>
       }
+
+      { loading && <CircularProgress color="primary" /> }
     </>
   )
 }

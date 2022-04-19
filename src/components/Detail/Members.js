@@ -18,8 +18,8 @@ const Members = ({ members, userMap }) => {
         {userMap && members.map(((m, i) =>
           <ListItem key={i}>
             <Chip
-              label={userMap[m].name}
-              color={currentUser&&currentUser.uid===userMap[m].id?"success":"default"} 
+              label={userMap[m]? userMap[m].name : '(new)'}
+              color={currentUser&&userMap[m]&&currentUser.uid===userMap[m].id?"success":"default"} 
               variant={i===0?"contained":"outlined"}  />
           </ListItem>
         ))}
