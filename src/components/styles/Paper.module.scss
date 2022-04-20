@@ -56,13 +56,6 @@
   width: 100%;
   max-width: 500px;
 }
-.ButtonFile {
-  cursor: pointer;
-  transition: 0.3s;
-  &:hover {
-    transform: scale(1.1);
-  }
-}
 .DisplayNone {
   display: none;
 }

@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       name: u.displayName,
       photoURL: u.photoURL,
       email: u.email,
+      lastDate: new Date()
     }
     if (userData) {
       obj = { ...userData, ...obj }

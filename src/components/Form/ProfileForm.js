@@ -1,20 +1,29 @@
-import { useRef, useState } from "react"
+import { useRef, useState, forwardRef, useEffect } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import stylesPaper from '../styles/Paper.module.scss'
+import styles from './Form.module.scss'
 
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import MuiAlert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { storage } from "../../firebase"
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const ProfileForm = () => {
   const { currentUser:user, userUpdate } = useAuth()
   const [imgFile, setImgFile] = useState()
   const [newName, setNewName] = useState(user.displayName)
   const [pending, setPending] = useState(false)
+  const [err, setErr] = useState('');
   const fileInput = useRef()
 
   const onChange = (e) => {
@@ -25,7 +34,14 @@ const ProfileForm = () => {
   // update
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (!newName) return
     if (user.displayName === newName && !imgFile) return
+    
+    const bannedNames = ['도망자💀', '운영자']
+    if (bannedNames.includes(newName)) {
+      setErr('금지된 이름입니다.')
+      return
+    }
 
     setPending(true)
     let url = ""
@@ -71,54 +87,71 @@ const ProfileForm = () => {
     fileInput.current.value = null
   }
 
+  useEffect(() => {
+    console.log("profile form", user)
+  }, [user])
+
   return (
-    <div className={stylesPaper.Flex}>
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          허허허허
-          <input id="fileInput" type="file" accept="image/*"
-            onChange={onFileChange} ref={fileInput} className={stylesPaper.DisplayNone}
-          />
-        </div>
-      </div>
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <h2><span className="accent3">{ user.displayName }</span>'s Profile</h2>
-          <div>
-            {pending ?
-              <div>...</div> : 
-              <>
-                <div className={stylesPaper.FlexCenter}>
-                  <label htmlFor="fileInput">
-                    <Avatar className={ stylesPaper.ButtonFile }
-                      alt={user.displayName}
-                      src={user.photoURL}
-                      sx={{ width: 64, height: 64, m:2 }}
-                    />
-                  </label>
-                  {imgFile && (
-                    <>
-                      👉 
-                      <Avatar onClick={ onClearFile }
-                        alt={user.displayName}
-                        src={imgFile.dataURL}
-                        sx={{ width: 64, height: 64, m:2 }}
-                      />
-                    </>
-                  )}
-                </div>
-                <form onSubmit={ onSubmit }>
-                  <TextField id="filled-basic" label="Display name" variant="filled"
-                  value={newName} onChange={ onChange }
+    <div>
+      <input id="fileInput" type="file" accept="image/*"
+        onChange={onFileChange} ref={fileInput} className={stylesPaper.DisplayNone}
+      />
+      <div>
+        {pending ?
+          <div>...</div> : 
+          <>
+            <h2><span className="accent3">{ user.displayName }</span>'s Profile</h2>
+            <div className={stylesPaper.FlexCenter}>
+              <label htmlFor="fileInput">
+                <Avatar className={ styles.ButtonFile }
+                  alt={user.displayName}
+                  src={user.photoURL}
+                  sx={{ width: 64, height: 64, m:2 }}
+                />
+              </label>
+              {imgFile && (
+                <>
+                  <span className={styles.ButtonFinger} onClick={ onClearFile }> 👉 </span>
+                  <Avatar
+                    alt={user.displayName}
+                    src={imgFile.dataURL}
+                    sx={{ width: 64, height: 64, m:2 }}
                   />
-                  <div>
-                    <Button type="submit" variant="contained" sx={{ mt:2 }}>UPDATE</Button>
-                  </div>
-                </form>
-              </>
-            }
-          </div>
-        </div>
+                </>
+              )}
+            </div>
+            <form onSubmit={ onSubmit }>
+              <TextField id="filled-basic" label="Display name" variant="filled"
+              value={newName} onChange={ onChange }
+              />
+              <div>
+                <Collapse in={err?true:false}>
+                  {/* <Alert variant="filled" severity="error">
+                    {err}
+                  </Alert> */}
+                  <Alert variant="filled" severity="error"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setErr('')
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mt: 2 }}
+                  >{ err }</Alert>
+                </Collapse>
+              </div>
+              <div>
+                <Button type="submit" variant="contained" sx={{ mt:2 }}>UPDATE</Button>
+              </div>
+            </form>
+          </>
+        }
       </div>
     </div>
   )

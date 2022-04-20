@@ -21,6 +21,7 @@ const Cleans = ({ place, userMap }) => {
     getCleans(nextCursor)
   }
 
+  // 이걸 실시간으로 안하는 건 페이징이라서야
   const getCleans = async (more) => {
     let q;
     let args = [

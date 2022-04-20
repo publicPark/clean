@@ -27,15 +27,17 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
       newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
       newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
       if (place && userMap && userMap[clean.who]) {
-        newData.whoText =userMap[clean.who].name
+        newData.whoText = userMap[clean.who].name
       } else {
-        newData.whoText = '???'
+        // if(place && place.membersMap) newData.whoText = place.membersMap[clean.who].name
+        newData.whoText = '도망자💀'
       }
 
       if (place && userMap && userMap[clean.target]) {
         newData.targetText = userMap[clean.target].name
       } else {
-        newData.targetText = '???'
+        // if(place && place.membersMap) newData.targetText = place.membersMap[clean.target].name
+        newData.targetText = '도망자💀'
       }
 
       try {
@@ -131,7 +133,11 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
             </div>
             <div className={styles.Blur}>
-              by <b className={currentUser && currentUser.uid === data.who?'accent3':''}>{data.whoText}</b>
+              by <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
+              { data.target && data.target !== data.who &&
+                <> for <span className={currentUser && currentUser.uid === data.target ? 'accent3' : ''}>{data.targetText}</span>
+                </>
+              }
             </div>
           </div>
           

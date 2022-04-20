@@ -95,8 +95,10 @@ const CleanForm = ({ currentUser }) => {
         date: endOfDay(value),
         text: text,
         judgement: judgement,
-        target: clean.next,
         created: new Date()
+      }
+      if (clean) { // 다음 타자가 있을 때 저장
+        obj.target = clean.next
       }
       const docRef = await addDoc(collection(db, "cleans"), obj);
 

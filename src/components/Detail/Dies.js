@@ -23,8 +23,8 @@ const Dies = ({ clean, place }) => {
 
     let doomsday = addDays(theday, place.days)
     setThatTime(doomsday)
-    newData.doomsday = doomsday // 심판의 날 날짜
     let howmany = differenceInDays(doomsday, endOfDay(new Date())) // 심판의 날이 얼마나 남았는지
+    newData.doomsday = doomsday // 심판의 날 날짜
     newData.howmany = howmany
     
     try {

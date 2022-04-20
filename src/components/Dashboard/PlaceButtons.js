@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import styles from './Place.module.scss'
+import styles from '../styles/List.module.scss'
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';

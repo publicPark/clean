@@ -14,7 +14,7 @@ import PlaceDetail from './Detail/PlaceDetail';
 import Questions from './pages/Questions';
 import Contact from './pages/Contact';
 import BrowserDetect from './Layout/BrowserDetect';
-import ProfileForm from './Form/ProfileForm';
+import Profile from './pages/Profile';
 
 function App({ user }) {
   const { currentUser } = useAuth()
@@ -55,7 +55,7 @@ function App({ user }) {
             <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser} />} />
             <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
 
-            <Route path="profile" element={ currentUser ? <ProfileForm /> : <NotFound status="auth" />} />
+            <Route path="profile" element={ currentUser ? <Profile /> : <NotFound status="auth" />} />
             
             {currentUser ?
               <>
