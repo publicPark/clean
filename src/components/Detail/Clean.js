@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
@@ -18,43 +20,46 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const [data, setData] = useState()
   const [memoForm, setMemoForm] = useState(false)
   const [memo, setMemo] = useState('')
-  const { loading: loadingClean, deleteClean, regret, editText } = useClean()
+  const { loading: loadingClean, deleteClean, regret, editText, clap, getClean } = useClean()
 
+  const formatClean = (c) => {
+    let newData = { ...c }
+    let theday = new Date(clean.date.seconds * 1000)
+    newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
+    newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
+    if (place && userMap && userMap[clean.who]) {
+      newData.whoText = userMap[clean.who].name
+    } else {
+      // if(place && place.membersMap) newData.whoText = place.membersMap[clean.who].name
+      newData.whoText = '도망자💀'
+    }
+
+    if (place && userMap && userMap[clean.target]) {
+      newData.targetText = userMap[clean.target].name
+    } else {
+      // if(place && place.membersMap) newData.targetText = place.membersMap[clean.target].name
+      newData.targetText = '도망자💀'
+    }
+
+    try {
+      if (currentUser && place) {
+        newData.amIWriter = userMap[clean.who] && userMap[clean.who].id === currentUser.uid
+        if (clean.target) {
+          newData.amITarget = clean.target === currentUser.uid
+        } else {
+          newData.amITarget = clean.who === currentUser.uid
+        }
+      }
+    } catch (err) {
+      console.log(err)
+    }
+    
+    setMemo(clean.text)
+    setData(newData)
+  }
   useEffect(() => {
     if (clean) {
-      let newData = { ...clean }
-      let theday = new Date(clean.date.seconds * 1000)
-      newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
-      newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
-      if (place && userMap && userMap[clean.who]) {
-        newData.whoText = userMap[clean.who].name
-      } else {
-        // if(place && place.membersMap) newData.whoText = place.membersMap[clean.who].name
-        newData.whoText = '도망자💀'
-      }
-
-      if (place && userMap && userMap[clean.target]) {
-        newData.targetText = userMap[clean.target].name
-      } else {
-        // if(place && place.membersMap) newData.targetText = place.membersMap[clean.target].name
-        newData.targetText = '도망자💀'
-      }
-
-      try {
-        if (currentUser && place) {
-          newData.amIWriter = userMap[clean.who] && userMap[clean.who].id === currentUser.uid
-          if (clean.target) {
-            newData.amITarget = clean.target === currentUser.uid
-          } else {
-            newData.amITarget = clean.who === currentUser.uid
-          }
-        }
-      } catch (err) {
-        console.log(err)
-      }
-      
-      setMemo(clean.text)
-      setData(newData)
+      formatClean(clean)
     }
   }, [clean])
 
@@ -74,14 +79,22 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     let msg = val? "벌칙을 수행하고 반성했습니까?": '반성 취소?'
     if (window.confirm(msg)) {
       await regret(data.id, val)
-      getCleans()
+      const res = await getClean(data.id)
+      formatClean(res)
     }
   }
 
   const handleEdit = async () => {
     await editText(data.id, memo)
     setMemoForm(false)
-    getCleans()
+    const res = await getClean(data.id)
+    formatClean(res)
+  }
+
+  const handleClap = async (val) => {
+    await clap(data.id, val, currentUser.uid)
+    const res = await getClean(data.id)
+    formatClean(res)
   }
 
   return (
@@ -109,7 +122,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 }
               </div>
               :
-              <div className={styles.Memo}
+              <div className={`${styles.Memo} ${data.amIWriter?styles.Pointer:undefined}`} 
                 onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}>
                 {data.text}
               </div>
@@ -132,12 +145,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
             <div className={styles.Blur}>
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
             </div>
-            <div className={styles.Blur}>
-              by <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
-              { data.target && data.target !== data.who &&
-                <> for <span className={currentUser && currentUser.uid === data.target ? 'accent3' : ''}>{data.targetText}</span>
-                </>
-              }
+            <div className={`${styles.Blur} ${styles.FlexSpace}`}>
+              <div>
+                by <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
+                { data.target && data.target !== data.who &&
+                  <> for <span className={currentUser && currentUser.uid === data.target ? 'accent3' : ''}>{data.targetText}</span>
+                  </>
+                }
+              </div>
             </div>
           </div>
           
@@ -167,6 +182,30 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               </Stack>
             </div>
           }
+
+
+          <div className={`${styles.FlexSpace} ${styles.MarginTop}`}>
+            {loadingClean ? '...' : <>
+              <div>
+                {data.claps && data.claps.map((clap, i) => currentUser && clap === currentUser.uid ?
+                  <Tooltip title="나 자신">
+                    <span key={i} className={styles.Pointer} onClick={() => handleClap(false)} >👏</span>
+                  </Tooltip>
+                  :
+                  <Tooltip title={ userMap && userMap[clap] ? userMap[clap].name : '도망자💀'}>
+                    <span key={i}>👏🏽</span>
+                  </Tooltip>
+                )}
+              </div>
+              <div>
+                {currentUser && place.members.includes(currentUser.uid) &&
+                  (!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
+                  <Chip label="박수" variant="outlined" size="small" onClick={()=>handleClap(true)} />
+                }
+              </div>
+            </>
+            }
+          </div>
         </div>
       }
     </>

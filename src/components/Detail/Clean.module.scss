@@ -56,3 +56,10 @@
   text-align: right;
   color: var(--accent);
 }
+
+.Pointer {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+}

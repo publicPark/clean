@@ -30,11 +30,12 @@ const Places = () => {
     setLoading(true)
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       // console.log("querySnapshot2", querySnapshot)
-      setList([])
+      let list = []
       querySnapshot.forEach(async (snap) => {
         let d = snap.data()
-        setList((cur) => [...cur, {...d, id:snap.id}])
+        list.push({...d, id:snap.id})
       });
+      setList(list)
       setLoading(false)
     },
     (error) => {
@@ -62,7 +63,7 @@ const Places = () => {
     });
     
     if (cnt === list.length) {
-      console.log("sort")
+      console.log("sort!")
       // 정렬
       let newListSorted = [...newList]
       newListSorted.sort((a, b) => { 
@@ -70,7 +71,7 @@ const Places = () => {
       })
       setList(newListSorted)
     } else {
-      console.log("not sort", cnt)
+      console.log("don't sort yet", cnt)
       setList(newList)
     }
   }

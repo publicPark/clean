@@ -34,10 +34,10 @@ const pages = [
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const Navbar = () => {
+  let navigate = useNavigate();
   const { currentUser } = useAuth()
   const { pathname } = useLocation();
-  console.log("pathname", pathname)
-  let navigate = useNavigate();
+  // console.log("pathname", pathname)
   const [anchorElNav, setAnchorElNav] = useState(null);
   const moveTo = (link) => {
     navigate(link)

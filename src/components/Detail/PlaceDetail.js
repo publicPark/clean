@@ -85,11 +85,11 @@ const PlaceDetail = ({ currentUser, now }) => {
                   {showCode ?
                     <>
                       <span>Copied! </span><span className={styles.Code}>{id}</span>
-                      { currentUser && place.members.includes(currentUser.uid) &&
+                      {/* { currentUser && place.members.includes(currentUser.uid) &&
                         <Link to={ `/placejoin?code=${id}` }>
                           <Button sx={{ m: 1.5 }} variant="outlined" color="success">초대</Button>
                         </Link>
-                      }
+                      } */}
                     </>
                     : 'CODE?'
                   }
@@ -162,7 +162,7 @@ const PlaceDetail = ({ currentUser, now }) => {
         </div>
       }
 
-      <div className={stylesPaper.Wrapper}>
+      {/* <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <span className={ stylesPaper.Blur }>
             {place && place.modified &&
@@ -176,7 +176,7 @@ const PlaceDetail = ({ currentUser, now }) => {
             }
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

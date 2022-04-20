@@ -1,9 +1,19 @@
 import { db } from '../firebase'
-import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore";
 import { useState } from 'react';
 
 const useClean = () => {
   const [loading, setLoading] = useState(false)
+
+  const getClean = async (id) => {
+    const docRef = doc(db, "cleans", id);
+    setLoading(true)
+    const snap = await getDoc(docRef);
+    setLoading(false)
+    let data = snap.data()
+    data.id = snap.id
+    return data
+  }
 
   const deleteClean = async (id) => {
     const docRef = doc(db, "cleans", id);
@@ -30,7 +40,24 @@ const useClean = () => {
     setLoading(false)
   }
 
-  return { loading, deleteClean, regret, editText }
+  const clap = async (id, val, uid) => {
+    const docRef = doc(db, "cleans", id);
+    setLoading(true)
+    if (val) {
+      console.log('arrayunion')
+      await updateDoc(docRef, {
+        claps: arrayUnion(uid),
+      });
+    } else {
+      console.log('arrayRemove')
+      await updateDoc(docRef, {
+        claps: arrayRemove(uid),
+      });
+    }
+    setLoading(false)
+  }
+
+  return { loading, deleteClean, regret, editText, clap, getClean }
 }
 
 export default useClean

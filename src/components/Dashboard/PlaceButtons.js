@@ -29,8 +29,8 @@ const PlaceButtons = ({ list }) => {
         <>
           {currentUser ?
           <div>
-            <Link to="/placeform"><Button sx={{ mr: 1, mb: 1 }} variant="contained" color="warning">청소 구역 생성</Button></Link>
-            <Link to="/placejoin"><Button sx={{ mb: 1 }} variant="contained" color="success">참가하기</Button></Link>
+            <Link to="/placeform"><Button sx={{ mb: 1 }} variant="contained" color="warning">청소 구역 생성</Button></Link>
+            <Link to="/placejoin"><Button sx={{ mb: 1, ml: 1 }} variant="contained" color="success">참가하기</Button></Link>
           </div>
           :
           <div>로그인을 하면 내 구역</div>

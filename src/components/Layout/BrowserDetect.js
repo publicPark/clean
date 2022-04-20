@@ -17,10 +17,10 @@ if (br === "chrome") {
 } else if (br === "edge") {
   msg = ("엣지? 🥱")
 } else if (br === "kakao"){
-  msg = ("카톡에서는 구글 로그인을 지원하지 않아요 😨 다른 브라우저로 열어주세요.")
+  msg = ("카톡에서는 구글 로그인을 지원하지 않아요 😨 다른 브라우저로 열어주세요")
   nono = true
 } else {
-  msg = ("이 브라우저는 지원하지 않아요 😨 다른 데서 열어주세요" + br)
+  msg = ("이 브라우저는 지원하지 않아요 😨 " + br)
   nono = true
 }
 
@@ -44,7 +44,10 @@ const BrowserDetect = () => {
           </IconButton>
         }
       >
-        {msg}
+        {nono ? msg
+          :
+          '옛날 데이터를 보고 있는 것 같다면, 새로고침을 가끔씩 해주세요.'
+        }
       </Alert>
     </Collapse>
   )

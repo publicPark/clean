@@ -37,7 +37,7 @@ const ProfileForm = () => {
     if (!newName) return
     if (user.displayName === newName && !imgFile) return
     
-    const bannedNames = ['도망자💀', '운영자']
+    const bannedNames = ['도망자💀', '도망자', '운영자']
     if (bannedNames.includes(newName)) {
       setErr('금지된 이름입니다.')
       return

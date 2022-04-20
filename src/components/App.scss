@@ -20,8 +20,8 @@
   height: 100vh;
   position: fixed;
   background-image: url(../assets/jc.png);
-  background-repeat: no-repeat;
   background-position: bottom;
+  background-repeat: no-repeat;
   background-size: cover;
   background-color: var(--bg);
 }
@@ -85,6 +85,9 @@ a:visited {
 
 .accent {
   color: var(--accent);
+}
+.accent2 {
+  color: var(--accent2);
 }
 .accent3 {
   color: var(--accent3);

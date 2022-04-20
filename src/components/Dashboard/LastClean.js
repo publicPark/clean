@@ -26,7 +26,9 @@ const LastClean = ({ place, index, cleanChanged }) => {
       querySnapshot.forEach(async (snap) => {
         let d = snap.data()
         setClean(d)
-        cleanChanged(index, d)
+        if (!place.clean) { // 부모쪽에 clean 정보 없으면 세팅
+          cleanChanged(index, d)
+        }
       });
       setLoading(false)
     },
