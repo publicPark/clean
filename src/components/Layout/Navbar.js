@@ -26,8 +26,12 @@ const pages = [
   //   link: '/questions'
   // },
   {
-    name: 'About',
+    name: '👋 About',
     link: '/about'
+  },
+  {
+    name: 'Contact',
+    link: '/contact'
   },
 ];
 

@@ -188,12 +188,12 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
             {loadingClean ? '...' : <>
               <div>
                 {data.claps && data.claps.map((clap, i) => currentUser && clap === currentUser.uid ?
-                  <Tooltip title="나 자신">
-                    <span key={i} className={styles.Pointer} onClick={() => handleClap(false)} >👏</span>
+                  <Tooltip key={i} title="나 자신의 손">
+                    <span className={styles.Pointer} onClick={() => handleClap(false)} >👏</span>
                   </Tooltip>
                   :
-                  <Tooltip title={ userMap && userMap[clap] ? userMap[clap].name : '도망자💀'}>
-                    <span key={i}>👏🏽</span>
+                  <Tooltip key={i} title={ userMap && userMap[clap] ? userMap[clap].name : '도망자💀'}>
+                    <span className={styles.NoSelect}>👏🏽</span>
                   </Tooltip>
                 )}
               </div>

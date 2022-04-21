@@ -17,6 +17,7 @@ const Members = ({ members, userMap }) => {
       <div className={`${styles.Flex} ${styles.ListMember}`}>
         {userMap && members.map(((m, i) =>
           <ListItem key={i}>
+            {i === 0 && <span className={ styles.Crown }>👑</span>}
             <Chip
               label={userMap[m]? userMap[m].name : '(new)'}
               color={currentUser&&userMap[m]&&currentUser.uid===userMap[m].id?"success":"default"} 

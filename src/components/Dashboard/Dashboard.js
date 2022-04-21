@@ -11,11 +11,13 @@ const Dashboard = ({ }) => {
   return (
     <div className={ stylesPaper.Flex }>
 
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <Clock/>
+      {!currentUser &&
+        <div className={stylesPaper.Wrapper}>
+          <div className={stylesPaper.Content}>
+            <Clock/>
+          </div>
         </div>
-      </div>
+      }
       
       <Places />
 

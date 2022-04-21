@@ -24,28 +24,21 @@ const Voices = ({ type = "all" }) => {
   const [loading, setLoading] = useState(false)
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const [list, setList] = useState([])
+  const [myVoice, setMyVoice] = useState()
 
   const handleSay = async (e) => {
     e.preventDefault();
-    
     if (!say) return
     
     setLoadingSubmit(true)
-    const q = query(voicesRef, where("who", "==", currentUser.uid), where("target", "==", type));
-    const querySnapshot = await getDocs(q);
-    console.log("length", querySnapshot.length)
 
-    let count = 0
-    querySnapshot.forEach(async (d) => {
-      count++
-      const docRef = doc(db, "voices", d.id);
+    if (myVoice) {
+      const docRef = doc(db, "voices", myVoice);
       await updateDoc(docRef, {
         lastDate: new Date(),
         say: say
       });
-    });
-
-    if (!count) {
+    } else {
       await addDoc(voicesRef, {
         who: currentUser.uid,
         target: type,
@@ -57,11 +50,23 @@ const Voices = ({ type = "all" }) => {
 
     setSay('')
     setLoadingSubmit(false)
-  } 
+  }
+
+  // 내꺼 있나
+  const getMyVoice = async () => {
+    const q = query(voicesRef, where("who", "==", currentUser.uid), where("target", "==", type));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (d) => {
+      setMyVoice(d.id)
+    });
+  }
 
   useEffect(() => {
     setLoading(true)
-    const q = query(voicesRef, where("target", "==", type), orderBy("lastDate", "desc"), limit(10));
+    let queryArr = [voicesRef, where("target", "==", type), orderBy("lastDate", "desc")]
+    if(type==='all') queryArr.push(limit(10))
+    const q = query(...queryArr);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       // console.log("voices", querySnapshot)
       setList([]);
@@ -81,18 +86,30 @@ const Voices = ({ type = "all" }) => {
 
     return () => unsubscribe() // 아놔..
   }, [])
+
+  useEffect(() => {
+    if (currentUser) {
+      getMyVoice()
+    }
+  }, [currentUser])
   
   return (
     <>
       { currentUser &&
         <form onSubmit={handleSay}>
           <div>
-            <TextField id="standard-basic" label={`한마디`} variant="standard" sx={{ mb:1 }}
+            <TextField id="standard-basic"
+              label={myVoice?`다시 한마디`:`한마디`}
+              variant="standard" sx={{ mb: 1 }}
               value={ say }
               onChange={ (e)=>setSay(e.target.value) }
             />
           </div>
-          <Button type="submit" variant="contained" onClick={ handleSay } disabled={ loadingSubmit }>SAY</Button>
+          <Button type="submit" variant="contained"
+            onClick={handleSay} disabled={loadingSubmit}
+          >
+            { myVoice?'이전 것은 지워지고 SAY' : 'SAY' }
+          </Button>
         </form>
       }
       {

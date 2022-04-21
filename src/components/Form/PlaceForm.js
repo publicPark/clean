@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
@@ -12,10 +12,20 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
+import usePlace from '../../apis/usePlace';
+import Collapse from '@mui/material/Collapse';
+import MuiAlert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
   let { id } = useParams();
+  const { loading: loadingPlace, deletePlace } = usePlace(id)
 
   const [place, setPlace] = useState()
   const [amIFirst, setAmIFirst] = useState(false)
@@ -27,16 +37,8 @@ const PlaceForm = ({ currentUser }) => {
   const [days, setDays] = useState();
   const [textForDelete, setTextForDelete] = useState('');
   const [loading, setLoading] = useState(false)
+  const [err, setErr] = useState('')
 
-  const handleChangeText = (event) => {
-    setText(event.target.value);
-  };
-  const handleChangeText2 = (event) => {
-    setText2(event.target.value);
-  };
-  const handleChangeText3 = (event) => {
-    setText3(event.target.value);
-  };
   const handleChangeDays = (event) => {
     setDays(event.target.value);
   };
@@ -49,12 +51,12 @@ const PlaceForm = ({ currentUser }) => {
     e.preventDefault();
 
     if (!text || !text2 || !text3) {
-      alert("다 채워야함")
+      setErr("다 채워주세요")
       return
     }
 
     if (days <= 0) { 
-      alert("Days Limit 청소할 시간을 주세요")
+      setErr("Days Limit 청소할 시간을 주세요")
       return
     }
     
@@ -121,21 +123,20 @@ const PlaceForm = ({ currentUser }) => {
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
+      navigate("/", { replace: true });
     }
   }
 
   // 삭제하기
   const handleDelete = async () => {
-    const docRef = doc(db, "places", id);
-    setLoading(true)
     if (amIFirst) {
       if (window.confirm("Do you really want to delete?")) {
-        await deleteDoc(docRef);
+        await deletePlace()
         navigate("/", { replace: true });
       }
     } else {
       // 빼기
-      alert("you are not the first")
+      setErr("You can't! You are not the owner.")
     }
   }
 
@@ -159,19 +160,17 @@ const PlaceForm = ({ currentUser }) => {
 
                   <div className={styles.Row}>
                     <TextField id="outlined-basic" label="구역 이름" variant="outlined"
-                    value={text} onChange={handleChangeText}/>
+                    value={text} onChange={(e) => { setText(e.target.value )}}/>
                   </div>
 
                   <div className={styles.Label}>멤버들에게 알립니다</div>
                   <div className={styles.Row}>
-                    {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
-                      value={text2} onChange={handleChangeText2} /> */}
                     <TextareaAutosize className={styles.Textarea}
                       aria-label="Rules"
                       minRows={3}
                       placeholder="Rules"
                       style={{ width: 200, resize: 'none' }}
-                      value={text2} onChange={handleChangeText2}
+                      value={text2} onChange={(e) => { setText2(e.target.value )}}
                     />
                   </div>
               </div>
@@ -184,7 +183,7 @@ const PlaceForm = ({ currentUser }) => {
                   <TextField
                     value={days} onChange={handleChangeDays}
                     id="outlined-number"
-                    label="Days Limit"
+                    label="⌛ 최대 청소 주기"
                     placeholder='default: 14'
                     type="number"
                     InputLabelProps={{
@@ -195,16 +194,32 @@ const PlaceForm = ({ currentUser }) => {
 
                 <div className={styles.Label}>위 기간이 지났을 때 벌칙</div>
                 <div className={styles.Row}>
-                  {/* <TextField id="outlined-basic" label="구역 설명" variant="outlined"
-                    value={text2} onChange={handleChangeText2} /> */}
                   <TextareaAutosize className={styles.Textarea}
                     aria-label="penalty"
                     minRows={3}
                     placeholder="벌칙 내용 예) 1일이 지나면 1만원, N일이 지나면 N만원을 회비로 입금"
                     style={{ width: 200, resize: 'none' }}
-                    value={text3} onChange={handleChangeText3}
+                    value={text3} onChange={(e) => { setText3(e.target.value )}}
                   />
                 </div>
+
+                <Collapse in={err?true:false}>
+                  <Alert variant="filled" severity="error"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setErr('')
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mt: 2 }}
+                  >{ err }</Alert>
+                </Collapse>
 
                 <div className={styles.Row}>
                   {loading ?
@@ -222,7 +237,7 @@ const PlaceForm = ({ currentUser }) => {
                       <Divider variant="middle" />
                     </div>
                     <div className={ styles.FormGroup }>
-                      <div>나가려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
+                      <div>영원히 삭제하려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
                       <div>
                         <TextField 
                         value={textForDelete} onChange={handleChangeTextForDelete}
@@ -233,7 +248,7 @@ const PlaceForm = ({ currentUser }) => {
                         placeholder={place.name}
                         />
                         <div>
-                          { loading ?
+                          { loading || loadingPlace ?
                           <LoadingButton loading variant="contained" sx={{ mt: 1 }}>
                             ...
                           </LoadingButton>

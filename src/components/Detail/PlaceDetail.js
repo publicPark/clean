@@ -46,7 +46,9 @@ const PlaceDetail = ({ currentUser, now }) => {
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
       setPlace(d)
-      getUsers(d.members)
+      if (d) {
+        getUsers(d.members)
+      }
       setLoading(false)
     },
     (error) => {
@@ -67,10 +69,10 @@ const PlaceDetail = ({ currentUser, now }) => {
     }
   }
   const handleDelete = async () => {
-    if (window.confirm("Do you really want to delete?")) {
-      await deletePlace()
-      navigate('/', { replace: true });
-    }
+    // if (window.confirm("Do you really want to delete?")) {
+    //   await deletePlace()
+    //   navigate('/', { replace: true });
+    // }
   }
 
   return (
@@ -101,7 +103,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                     {place.description}
                   </div>
                 </div>
-                <div><span className={styles.Label}>Days Limit: </span><b>{place.days}</b>일<br /></div>
+                <div><span className={styles.Label}>⌛ 최대 청소 주기: </span><b>{place.days}</b>일<br /></div>
                 <div>
                   <div className={styles.Label}>지났을 때 벌칙: </div>
                   <div className={styles.Penalty}>
@@ -109,7 +111,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                   </div>
                 </div>
                 <div>
-                  <div className={styles.Label}>🧑‍🤝‍🧑 Members 🧑‍🤝‍🧑</div>
+                  <div className={styles.Label}> Members: </div>
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
@@ -117,7 +119,8 @@ const PlaceDetail = ({ currentUser, now }) => {
                 { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
                   <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">Edit</Button></Link>
                   {place.members[0] === currentUser.uid && place.members.length === 1 ?
-                    <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleDelete}>GET OUT FOREVER</Button> 
+                    // <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleDelete}>GET OUT FOREVER</Button> 
+                    undefined
                     :
                     <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>GET OUT</Button>
                   }

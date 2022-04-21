@@ -1,5 +1,5 @@
 import { db } from '../firebase'
-import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove } from "firebase/firestore";
 import { useState } from 'react';
 
 const usePlace = (id) => {
@@ -9,6 +9,13 @@ const usePlace = (id) => {
     const docRef = doc(db, "places", id);
     setLoading(true)
     await deleteDoc(docRef);
+    
+    let q = query(collection(db, "cleans"), where('where', '==', id));
+    const snapshots = await getDocs(q);
+    await snapshots.forEach(async (d) => {
+      const docRef = doc(db, "cleans", d.id);
+      await deleteDoc(docRef);
+    });
     setLoading(false)
   }
 

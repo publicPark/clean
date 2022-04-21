@@ -26,6 +26,8 @@ import Collapse from '@mui/material/Collapse';
 import MuiAlert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import useEmail from "../../apis/useEmail"
+
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -52,6 +54,7 @@ const CleanForm = ({ currentUser }) => {
   const [err3, setErr3] = useState('');
 
   const [userMap, setUserMap] = useState()
+  const { sendCleanNews } = useEmail()
   
   const getUsers = async (members) => {
     const q = query(collection(db, "users"), where('id', 'in', members))
@@ -102,8 +105,20 @@ const CleanForm = ({ currentUser }) => {
       }
       const docRef = await addDoc(collection(db, "cleans"), obj);
 
-      setPending(false)
       console.log("Document written with ID: ", docRef.id);
+
+      // 메일 보내기
+      await sendCleanNews({
+        place_name: place.name,
+        place_id: place.id,
+        to_email: userMap[next].email,
+        to_name: userMap[next].name,
+        from_name: userMap[currentUser.uid].name,
+        message: text,
+        // reply_to: userMap[currentUser.uid].email,
+      })
+
+      setPending(false)
       navigate(-1, { replace: true });
     } catch (e) {
       setPending(false)
@@ -115,6 +130,7 @@ const CleanForm = ({ currentUser }) => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
+      d.id = snap.id
       setPlace(d)
       setPlayers(d.members)
       getUsers(d.members)

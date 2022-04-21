@@ -48,7 +48,7 @@ const Places = () => {
   const handleCleans = (i, d) => {
     let newList = [...list]
     const { howmany } = getDoomsday(new Date(d.date.seconds * 1000), list[i].days)
-    if (d.next === currentUser.uid) { // 내 차례일때
+    if (currentUser && d.next === currentUser.uid) { // 내 차례일때
       d.myDies = true
       newList[i].howmany = howmany
     } else {
@@ -85,8 +85,8 @@ const Places = () => {
             :
             <>
               <PlaceButtons list={list} />
-              {list.length >= maxCount && `최대 ${maxCount}개 표시됩니다. `}
-              {list.length >= maxCount && <Link to='/profile'>다?</Link>}
+              {list.length >= maxCount && `최대 ${maxCount}개 표시됩니`}
+              {list.length >= maxCount && <Link to='/profile'>더..</Link>}
             </>
           }
         </div>

@@ -1,14 +1,14 @@
 export const note = [
   {
-    title: '계획이란걸',
-    content: '초대 기능, 핀, 페이징'
+    title: '최근 업데이트', // 20
+    content: '박수치기'
   },
   {
-    title: '17 April, 2022',
+    title: '17, April, 2022',
     content: '사건 삭제, 반성하기(사건 수정), 구역 나가기, 프로필 수정'
   },
   {
-    title: '15 April, 2022 (이 정도면 쓸만해)',
+    title: '15, April, 2022 (이 정도면 쓸만해)',
     content: '심판하기(벌칙)'
   },
   {
@@ -22,5 +22,9 @@ export const note = [
   {
     title: '10, April, 2022',
     content: '본격 개발 시작'
-  }
+  },
+  // {
+  //   title: '계획이란걸 한다',
+  //   content: '초대 기능, 핀, 페이징'
+  // },
 ]
