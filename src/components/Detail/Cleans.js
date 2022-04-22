@@ -84,7 +84,8 @@ const Cleans = ({ place, userMap }) => {
             </div>
             )}
           </List>
-
+          
+          {loading && <div><CircularProgress color="primary" /></div>}
           { nextCursor &&
             <Button sx={{ m: 1.5 }} variant="outlined" color="neutral"
               onClick={moreCleans}
@@ -98,8 +99,6 @@ const Cleans = ({ place, userMap }) => {
           <div>여기는 청소한 적이 없음.</div>
         </div>
       }
-
-      { loading && <CircularProgress color="primary" /> }
     </>
   )
 }

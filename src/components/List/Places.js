@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 import styles from '../styles/List.module.scss'
 import { db } from '../../firebase'
-import { collection, query, where, limit, startAfter, getDocs } from "firebase/firestore"; 
+import { collection, query, where, limit, startAfter, getDocs, orderBy } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
@@ -29,6 +29,7 @@ const Places = () => {
     let args = [
       placesRef,
       where("members", "array-contains", currentUser.uid),
+      orderBy("created", "desc"),
     ]
     if (more) {
       args.push(startAfter(nextCursor))
@@ -82,6 +83,7 @@ const Places = () => {
         </List>
       }
 
+      {loading && <div><CircularProgress color="primary" /></div>}
       { nextCursor &&
         <Button sx={{ m: 1.5 }} variant="outlined" color="neutral"
           onClick={moreCleans}
@@ -89,7 +91,6 @@ const Places = () => {
           more
         </Button>
       }
-      {loading && <CircularProgress color="primary" />}
     </>
   )
 }

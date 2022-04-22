@@ -22,7 +22,7 @@ const PlaceDetail = ({ currentUser, now }) => {
   const [place, setPlace] = useState()
   const [loading, setLoading] = useState(true)
   const [showCode, setShowCode] = useState(false)
-  const { loading: loadingPlace, getout, deletePlace } = usePlace(id)
+  const { loading: loadingPlace, getout } = usePlace(id)
 
   const [userMap, setUserMap] = useState()
   
@@ -63,16 +63,14 @@ const PlaceDetail = ({ currentUser, now }) => {
   }, [id])
   
   const handleGetOut = async () => {
-    if (window.confirm("Do you really want to get out? 다시 들어올 수 있어")) {
-      await getout(currentUser.uid)
-      getPlace(id)
+    if (window.confirm("Do you really want to get out? 다시 들어올 수 있어요.")) {
+      try {
+        await getout(currentUser.uid)
+        getPlace(id)
+      } catch (err) {
+        alert(err)
+      }
     }
-  }
-  const handleDelete = async () => {
-    // if (window.confirm("Do you really want to delete?")) {
-    //   await deletePlace()
-    //   navigate('/', { replace: true });
-    // }
   }
 
   return (
@@ -117,12 +115,13 @@ const PlaceDetail = ({ currentUser, now }) => {
 
                 
                 { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
-                  <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">Edit</Button></Link>
+                  <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">수정하기</Button></Link>
                   {place.members[0] === currentUser.uid && place.members.length === 1 ?
-                    // <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleDelete}>GET OUT FOREVER</Button> 
-                    undefined
+                    <Link to={`/placeform/${id}`}>
+                      <Button sx={{ ml: 2 }} variant="outlined" color="neutral">영원히 나가고 삭제</Button>
+                    </Link>
                     :
-                    <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>GET OUT</Button>
+                    <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>나가기</Button>
                   }
                 </div>
                 }

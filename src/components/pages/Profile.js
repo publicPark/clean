@@ -2,6 +2,7 @@ import { useAuth } from "../../contexts/AuthContext"
 import stylesPaper from '../styles/Paper.module.scss'
 import ProfileForm from '../Form/ProfileForm';
 import Places from "../List/Places";
+import PlaceButtons from "../Dashboard/PlaceButtons";
 
 const Profile = () => {
   const { currentUser:user } = useAuth()
@@ -17,6 +18,7 @@ const Profile = () => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>내 모든 구역들</h2>
+          <PlaceButtons />
         </div>
         <Places />
       </div>

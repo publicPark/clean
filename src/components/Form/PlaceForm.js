@@ -95,7 +95,7 @@ const PlaceForm = ({ currentUser }) => {
       }
 
       setLoading(false)
-      navigate(-1, { replace: true });
+      navigate('/profile', { replace: true });
     } catch (e) {
       setLoading(false)
       console.error("Error adding document: ", e);
