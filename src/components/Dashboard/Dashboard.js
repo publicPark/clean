@@ -30,8 +30,8 @@ const Dashboard = ({ }) => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>청소 애호가들의 한마디</h2>
-          <Voices />
         </div>
+        <Voices />
       </div>
     </div>
   )

@@ -21,10 +21,6 @@ const pages = [
     name: '= Dashboard',
     link: '/'
   },
-  // {
-  //   name: 'Questions?',
-  //   link: '/questions'
-  // },
   {
     name: '👋 About',
     link: '/about'

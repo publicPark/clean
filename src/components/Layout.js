@@ -9,7 +9,7 @@ import JoinForm from './Form/JoinForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
 import PlaceDetail from './Detail/PlaceDetail';
-import Questions from './pages/Questions';
+import Terms from './pages/Terms';
 import Contact from './pages/Contact';
 import BrowserDetect from './Layout/BrowserDetect';
 import Profile from './pages/Profile';
@@ -29,7 +29,7 @@ function Layout() {
       </div>
       <Routes>
         <Route path="/" element={<Dashboard currentUser={currentUser} />} />
-        <Route path="/questions" element={<Questions />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/test" element={<Test />} />

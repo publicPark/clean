@@ -117,7 +117,7 @@ const Voices = ({ type = "all" }) => {
           <CircularProgress sx={{ mt: 2 }} color="primary" />
         :
         list.length ?
-        <List sx={{ mt:2, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <List sx={{ mt:3, width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
           {list.map((l, i) => {
             return (
               <div key={i}>

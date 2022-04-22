@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { auth, db } from '../firebase'
 import { setDoc, doc, getDoc } from "firebase/firestore"; 
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
+import Comet from "../components/Layout/Comet";
 const provider = new GoogleAuthProvider();
 
 console.log('AuthContext')
@@ -21,11 +22,10 @@ export const AuthProvider = ({ children }) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
-      // ...
     }).catch((error) => {
-      // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
+      alert(errorMessage)
     });
   }
   
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       // Sign-out successful.
       setCurrentUser(null)
     }).catch((error) => {
-      // An error happened.
+      console.log(error)
     });
   }
 
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? <Comet /> : children}
       {/* {children} */}
     </AuthContext.Provider>
   )

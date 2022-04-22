@@ -160,8 +160,8 @@ const PlaceDetail = ({ currentUser, now }) => {
         <div className={stylesPaper.Wrapper}>
           <div className={stylesPaper.Content}>
             <h2>이 구역에서 한마디</h2>
-            <Voices type={ id }/>
           </div>
+          <Voices type={ id }/>
         </div>
       }
 
