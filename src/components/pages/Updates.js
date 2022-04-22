@@ -54,26 +54,27 @@ const Updates = () => {
   };
 
   return (
+    <>
       <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
-        <div className={stylesPaper.Content}>
-          <div>
-            {note.map((l, i) => {
-              return <Accordion key={i}
-                expanded={expanded === 'panel'+(i+1)} onChange={handleChange('panel'+(i+1))}
-              >
-                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                  <Typography>{l.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    {l.content}
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            })}
-          </div>
+        <div>
+          {note.map((l, i) => {
+            return <Accordion key={i}
+              expanded={expanded === 'panel'+(i+1)} onChange={handleChange('panel'+(i+1))}
+            >
+              <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                <Typography>{l.title}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  {l.content}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          })}
         </div>
       </div>
+      
+    </>
   )
 }
 

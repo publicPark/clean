@@ -1,22 +1,30 @@
 import React from 'react';
+import { useLayoutEffect } from 'react'
 import './index.css';
 import App from './components/App';
 import { createRoot } from 'react-dom/client';
-import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext'
-import { BrowserRouter, HashRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter, useLocation } from "react-router-dom";
 const container = document.getElementById('root');
 const root = createRoot(container);
+
+const Wrapper = ({children}) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children
+} 
 
 root.render(
   <React.StrictMode>
     {/* <BrowserRouter basename={process.env.PUBLIC_URL}> */}
     <HashRouter>
-      <ThemeProvider>
-        <AuthProvider>  
+      <Wrapper>
+        <ThemeProvider>
           <App tab="home" />
-        </AuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </Wrapper>
     </HashRouter>
   </React.StrictMode>
 );

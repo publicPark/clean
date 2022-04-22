@@ -183,7 +183,7 @@ const PlaceForm = ({ currentUser }) => {
                   <TextField
                     value={days} onChange={handleChangeDays}
                     id="outlined-number"
-                    label="⌛ 최대 청소 주기"
+                    label="⌛ 최대 청소 주기(제한 기간)"
                     placeholder='default: 14'
                     type="number"
                     InputLabelProps={{

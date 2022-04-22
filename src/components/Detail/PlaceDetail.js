@@ -103,7 +103,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                     {place.description}
                   </div>
                 </div>
-                <div><span className={styles.Label}>⌛ 최대 청소 주기: </span><b>{place.days}</b>일<br /></div>
+                <div><span className={styles.Label}>⌛ 최대 청소 주기(제한 기간): </span><b>{place.days}</b>일<br /></div>
                 <div>
                   <div className={styles.Label}>지났을 때 벌칙: </div>
                   <div className={styles.Penalty}>

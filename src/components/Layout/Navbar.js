@@ -30,8 +30,8 @@ const pages = [
     link: '/about'
   },
   {
-    name: 'Contact',
-    link: '/contact'
+    name: 'Notice',
+    link: '/notice'
   },
 ];
 

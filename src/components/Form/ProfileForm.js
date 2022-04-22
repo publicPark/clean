@@ -84,7 +84,12 @@ const ProfileForm = () => {
   }
   const onClearFile = () => {
     setImgFile(null)
-    fileInput.current.value = null
+    try {
+      fileInput.current.value = null
+    } catch (err) {
+      // 그냥 알아서 초기화 시켜 ui 없애서
+    }
+    
   }
 
   useEffect(() => {

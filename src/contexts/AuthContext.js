@@ -39,8 +39,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const userUpdate = async (data) => {
+    setLoading(true)
     await updateProfile(currentUser, data)
-    writeUser({...currentUser, data})
+    await writeUser({...currentUser, data})
+    setLoading(false)
   }
 
   const writeUser = async (u) => {
@@ -88,8 +90,8 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {/* {!loading && children} */}
-      {children}
+      {!loading && children}
+      {/* {children} */}
     </AuthContext.Provider>
   )
 }
