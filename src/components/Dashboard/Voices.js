@@ -4,6 +4,7 @@ import { collection, doc, getDoc, getDocs, addDoc, query, where, onSnapshot, lim
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styles from './Common.module.scss'
+import stylesPaper from '../styles/Paper.module.scss'
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
@@ -95,23 +96,33 @@ const Voices = ({ type = "all" }) => {
   
   return (
     <>
-      { currentUser &&
-        <form onSubmit={handleSay}>
-          <div>
-            <TextField id="standard-basic"
-              label={myVoice?`다시 한마디`:`한마디`}
-              variant="standard" sx={{ mb: 1 }}
-              value={ say }
-              onChange={ (e)=>setSay(e.target.value) }
-            />
-          </div>
-          <Button type="submit" variant="contained" sx={{mb:3}}
-            onClick={handleSay} disabled={loadingSubmit}
-          >
-            { myVoice?'이전 것은 지워지고 SAY' : 'SAY' }
-          </Button>
-        </form>
-      }
+      <div className={stylesPaper.Content}>
+        {type === 'all' ?
+          <h2>청소 애호가들의 한마디</h2>
+          :
+          <h2>이 구역에서 한마디</h2>
+        }
+        
+        
+
+        { currentUser &&
+          <form onSubmit={handleSay}>
+            <div>
+              <TextField id="standard-basic"
+                label={myVoice?`다시 한마디`:`한마디`}
+                variant="standard" sx={{ mb: 1 }}
+                value={ say }
+                onChange={ (e)=>setSay(e.target.value) }
+              />
+            </div>
+            <Button type="submit" variant="contained" sx={{mb:3}}
+              onClick={handleSay} disabled={loadingSubmit}
+            >
+              { myVoice?'이전 것은 지워지고 SAY' : 'SAY' }
+            </Button>
+          </form>
+        }
+      </div>
       {
         loading ?
           <CircularProgress sx={{ mt: 2 }} color="primary" />

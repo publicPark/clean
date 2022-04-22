@@ -18,7 +18,7 @@ const Clock = () => {
         :
         <>
           <p>로그인을 하면, 청소할 수 있지!</p>
-          <p><Link to="/about">여긴 뭐하는 데죠?</Link></p>
+          <p><Link to="/about"><b>그런데 여긴 어떤 곳입니까?</b></Link></p>
         </>
       }
     </>

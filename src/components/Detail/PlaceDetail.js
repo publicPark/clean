@@ -109,7 +109,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                   </div>
                 </div>
                 <div>
-                  <div className={styles.Label}> Members: </div>
+                  <div className={styles.Label}> 멤버들: </div>
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
@@ -157,9 +157,6 @@ const PlaceDetail = ({ currentUser, now }) => {
 
       {place && 
         <div className={stylesPaper.Wrapper}>
-          <div className={stylesPaper.Content}>
-            <h2>이 구역에서 한마디</h2>
-          </div>
           <Voices type={ id }/>
         </div>
       }
