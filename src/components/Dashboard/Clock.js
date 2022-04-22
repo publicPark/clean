@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { Link } from 'react-router-dom';
 import useNow from "../../apis/useNow";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -17,6 +18,7 @@ const Clock = () => {
         :
         <>
           <p>로그인을 하면, 청소할 수 있지!</p>
+          <p><Link to="/about">여긴 뭐하는 데죠?</Link></p>
         </>
       }
     </>
