@@ -14,16 +14,16 @@ $duration: 7s;
   0% {
     transform: translate(0, 0);
   }
-  100% {
+  90% {
     transform: translate(-100px, -100px);
   }
 }
 
 @keyframes shoot {
   0% {
-    transform: scale(3);
+    transform: scale(1) rotate(0);
   }
-  100% {
-    transform: scale(0);
+  90% {
+    transform: scale(0) rotate(-20deg);
   }
 }

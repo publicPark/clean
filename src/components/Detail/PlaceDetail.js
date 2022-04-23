@@ -9,12 +9,12 @@ import Members from './Members';
 import Voices from "../Dashboard/Voices";
 import Cleans from './Cleans';
 import usePlace from '../../apis/usePlace';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import format from 'date-fns/format'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import format from 'date-fns/format';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-
+const userAgent = navigator.userAgent.toLocaleLowerCase()
 
 const PlaceDetail = ({ currentUser, now }) => {
   let navigate = useNavigate();
@@ -58,6 +58,7 @@ const PlaceDetail = ({ currentUser, now }) => {
   }
 
   useEffect(() => {
+    console.log(userAgent)
     const unsubscribe = getPlace(id)
     return () => unsubscribe() // 아놔..
   }, [id])
@@ -81,19 +82,6 @@ const PlaceDetail = ({ currentUser, now }) => {
             <>
               <div className={styles.Content}>
                 <div className={ styles.Title }>{place.name}</div>
-                <code onClick={onShowCode} className={styles.Label}>
-                  {showCode ?
-                    <>
-                      <span>Copied! </span><span className={styles.Code}>{id}</span>
-                      {/* { currentUser && place.members.includes(currentUser.uid) &&
-                        <Link to={ `/placejoin?code=${id}` }>
-                          <Button sx={{ m: 1.5 }} variant="outlined" color="success">초대</Button>
-                        </Link>
-                      } */}
-                    </>
-                    : 'CODE?'
-                  }
-                </code>
                 
                 <div>
                   <div className={styles.Label}>멤버들에게 알립니다: </div>
@@ -113,6 +101,31 @@ const PlaceDetail = ({ currentUser, now }) => {
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
+                {currentUser &&
+                  (
+                    !place.members.includes(currentUser.uid) ?
+                    <Link to={ `/placejoin?code=${id}` }>
+                      <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
+                    </Link>
+                    :
+                    <a href={`sms:&body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>초대하기(테스트중) </a>
+                  ) 
+                }
+                <div>
+                  <code className={styles.Label} onClick={onShowCode}>
+                    {showCode ?
+                      <>
+                        <span>Copied! </span><span className={styles.Code}>{id}</span>
+                        {/* { currentUser && place.members.includes(currentUser.uid) &&
+                          <Link to={ `/placejoin?code=${id}` }>
+                            <Button sx={{ m: 1.5 }} variant="outlined" color="success">초대</Button>
+                          </Link>
+                        } */}
+                      </>
+                      : <span>CODE?</span>
+                    }
+                  </code>
+                </div>
                 
                 { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
                   <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">수정하기</Button></Link>
@@ -124,12 +137,6 @@ const PlaceDetail = ({ currentUser, now }) => {
                     <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>나가기</Button>
                   }
                 </div>
-                }
-
-                { currentUser && !place.members.includes(currentUser.uid) &&
-                  <Link to={ `/placejoin?code=${id}` }>
-                    <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
-                  </Link>
                 }
               </div>
             </>
