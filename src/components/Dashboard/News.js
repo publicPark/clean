@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 
 const News = ({ currentUser, maxCount=4 }) => {
   let navigate = useNavigate();
   const [cleans, setCleans] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const cRef = collection(db, "cleans");
@@ -45,11 +47,18 @@ const News = ({ currentUser, maxCount=4 }) => {
 
   return (
     <>
-      <h2>따끈따끈한 🔥 { maxCount }개의 청소소식</h2>
+      <h2>따끈따끈한 🔥 {maxCount}개의 청소소식</h2>
+      {loading && Array.from(new Array(4)).map((ghost, i) => <div key={ i }>
+        <Divider sx={{ mt: 2, mb: 2 }} />
+        <Box>
+          <Skeleton />
+          <Skeleton width="60%" />
+        </Box>
+      </div>)
+      }
       {cleans.map((c, i) => {
         return <div key={i} className={styles.Left}>
           <Divider sx={{ mt: 2, mb: 2 }} />
-
           {c.placeData && 
           <>
             { c.placeData.test ? '모두의 구역 ' : 

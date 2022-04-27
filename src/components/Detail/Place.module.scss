@@ -14,15 +14,15 @@
 
 .Content {
   > * + * {
-    margin-top: 1rem;
+    margin-top: 1.2rem;
   }
 }
 .Paper {
-  margin: 0.5em;
+  margin: 0.1em;
+  margin-top: 0.5em;
   background-color: var(--bg);
   color: var(--text-color);
   font-weight: 500;
-  // border: 2px dotted var(--text-color);
   border-radius: 0.5em;
   white-space: pre-line;
   word-break: keep-all;
@@ -56,7 +56,8 @@
   word-break: keep-all;
   padding: 1em;
   border-radius: 0.5em;
-  margin: 0.5em;
+  margin: 0.1em;
+  margin-top: 0.5em;
   background-color: var(--bg-accent);
   color: var(--text-color);
   border: 2px dotted var(--text-color2);
@@ -66,8 +67,11 @@
   margin-top: 0.5em;
 }
 
-.Crown {
+.Member {
   position: relative;
-  left: 50%;
-  top: -1.2em;
+}
+.Crown {
+  position: absolute;
+  left: calc(50% - 0.5em);
+  top: -0.9em;
 }

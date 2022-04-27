@@ -14,7 +14,8 @@ import format from 'date-fns/format';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-const userAgent = navigator.userAgent.toLocaleLowerCase()
+import getMobileOS from '../../apis/getMobileOS'
+const os = getMobileOS()
 
 const PlaceDetail = ({ currentUser, now }) => {
   let navigate = useNavigate();
@@ -41,7 +42,7 @@ const PlaceDetail = ({ currentUser, now }) => {
     setShowCode((cur)=>!cur)
   }
 
-  const getPlace = (id) => {
+  useEffect(() => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
@@ -54,20 +55,13 @@ const PlaceDetail = ({ currentUser, now }) => {
     (error) => {
       console.log("querySnapshot", error)
     });
-    return unsubscribe
-  }
-
-  useEffect(() => {
-    console.log(userAgent)
-    const unsubscribe = getPlace(id)
     return () => unsubscribe() // 아놔..
-  }, [id])
+  }, [])
   
   const handleGetOut = async () => {
     if (window.confirm("Do you really want to get out? 다시 들어올 수 있어요.")) {
       try {
         await getout(currentUser.uid)
-        getPlace(id)
       } catch (err) {
         alert(err)
       }
@@ -101,40 +95,48 @@ const PlaceDetail = ({ currentUser, now }) => {
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
 
-                {currentUser &&
-                  (
-                    !place.members.includes(currentUser.uid) ?
-                    <Link to={ `/placejoin?code=${id}` }>
-                      <Button sx={{ m: 1 }} variant="outlined" color="success">참가!</Button>
-                    </Link>
-                    :
-                    <a href={`sms:&body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>초대하기(테스트중) </a>
-                  ) 
-                }
                 <div>
                   <code className={styles.Label} onClick={onShowCode}>
                     {showCode ?
                       <>
                         <span>Copied! </span><span className={styles.Code}>{id}</span>
-                        {/* { currentUser && place.members.includes(currentUser.uid) &&
-                          <Link to={ `/placejoin?code=${id}` }>
-                            <Button sx={{ m: 1.5 }} variant="outlined" color="success">초대</Button>
-                          </Link>
-                        } */}
                       </>
-                      : <span>CODE?</span>
+                      : <span>Code?</span>
                     }
                   </code>
                 </div>
                 
-                { currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
-                  <Link to={`/placeform/${id}`}><Button variant="outlined" color="neutral">수정하기</Button></Link>
+                {currentUser &&
+                  (
+                    !place.members.includes(currentUser.uid) &&
+                    <Link to={ `/placejoin?code=${id}` }>
+                      <Button sx={{ m: 1 }} variant="contained" color="success">참가!</Button>
+                    </Link>
+                  ) 
+                }
+                
+                {currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
+                  <>
+                    {(os === 'iOS' || os === 'Mac') &&
+                      <a href={`sms:&body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+                        <Button variant="outlined" color="info">초대문자</Button>
+                      </a> 
+                    }
+                    {os === 'Android' &&
+                      <a href={`sms:?body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+                        <Button variant="outlined" color="info">초대문자</Button>
+                      </a> 
+                    }
+                    <Link to={`/placeform/${id}`}>
+                      <Button sx={{ ml: 1 }} variant="outlined" color="neutral">수정하기</Button>
+                    </Link>
+                  </>
                   {place.members[0] === currentUser.uid && place.members.length === 1 ?
                     <Link to={`/placeform/${id}`}>
-                      <Button sx={{ ml: 2 }} variant="outlined" color="neutral">영원히 나가고 삭제</Button>
+                      <Button sx={{ ml: 1 }} variant="outlined" color="neutral">영원히 나가고 삭제</Button>
                     </Link>
                     :
-                    <Button sx={{ ml: 2 }} variant="outlined" color="neutral" onClick={handleGetOut}>나가기</Button>
+                    <Button sx={{ ml: 1 }} variant="outlined" color="neutral" onClick={handleGetOut}>나가기</Button>
                   }
                 </div>
                 }
@@ -152,7 +154,7 @@ const PlaceDetail = ({ currentUser, now }) => {
           <div className={stylesPaper.Content}>
             <div className={ styles.Buttons }>
               <Link to={`/cleaned/${id}`}>
-                <Button variant="contained">I've cleaned</Button>
+                <Button variant="contained">청소했어! I've cleaned</Button>
               </Link>
             </div>
           </div>

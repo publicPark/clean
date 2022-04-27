@@ -70,23 +70,26 @@ const Voices = ({ type = "all" }) => {
     const q = query(...queryArr);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       // console.log("voices", querySnapshot)
-      setList([]);
+      let arr = []
+      if(querySnapshot.size===0) setLoading(false)
       querySnapshot.forEach(async (snap) => {
         let d = snap.data()
-
         const docRef = doc(db, "users", d.who);
         const userDocSnap = await getDoc(docRef);
         d.whoData = userDocSnap.data()
-        setList((cur)=>[...cur, d])
+        arr.push(d)
+        if (arr.length === querySnapshot.size) {
+          setList(arr)
+          setLoading(false)
+        }
       });
-      setLoading(false)
     },
     (error) => {
       console.log("querySnapshot", error)
     });
 
     return () => unsubscribe() // 아놔..
-  }, [])
+  }, [type])
 
   useEffect(() => {
     if (currentUser) {
@@ -108,14 +111,14 @@ const Voices = ({ type = "all" }) => {
         { currentUser &&
           <form onSubmit={handleSay}>
             <div>
-              <TextField id="standard-basic"
+              <TextField id="standard-voice" fullWidth
                 label={myVoice?`다시 한마디`:`한마디`}
                 variant="standard" sx={{ mb: 1 }}
                 value={ say }
                 onChange={ (e)=>setSay(e.target.value) }
               />
             </div>
-            <Button type="submit" variant="contained" sx={{mb:3}}
+            <Button type="submit" variant="contained" sx={{mb:2}}
               onClick={handleSay} disabled={loadingSubmit}
             >
               { myVoice?'이전 것은 지워지고 SAY' : 'SAY' }
@@ -125,7 +128,7 @@ const Voices = ({ type = "all" }) => {
       </div>
       {
         loading ?
-          <CircularProgress sx={{ mt: 2 }} color="primary" />
+          <CircularProgress sx={{ m: 2 }} color="primary" />
         :
         list.length ?
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>

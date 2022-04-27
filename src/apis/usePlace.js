@@ -1,12 +1,42 @@
 import { db } from '../firebase'
-import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove, getDoc, arrayUnion } from "firebase/firestore";
 import { useState } from 'react';
 
 const usePlace = (id) => {
   const [loading, setLoading] = useState(false)
+  const docRef = doc(db, "places", id);
+
+  const myInvitations = async (uid) => {
+    let q = query(docRef, where("members", "array-contains", uid));
+  }
+
+  const getPlace = async () => {
+    setLoading(true)
+    const docSnap = await getDoc(docRef);
+    setLoading(false)
+    if (docSnap.exists()) {
+      let data = docSnap.data()
+      data.id = docSnap.id
+      return data
+    }else return null
+  }
+
+  const invite = async (userId) => {
+    setLoading(true)
+    await updateDoc(docRef, {
+      membersInvited: arrayUnion(userId),
+    });
+    setLoading(false)
+  }
+  const inviteCancel = async (userId) => {
+    setLoading(true)
+    await updateDoc(docRef, {
+      membersInvited: arrayRemove(userId),
+    });
+    setLoading(false)
+  }
 
   const deletePlace = async () => {
-    const docRef = doc(db, "places", id);
     setLoading(true)
 
     // 구역 삭젠
@@ -32,7 +62,6 @@ const usePlace = (id) => {
   }
 
   const getout = async (uid) => {
-    const docRef = doc(db, "places", id);
     setLoading(true)
     await updateDoc(docRef, {
       members: arrayRemove(uid),
@@ -40,7 +69,7 @@ const usePlace = (id) => {
     setLoading(false)
   }
 
-  return { loading, getout, deletePlace }
+  return { loading, getout, deletePlace, getPlace, invite, inviteCancel, myInvitations }
 }
 
 export default usePlace

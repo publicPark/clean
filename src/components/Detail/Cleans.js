@@ -41,9 +41,8 @@ const Cleans = ({ place, userMap }) => {
 
     const lastVisible = snapshots.docs[snapshots.docs.length-1]
     setNextCursor(lastVisible)
-    console.log("nextCursor lastVisible", lastVisible)
+    // console.log("nextCursor lastVisible", lastVisible)
 
-    
     let arr = []
     if (more) {
       arr = [...cleans]

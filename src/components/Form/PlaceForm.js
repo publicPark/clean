@@ -4,7 +4,7 @@ import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 
 import { db } from '../../firebase'
-import { collection, addDoc, getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDoc, doc, updateDoc } from "firebase/firestore"; 
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -95,7 +95,7 @@ const PlaceForm = ({ currentUser }) => {
       }
 
       setLoading(false)
-      navigate('/profile', { replace: true });
+      navigate(-1, { replace: true });
     } catch (e) {
       setLoading(false)
       console.error("Error adding document: ", e);
@@ -159,7 +159,7 @@ const PlaceForm = ({ currentUser }) => {
                   </div>
 
                   <div className={styles.Row}>
-                    <TextField id="outlined-basic" label="구역 이름" variant="outlined"
+                    <TextField id="outlined-district" label="구역 이름" variant="outlined"
                     value={text} onChange={(e) => { setText(e.target.value )}}/>
                   </div>
 

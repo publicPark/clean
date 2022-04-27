@@ -244,7 +244,7 @@ const CleanForm = ({ currentUser }) => {
           </div>
 
           <div className={styles.Row}>
-            <TextField id="outlined-basic" label="메모" variant="outlined"
+            <TextField id="outlined-text" label="메모" variant="outlined"
             value={text} onChange={handleChangeText}/>
           </div>
           

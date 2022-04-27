@@ -4,11 +4,13 @@ import styles from './Clean.module.scss'
 import { db } from '../../firebase'
 import { collection, query, where, orderBy, limit, onSnapshot } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
-
-import CircularProgress from '@mui/material/CircularProgress';
 import Dies from '../Detail/Dies';
 
-const LastClean = ({ place, index, cleanChanged }) => {
+import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+
+const LastClean = ({ place, index, cleanChanged=()=>false, sorted }) => {
   const [loading, setLoading] = useState(false)
   const [clean, setClean] = useState()
 
@@ -22,7 +24,7 @@ const LastClean = ({ place, index, cleanChanged }) => {
     );
     setLoading(true)
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      // console.log("querySnapshot3", querySnapshot)
+      // console.log("querySnapshot3", querySnapshot.size)
       querySnapshot.forEach(async (snap) => {
         let d = snap.data()
         setClean(d)
@@ -30,6 +32,9 @@ const LastClean = ({ place, index, cleanChanged }) => {
           cleanChanged(index, d)
         }
       });
+      if (querySnapshot.size === 0) {
+        cleanChanged(index, null)
+      }
       setLoading(false)
     },
     (error) => {
@@ -40,8 +45,14 @@ const LastClean = ({ place, index, cleanChanged }) => {
   }, [place])
 
   return (
-    <div className={styles.Space}>
-      {loading ? <CircularProgress color="primary" /> : clean ?
+    <div>
+      {loading || !sorted ?
+        // <CircularProgress color="primary" sx={{ mt: 1 }} />
+        <Box>
+          <Skeleton />
+          <Skeleton />
+        </Box>
+        : clean ?
         <Dies clean={clean} place={place} />
         :<div className={styles.Blur}>
           <div className={styles.Who}>청소한 적이 없음</div>

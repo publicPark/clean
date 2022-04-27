@@ -15,6 +15,7 @@ import BrowserDetect from './Layout/BrowserDetect';
 import Profile from './pages/Profile';
 import Test from './pages/Test';
 import Notice from './pages/Notice';
+import Invitation from './Detail/Invitation';
 
 function Layout() {
   const { currentUser } = useAuth()
@@ -40,6 +41,7 @@ function Layout() {
         <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
 
         <Route path="profile" element={ currentUser ? <Profile /> : <NotFound status="auth" />} />
+        <Route path="invite/:id" element={ currentUser ? <Invitation /> : <NotFound status="auth" />} />
         <Route path="placeform/:id" element={ currentUser ? <PlaceForm currentUser={currentUser}/>  : <NotFound status="auth" />} />
         {currentUser ?
           <>

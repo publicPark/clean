@@ -24,9 +24,10 @@ const Alert = forwardRef(function Alert(props, ref) {
 const JoinForm = () => {
   const { currentUser } = useAuth()
   let [searchParams, setSearchParams] = useSearchParams();
+  const code = searchParams.get("code")
 
   let navigate = useNavigate();
-  const [text, setText] = useState(searchParams.get("code") || '');
+  const [text, setText] = useState(code || '');
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState('');
 
@@ -83,12 +84,14 @@ const JoinForm = () => {
       <div className={stylesPaper.Content}>
         <form className={styles.Form} onSubmit={onSubmit}>
           <div className={styles.Title}>
-            <h2>코드를 아십니까?</h2>
+            <h2>{ code? '참가하시겠습니까?' : '코드를 아십니까?' }</h2>
           </div>
+          {!code && 
           <div className={styles.Row}>
-            <TextField id="outlined-basic" label="Code" variant="outlined"
+            <TextField id="outlined-code" label="Code" variant="outlined"
             value={text} onChange={(e)=>setText(e.target.value)}/>
           </div>
+          }
           <div>
             <Collapse in={err?true:false} className={ styles.Inline }>
               {/* <Alert variant="filled" severity="error">

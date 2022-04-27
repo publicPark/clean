@@ -30,4 +30,9 @@
 }
 .Space {
   padding: 0.5em;
+  transition: 0.5s;
+  text-align: left;
+}
+.Hide {
+  opacity: 0;
 }

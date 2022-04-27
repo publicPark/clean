@@ -3,6 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Link } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
+import LastClean from "../Dashboard/LastClean";
 
 import styles from '../styles/List.module.scss'
 import { db } from '../../firebase'
@@ -42,8 +43,6 @@ const Places = () => {
 
     const lastVisible = snapshots.docs[snapshots.docs.length-1]
     setNextCursor(lastVisible)
-    console.log("nextCursor lastVisible", lastVisible)
-
     
     let arr = []
     if (more) {
@@ -76,6 +75,7 @@ const Places = () => {
                   </Link>
                   { p.test && ' (public)' }
                 </div>
+                <LastClean place={p} index={ i } />
               </div>
             </ListItem>
             { i<list.length-1 && <Divider component="li" />}

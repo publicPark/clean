@@ -93,7 +93,7 @@ const ProfileForm = () => {
   }
 
   useEffect(() => {
-    console.log("profile form", user)
+    // console.log("profile form", user)
   }, [user])
 
   return (
@@ -126,7 +126,7 @@ const ProfileForm = () => {
               )}
             </div>
             <form onSubmit={ onSubmit }>
-              <TextField id="filled-basic" label="Display name" variant="filled"
+              <TextField id="filled-name" label="Display name" variant="filled"
               value={newName} onChange={ onChange }
               />
               <div>

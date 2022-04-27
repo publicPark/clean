@@ -5,7 +5,6 @@ import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, updat
 import Comet from "../components/Layout/Comet";
 const provider = new GoogleAuthProvider();
 
-console.log('AuthContext')
 const AuthContext = createContext()
 
 export const useAuth = () => {
@@ -70,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("onAuthStateChanged", user)
+      // console.log("onAuthStateChanged", user)
       setLoading(false)
       setCurrentUser(user)
       if (user) {

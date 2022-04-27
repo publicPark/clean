@@ -104,7 +104,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           <div className={styles.FlexSpace}>
             {memoForm && !loadingClean ?
               <div className={styles.Flex}>
-                <TextField id="standard-basic" variant="standard"
+                <TextField id="standard-memo" variant="standard"
                 value={memo} onChange={(e)=>{setMemo(e.target.value)}}
                 />
                 {data.amIWriter && <>

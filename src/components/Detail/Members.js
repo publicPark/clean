@@ -16,12 +16,12 @@ const Members = ({ members, userMap }) => {
     <>
       <div className={`${styles.Flex} ${styles.ListMember}`}>
         {userMap && members.map(((m, i) =>
-          <ListItem key={i}>
+          <ListItem key={i} className={ styles.Member }>
             {i === 0 && <span className={ styles.Crown }>👑</span>}
             <Chip
               label={userMap[m]? userMap[m].name : '(new)'}
               color={currentUser&&userMap[m]&&currentUser.uid===userMap[m].id?"success":"default"} 
-              variant={i===0?"contained":"outlined"}  />
+              variant="contained"  />
           </ListItem>
         ))}
       </div>
