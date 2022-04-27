@@ -54,7 +54,7 @@ const PlaceDetail = ({ currentUser, now }) => {
   const handleGetOut = async () => {
     if (window.confirm("Do you really want to get out? 다시 들어올 수 있어요.")) {
       try {
-        await getout(currentUser.uid)
+        await getout(id, currentUser.uid)
       } catch (err) {
         alert(err)
       }

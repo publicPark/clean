@@ -25,7 +25,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
   let { id } = useParams();
-  const { loading: loadingPlace, deletePlace } = usePlace(id)
+  const { loading: loadingPlace, deletePlace } = usePlace()
 
   const [place, setPlace] = useState()
   const [amIFirst, setAmIFirst] = useState(false)
@@ -131,7 +131,7 @@ const PlaceForm = ({ currentUser }) => {
   const handleDelete = async () => {
     if (amIFirst) {
       if (window.confirm("Do you really want to delete?")) {
-        await deletePlace()
+        await deletePlace(place.id)
         navigate("/", { replace: true });
       }
     } else {

@@ -4,7 +4,7 @@ import stylesPaper from '../styles/Paper.module.scss'
 
 import { useState, forwardRef } from 'react';
 import { db } from '../../firebase'
-import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore"; 
+import { doc, updateDoc, arrayUnion, getDoc, arrayRemove } from "firebase/firestore"; 
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from "react-router-dom";
@@ -69,6 +69,7 @@ const JoinForm = () => {
         setLoading(true)
         await updateDoc(docRef, {
           members: arrayUnion(currentUser.uid),
+          membersInvited: arrayRemove(currentUser.uid),
           membersMap: data.membersMap
         });
         setLoading(false)

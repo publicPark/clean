@@ -75,7 +75,7 @@ const Places = () => {
                   </Link>
                   { p.test && ' (public)' }
                 </div>
-                <LastClean place={p} index={ i } />
+                <LastClean place={p} index={i} sorted={true} />
               </div>
             </ListItem>
             { i<list.length-1 && <Divider component="li" />}
@@ -83,7 +83,7 @@ const Places = () => {
         </List>
       }
 
-      {loading && <div><CircularProgress color="primary" /></div>}
+      {loading && <div><CircularProgress color="primary" sx={{mb:2}}/></div>}
       { nextCursor &&
         <Button sx={{ m: 1.5 }} variant="outlined" color="neutral"
           onClick={moreCleans}

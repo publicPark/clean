@@ -12,6 +12,7 @@ const About = () => {
       <div className={`${stylesPaper.Wrapper}`}>
         <div className={stylesPaper.Content}>
           <h1>ABOUT</h1>
+          <h2>청소당번 바톤터치</h2>
           <p>
             같이 사는 공간에서<br />
             즐겁게 청소하기는 쉽지 않지.<br />

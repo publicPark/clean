@@ -38,7 +38,8 @@ const Places = () => {
   useEffect(() => {
     let q = query(placesRef, where("test", "==",  true));
     if (currentUser) {
-     q = query(placesRef, where("members", "array-contains", currentUser.uid), limit(10));
+      q = query(placesRef, where("members", "array-contains", currentUser.uid), limit(10));
+      // modified로 정렬
     }
     setLoading(true)
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

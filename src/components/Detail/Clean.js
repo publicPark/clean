@@ -124,9 +124,9 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               :
               <div className={`${styles.Memo} ${data.amIWriter?styles.Pointer:undefined}`} 
                 onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}>
-                <span className={ styles.Quot }>"</span>
-                <span>{data.text}</span>
-                <span className={ styles.Quot }>"</span>
+                <span className={ styles.Quot }>" </span>
+                <span className={ styles.Ital }>{data.text}</span>
+                <span className={ styles.Quot }> " </span>
               </div>
             }
             <div>

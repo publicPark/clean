@@ -33,7 +33,7 @@ const Users = ({ place, users }) => {
   
   const handleClick = async (u, i) => {
     try {
-      await invite(u.id)
+      await invite(place.id, u.id)
     } catch (err) {
       return
     }
@@ -45,7 +45,7 @@ const Users = ({ place, users }) => {
   }
   const handleClickCancel = async (u, i) => {
     try {
-      await inviteCancel(u.id)
+      await inviteCancel(place.id, u.id)
     } catch (err) {
       return
     }

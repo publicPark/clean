@@ -32,7 +32,7 @@ const Invite = () => {
   const [showCode, setShowCode] = useState(false)
 
   const initPlace = async () => {
-    const data = await getPlace()
+    const data = await getPlace(id)
     if (!data) {
       setErr('구역을 불러 올 수 없습니다')
       return

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { auth, db } from '../firebase'
 import { setDoc, doc, getDoc } from "firebase/firestore"; 
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
+import { inviteMeToTheTest } from "../apis/inviteMeToTheTest";
 import Comet from "../components/Layout/Comet";
 const provider = new GoogleAuthProvider();
 
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
+      inviteMeToTheTest(user.uid)
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;

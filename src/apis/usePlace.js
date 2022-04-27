@@ -3,14 +3,14 @@ import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemo
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
-const usePlace = (id) => {
+const usePlace = () => {
   const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
-  const docRef = doc(db, "places", id);
 
   // 초대 수락
   const inviOk = async (id) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     await updateDoc(docRef, {
       members: arrayUnion(currentUser.uid),
       membersInvited: arrayRemove(currentUser.uid),
@@ -21,14 +21,16 @@ const usePlace = (id) => {
   // 초대 거절
   const inviNo = async (id) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     await updateDoc(docRef, {
       membersInvited: arrayRemove(currentUser.uid),
     });
     setLoading(false)
   }
 
-  const getPlace = async () => {
+  const getPlace = async (id) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     const docSnap = await getDoc(docRef);
     setLoading(false)
     if (docSnap.exists()) {
@@ -38,26 +40,29 @@ const usePlace = (id) => {
       return data
     }else return null
   }
-
-  const invite = async (userId) => {
+  
+  const invite = async (id, userId) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     await updateDoc(docRef, {
       membersInvited: arrayUnion(userId),
     });
     setLoading(false)
   }
-  const inviteCancel = async (userId) => {
+  const inviteCancel = async (id, userId) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     await updateDoc(docRef, {
       membersInvited: arrayRemove(userId),
     });
     setLoading(false)
   }
 
-  const deletePlace = async () => {
+  const deletePlace = async (id) => {
     setLoading(true)
 
-    // 구역 삭젠
+    const docRef = doc(db, "places", id);
+    // 구역 삭제
     await deleteDoc(docRef);
     
     // 구역에 속한 청소 삭제
@@ -79,8 +84,9 @@ const usePlace = (id) => {
     setLoading(false)
   }
 
-  const getout = async (uid) => {
+  const getout = async (id, uid) => {
     setLoading(true)
+    const docRef = doc(db, "places", id);
     await updateDoc(docRef, {
       members: arrayRemove(uid),
     });
