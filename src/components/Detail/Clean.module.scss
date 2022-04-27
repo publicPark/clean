@@ -33,9 +33,15 @@
 .Blur {
   opacity: 0.7;
 }
+.Quot {
+  font-style: italic;
+  // color: var(--text-color2);
+  opacity: 0.5;
+}
 .Memo {
   margin-top: 0.7em;
   color: var(--text-color);
+  max-width: 80%;
 }
 .Dates {
   font-size: 0.9em;

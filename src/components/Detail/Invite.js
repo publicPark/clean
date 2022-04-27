@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";import { db } from '../../firebase'
 import { collection, getDocs, query, where } from "firebase/firestore";
+import styles from './Place.module.scss'
 
 import usePlace from '../../apis/usePlace';
 
@@ -19,7 +20,7 @@ const os = getMobileOS()
 
 const userRef = collection(db, "users")
 
-const Invitation = () => {
+const Invite = () => {
   let { id } = useParams();
   let [place, setPlace] = useState(null)
   let [searchText, setSearchText] = useState('')
@@ -28,10 +29,18 @@ const Invitation = () => {
   let [list, setList] = useState('')
   let [loading, setLoading] = useState('')
   const { loading: loadingPlace, getPlace } = usePlace(id)
+  const [showCode, setShowCode] = useState(false)
 
   const initPlace = async () => {
     const data = await getPlace()
-    if(!data) setErr('구역을 불러 올 수 없습니다')
+    if (!data) {
+      setErr('구역을 불러 올 수 없습니다')
+      return
+    }
+    if (!data.amIMember) {
+      setErr('나는 이 구역의 멤버가 아닙니다')
+      return
+    }
     setPlace(data)
   }
 
@@ -57,6 +66,11 @@ const Invitation = () => {
     setLoading(false)
   }
 
+  const onShowCode = () => { 
+    navigator.clipboard.writeText(id)
+    setShowCode((cur)=>!cur)
+  }
+
   useEffect(() => {
     initPlace()
     return
@@ -70,25 +84,25 @@ const Invitation = () => {
       spacing={2}
       sx={{mt:2}}
     >
-      <h1>초대하기는 지금 공사중</h1>
-      {place &&
-        <>
-          {(os === 'iOS' || os === 'Mac') &&
-            <a href={`sms:&body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
-              <Button variant="outlined" color="info">SMS 보내기</Button>
-            </a> 
-          }
-          {os === 'Android' &&
-            <a href={`sms:?body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
-              <Button variant="outlined" color="info">SMS 보내기</Button>
-            </a> 
-          }
-        </>
-      }
+      <h1>초대하기</h1>
+      {/* <Box sx={{ minWidth: 275, maxWidth: 360, p: 1 }}>
+        <Card variant="outlined" sx={{ p: 2 }}>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            {place.name}
+          </Typography>
+        </Card>
+      </Box> */}
       {!place && loadingPlace ? <CircularProgress sx={{ m: 2 }} color="primary" /> :
-        <Box sx={{ minWidth: 275, maxWidth: 360, p: 1 }}> { err ? { err } : place &&
+        <Box sx={{ minWidth: 275, maxWidth: 360, p: 1 }}>
+          {err ?
+            <Card variant="outlined" sx={{ p: 2 }}>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                {err}
+              </Typography>
+            </Card>
+          : place &&
           <Card variant="outlined" sx={{ p: 2 }}>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <Typography color="text.secondary" gutterBottom>
               {place.name}
             </Typography>
             <Typography variant="h6" component="div" sx={{ mb: 3 }}>
@@ -113,13 +127,40 @@ const Invitation = () => {
             >
               {msg}
             </Typography>
+            {loading && <CircularProgress sx={{ mt: 2 }} color="primary" />}
             {list && <Users users={list} place={place} />}
           </Card>
         }
         </Box>
       }
+
+      {place &&
+        <>
+          <div className={ styles.Blur }>OR</div>
+          <div>
+            <code className={styles.Label} onClick={onShowCode}>
+              {showCode ?
+                <>
+                  <span>Copied! </span><span className={styles.Code}>{id}</span>
+                </>
+                : <span>Code?</span>
+              }
+            </code>
+          </div>
+          {(os === 'iOS' || os === 'Mac') &&
+            <a href={`sms:&body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+              <Button variant="outlined" color="info">SMS 보내기</Button>
+            </a> 
+          }
+          {os === 'Android' &&
+            <a href={`sms:?body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+              <Button variant="outlined" color="info">SMS 보내기</Button>
+            </a> 
+          }
+        </>
+      }
     </Stack>
   
   </>
 }
-export default Invitation
+export default Invite

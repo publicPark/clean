@@ -1,10 +1,31 @@
 import { db } from '../firebase'
 import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove, getDoc, arrayUnion } from "firebase/firestore";
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const usePlace = (id) => {
+  const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const docRef = doc(db, "places", id);
+
+  // 초대 수락
+  const inviOk = async (id) => {
+    setLoading(true)
+    await updateDoc(docRef, {
+      members: arrayUnion(currentUser.uid),
+      membersInvited: arrayRemove(currentUser.uid),
+    });
+    setLoading(false)
+  }
+
+  // 초대 거절
+  const inviNo = async (id) => {
+    setLoading(true)
+    await updateDoc(docRef, {
+      membersInvited: arrayRemove(currentUser.uid),
+    });
+    setLoading(false)
+  }
 
   const getPlace = async () => {
     setLoading(true)
@@ -13,6 +34,7 @@ const usePlace = (id) => {
     if (docSnap.exists()) {
       let data = docSnap.data()
       data.id = docSnap.id
+      if(data.members.includes(currentUser.uid)) data.amIMember = true
       return data
     }else return null
   }
@@ -65,7 +87,11 @@ const usePlace = (id) => {
     setLoading(false)
   }
 
-  return { loading, getout, deletePlace, getPlace, invite, inviteCancel }
+  return {
+    loading, getout, deletePlace, getPlace,
+    invite, inviteCancel,
+    inviOk, inviNo,
+  }
 }
 
 export default usePlace

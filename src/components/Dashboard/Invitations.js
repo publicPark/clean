@@ -5,13 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import stylesPaper from '../styles/Paper.module.scss'
 
 import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Link } from "react-router-dom";
-
+import Invitation from "./Invitation";
 
 const placesRef = collection(db, "places");
 const Invitations = () => {
@@ -26,7 +20,7 @@ const Invitations = () => {
     }
     setLoading(true)
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      console.log("querySnapshot invitations", querySnapshot)
+      // console.log("querySnapshot invitations", querySnapshot)
       let list = []
       querySnapshot.forEach(async (snap) => {
         let d = snap.data()
@@ -47,22 +41,9 @@ const Invitations = () => {
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
           <h2>초대장이 도착했어요 💌</h2>
-          {list.map(el => <>
-            <Card sx={{ minWidth: 250, textAlign:'left' }}>
-              <CardContent>
-                <Typography gutterBottom>
-                  <Link to={`/place/${el.id}`}>{el.name}</Link>
-                </Typography>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" >
-                  ⌛ 최대 청소 주기: {el.days}일
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">초대 수략하기</Button>
-                <Button size="small">거절하기</Button>
-              </CardActions>
-            </Card>
-          </>)}
+          {list.map((el,i) => <div key="i">
+            <Invitation data={ el }/>
+          </div>)}
         </div>
       </div>
   </Stack>

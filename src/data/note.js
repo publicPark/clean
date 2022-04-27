@@ -1,7 +1,7 @@
 export const note = [
   {
-    title: '최근 업데이트', // 20
-    content: '박수치기'
+    title: 'April, 2022', // 20
+    content: '박수치기, 초대하기'
   },
   {
     title: '17, April, 2022',

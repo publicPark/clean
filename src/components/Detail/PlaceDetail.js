@@ -20,7 +20,6 @@ const PlaceDetail = ({ currentUser, now }) => {
   const {id} = useParams() 
   const [place, setPlace] = useState()
   const [loading, setLoading] = useState(true)
-  const [showCode, setShowCode] = useState(false)
   const { loading: loadingPlace, getout } = usePlace(id)
 
   const [userMap, setUserMap] = useState()
@@ -35,10 +34,6 @@ const PlaceDetail = ({ currentUser, now }) => {
     setUserMap(obj)
   }
 
-  const onShowCode = () => {
-    navigator.clipboard.writeText(id)
-    setShowCode((cur)=>!cur)
-  }
 
   useEffect(() => {
     const docRef = doc(db, "places", id);
@@ -91,17 +86,6 @@ const PlaceDetail = ({ currentUser, now }) => {
                 <div>
                   <div className={styles.Label}> 멤버들: </div>
                   { userMap && <Members members={place.members} userMap={userMap} /> }
-                </div>
-
-                <div>
-                  <code className={styles.Label} onClick={onShowCode}>
-                    {showCode ?
-                      <>
-                        <span>Copied! </span><span className={styles.Code}>{id}</span>
-                      </>
-                      : <span>Code?</span>
-                    }
-                  </code>
                 </div>
                 
                 {currentUser &&
