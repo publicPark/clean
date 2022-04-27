@@ -118,7 +118,7 @@ const Voices = ({ type = "all" }) => {
                 onChange={ (e)=>setSay(e.target.value) }
               />
             </div>
-            <Button type="submit" variant="contained" sx={{mb:2}}
+            <Button type="submit" variant="contained" sx={{mb:2}} color="neutral"
               onClick={handleSay} disabled={loadingSubmit}
             >
               { myVoice?'이전 것은 지워지고 SAY' : 'SAY' }

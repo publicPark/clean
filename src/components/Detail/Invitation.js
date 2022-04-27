@@ -11,7 +11,11 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+
 import Users from "./Users";
+import getMobileOS from '../../apis/getMobileOS'
+const os = getMobileOS()
 
 const userRef = collection(db, "users")
 
@@ -60,46 +64,61 @@ const Invitation = () => {
 
   return <>
     <Stack
-      direction="row"
+      direction="column"
       justifyContent="center"
       alignItems="center"
       spacing={2}
+      sx={{mt:2}}
     >
-    {!place && loadingPlace ? <CircularProgress sx={{ m: 2 }} color="primary" /> :
-      <Box sx={{ minWidth: 275, maxWidth: 360, p: 1 }}> { err ? { err } : place &&
-        <Card variant="outlined" sx={{ p: 2 }}>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {place.name}
-          </Typography>
-          <Typography variant="h5" component="div" sx={{ mb: 3 }}>
-            에 초대할 주민 이름을 입력하고 엔터 
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="flex-start"
-              alignItems="center"
-            >
-              <TextField id="user-search" label="정확한 이름이 좋아" variant="outlined" fullWidth
-              value={searchText} onChange={(e)=>setSearchText(e.target.value)}
-              />
-            </Stack>
-          </form>
-          
-          <Typography
-            color="text.secondary"
-            component="div" sx={{ mt:2, p:1 }}
-          >
-            {msg}
-          </Typography>
-          {list && <Users users={list} place={place} />}
-        </Card>
+      <h1>초대하기는 지금 공사중</h1>
+      {place &&
+        <>
+          {(os === 'iOS' || os === 'Mac') &&
+            <a href={`sms:&body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+              <Button variant="outlined" color="info">SMS 보내기</Button>
+            </a> 
+          }
+          {os === 'Android' &&
+            <a href={`sms:?body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+              <Button variant="outlined" color="info">SMS 보내기</Button>
+            </a> 
+          }
+        </>
       }
-      </Box>
-    }
+      {!place && loadingPlace ? <CircularProgress sx={{ m: 2 }} color="primary" /> :
+        <Box sx={{ minWidth: 275, maxWidth: 360, p: 1 }}> { err ? { err } : place &&
+          <Card variant="outlined" sx={{ p: 2 }}>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+              {place.name}
+            </Typography>
+            <Typography variant="h6" component="div" sx={{ mb: 3 }}>
+              초대할 주민 이름을 입력하고 엔터 
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent="flex-start"
+                alignItems="center"
+              >
+                <TextField id="user-search" label="정확한 이름이 좋아" variant="outlined" fullWidth
+                value={searchText} onChange={(e)=>setSearchText(e.target.value)}
+                />
+              </Stack>
+            </form>
+            
+            <Typography
+              color="text.secondary"
+              component="div" sx={{ mt:2, p:1 }}
+            >
+              {msg}
+            </Typography>
+            {list && <Users users={list} place={place} />}
+          </Card>
+        }
+        </Box>
+      }
     </Stack>
-    <h1>TEST 유저 이름 검색, 이메일로 보내기, SMS 보내기</h1>
   
   </>
 }

@@ -6,10 +6,6 @@ const usePlace = (id) => {
   const [loading, setLoading] = useState(false)
   const docRef = doc(db, "places", id);
 
-  const myInvitations = async (uid) => {
-    let q = query(docRef, where("members", "array-contains", uid));
-  }
-
   const getPlace = async () => {
     setLoading(true)
     const docSnap = await getDoc(docRef);
@@ -69,7 +65,7 @@ const usePlace = (id) => {
     setLoading(false)
   }
 
-  return { loading, getout, deletePlace, getPlace, invite, inviteCancel, myInvitations }
+  return { loading, getout, deletePlace, getPlace, invite, inviteCancel }
 }
 
 export default usePlace

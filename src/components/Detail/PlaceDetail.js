@@ -14,8 +14,6 @@ import format from 'date-fns/format';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import getMobileOS from '../../apis/getMobileOS'
-const os = getMobileOS()
 
 const PlaceDetail = ({ currentUser, now }) => {
   let navigate = useNavigate();
@@ -110,23 +108,16 @@ const PlaceDetail = ({ currentUser, now }) => {
                   (
                     !place.members.includes(currentUser.uid) &&
                     <Link to={ `/placejoin?code=${id}` }>
-                      <Button sx={{ m: 1 }} variant="contained" color="success">참가!</Button>
+                      <Button sx={{ m: 1 }} variant="contained" color="primary">참가하기! JOIN!</Button>
                     </Link>
                   ) 
                 }
                 
                 {currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
                   <>
-                    {(os === 'iOS' || os === 'Mac') &&
-                      <a href={`sms:&body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
-                        <Button variant="outlined" color="info">초대문자</Button>
-                      </a> 
-                    }
-                    {os === 'Android' &&
-                      <a href={`sms:?body=평화로운 청소마을입니다. ${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
-                        <Button variant="outlined" color="info">초대문자</Button>
-                      </a> 
-                    }
+                    <Link to={`/invite/${id}`}>
+                      <Button variant="outlined" color="info">초대하기</Button>
+                    </Link>
                     <Link to={`/placeform/${id}`}>
                       <Button sx={{ ml: 1 }} variant="outlined" color="neutral">수정하기</Button>
                     </Link>

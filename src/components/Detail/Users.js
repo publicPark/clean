@@ -72,21 +72,21 @@ const Users = ({ place, users }) => {
             />
             {place.members.includes(u.id) ?
               <Chip label="이미 멤버"
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, ml: 2 }}
                 disabled
                 onClick={() => handleClick(u, i)}
               />
               :
               !u.send ?
               <Chip label="초대장 보내기"
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, ml: 2 }}
                 color="primary"
                 disabled={ loadingPlace }
                 onClick={() => handleClick(u, i)}
               />
               :
               <Chip label="보내기 취소"
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, ml: 2 }}
                 disabled={ loadingPlace }
                 onClick={() => handleClickCancel(u, i)}
               />

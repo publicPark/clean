@@ -4,6 +4,7 @@ import Places from "./Places";
 import Voices from "./Voices";
 import { useAuth } from "../../contexts/AuthContext";
 import Clock from './Clock';
+import Invitations from './Invitations';
 
 const Dashboard = ({ }) => {
   const { currentUser } = useAuth()
@@ -18,6 +19,8 @@ const Dashboard = ({ }) => {
           </div>
         </div>
       }
+      
+      {currentUser && <Invitations /> }
       
       <Places />
 

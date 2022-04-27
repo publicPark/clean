@@ -41,7 +41,7 @@ const Profile = () => {
             <Avatar alt={currentUser.displayName} src={currentUser.photoURL} />
           </IconButton>
           :
-          <Button variant="contained" onClick={handleOpenUserMenu} color="success">클릭!</Button>
+          <Button variant="contained" onClick={handleOpenUserMenu} color="primary">클릭! CLICK!</Button>
         }
       </Tooltip>
         

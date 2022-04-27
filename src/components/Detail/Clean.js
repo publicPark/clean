@@ -138,7 +138,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               }
             </div>
           </div>
-          <div className={styles.MarginTop}>
+          <div className={`${styles.MarginTop} ${styles.Dates}`}>
             <div className={styles.Blur}>
               cleaned <b>{data.theday }</b>
             </div>
