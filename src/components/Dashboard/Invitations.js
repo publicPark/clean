@@ -36,17 +36,16 @@ const Invitations = () => {
     return () => unsubscribe()
   },[])
   return ( list && list.length>0 &&
-    
-    <Stack spacing={1}>
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <h2>초대장이 도착했어요 💌</h2>
+    <div className={stylesPaper.Wrapper}>
+      <div className={stylesPaper.Content}>
+        <h2>초대장이 도착했어요 💌</h2>
+        <Stack spacing={1}>
           {list.map((el,i) => <div key="i">
             <Invitation data={ el }/>
           </div>)}
-        </div>
+        </Stack>
       </div>
-  </Stack>
+    </div>
   )
 }
 

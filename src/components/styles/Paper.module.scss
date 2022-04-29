@@ -19,6 +19,9 @@
   transition: 0.3s;
   text-align: center;
   word-break: keep-all;
+  > div {
+    position: relative;
+  }
 }
 .WrapperWide {
   max-width: 100%;

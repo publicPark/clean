@@ -1,5 +1,7 @@
 import { db } from '../firebase'
-import { doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore";
+import {
+  doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, getDoc,
+} from "firebase/firestore";
 import { useState } from 'react';
 
 const useClean = () => {

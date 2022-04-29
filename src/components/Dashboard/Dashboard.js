@@ -5,6 +5,7 @@ import Voices from "./Voices";
 import { useAuth } from "../../contexts/AuthContext";
 import Clock from './Clock';
 import Invitations from './Invitations';
+import NewPlaces from './NewPlaces';
 
 const Dashboard = ({ }) => {
   const { currentUser } = useAuth()
@@ -23,6 +24,7 @@ const Dashboard = ({ }) => {
       {currentUser && <Invitations /> }
       
       <Places />
+      <NewPlaces />
 
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>

@@ -69,9 +69,8 @@ const Places = () => {
         d.myDies = true
         newList[i].howmany = howmany
       } else {
-        newList[i].howmany = 1000 + howmany // 내꺼 아니면 제일 나중 순위
+        newList[i].howmany = 10000 + howmany // 내꺼 아니면 제일 나중 순위
       }
-
       newList[i].clean = d
     }
 
@@ -100,7 +99,7 @@ const Places = () => {
     <>
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
-          <h2 className={styles.Flex}>{!currentUser ? '남의 구역' : '내 구역들'}
+          <h2 className={styles.Flex}>{!currentUser ? '남의 청소 구역' : '내 청소 구역들'}
             <IconButton sx={{ ml: 1 }}
               aria-label="show" onClick={() => setShowButton((cur) => !cur)}>
               {showButton ? <CloseIcon /> : <AddIcon />}
@@ -110,16 +109,17 @@ const Places = () => {
             <CircularProgress color="primary" />
             :
             <>
-              <div>
-                {showButton && <PlaceButtons list={list} />}
-              </div>
+              {showButton && <PlaceButtons list={list} />}
               {list.length >= maxCount && `최대 ${maxCount}개 표시됩니`}
               {list.length >= maxCount && <Link to='/profile'>더..</Link>}
             </>
           }
         </div>
         {list.length > 0 && 
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <List sx={{
+            width: '100%', maxWidth: 360,
+            bgcolor: 'background.paper'
+          }}>
             {list.map((p, i) => <div key={i}>
               <Box sx={{ p:1 }}>
                 <div className={`${styles.Space}`}>

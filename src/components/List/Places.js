@@ -75,7 +75,6 @@ const Places = () => {
                   </Link>
                   { p.test && ' (public)' }
                 </div>
-                <LastClean place={p} index={i} sorted={true} />
               </div>
             </ListItem>
             { i<list.length-1 && <Divider component="li" />}

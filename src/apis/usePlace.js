@@ -1,11 +1,33 @@
 import { db } from '../firebase'
-import { doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove, getDoc, arrayUnion } from "firebase/firestore";
+import {
+  doc, deleteDoc, updateDoc, where, query, collection, getDocs, arrayRemove, getDoc, arrayUnion,
+  orderBy, limit
+} from "firebase/firestore";
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const usePlace = () => {
   const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
+
+  // 이 장소의 마지막 clean
+  const getLastClean = async (placeId) => {
+    const q = query(collection(db, "cleans"),
+      where("where", "==", placeId),
+      orderBy("date", "desc"),
+      orderBy("created", "desc"),
+      limit(1)
+    );
+    setLoading(true)
+    const snapshots = await getDocs(q);
+    let data;
+    await snapshots.forEach((doc) => {
+      // console.log(`CLEAN: ${doc.id} => ${doc.data()}`);
+      data = {id:doc.id, ...doc.data()}
+    });
+    setLoading(false)
+    return data
+  }
 
   // 초대 수락
   const inviOk = async (id) => {
@@ -97,6 +119,7 @@ const usePlace = () => {
     loading, getout, deletePlace, getPlace,
     invite, inviteCancel,
     inviOk, inviNo,
+    getLastClean
   }
 }
 

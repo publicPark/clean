@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react"
+import { useAuth } from '../../contexts/AuthContext';
+
 import usePlace from '../../apis/usePlace';
 
 import Card from '@mui/material/Card';
@@ -7,31 +10,29 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
 
-const Invitation = ({ data }) => {
-  const { loading: loadingPlace, inviOk, inviNo } = usePlace(data.id)
+const PlaceSimple = ({ place }) => {
+  const { loading: loadingPlace } = usePlace(place.id)
+  const handleYeah = () => {
 
-  const handleOk = () => {
-    inviOk(data.id)
   }
 
-  const handleNo = () => {
-    inviNo(data.id)
-  }
+  useEffect(() => {
+    // 라스트 이벤트 가져올거임
+    
+  }, [])
 
   return (
     <Card sx={{ minWidth: 250, textAlign:'left' }}>
       <CardContent>
         <Typography gutterBottom>
-          <Link to={`/place/${data.id}`}>{data.name}</Link>
+          <Link to={`/place/${place.id}`}>{place.name}</Link>
         </Typography>
         <Typography sx={{ fontSize: 14, mb: 1.5 }} color="text.secondary" >
-          ⌛ 최대 청소 주기: {data.days}일
+          ⌛ 최대 청소 주기: {place.days}일
         </Typography>
-        {data.test && 
+        {place.test && 
           <Typography variant="body2">
             공개 구역입니다
-            <br />
-            수락 거절은 님의 자유입니다
           </Typography>
         }
       </CardContent>
@@ -39,8 +40,7 @@ const Invitation = ({ data }) => {
         {loadingPlace ? '...'
           :
           <> 
-            <Button size="small" onClick={ handleOk }>초대 수락하기</Button>
-            <Button size="small" onClick={handleNo}>거절하기</Button>
+            <Button size="small" onClick={ handleYeah }>청소했어요!</Button>
           </>
         }
       </CardActions>
@@ -48,4 +48,4 @@ const Invitation = ({ data }) => {
   )
 }
 
-export default Invitation
+export default PlaceSimple
