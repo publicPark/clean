@@ -45,14 +45,30 @@ const NewPlaces = () => {
       // console.log("querySnapshot2", querySnapshot)
       let list = []
       snapshot.forEach(async (snap) => {
-        let d = snap.data()
-        list.push({ ...d, id: snap.id })
+        let pl = snap.data() // 구역
+
+        // 마지막 청소
+        const cl = await getLastClean(snap.id)
+        if (cl) { // 청소가 없을 수도 있어
+          const { howmany, doomsday } = getDoomsday(new Date(cl.date.seconds * 1000), pl.days)
+          pl.doomsday = doomsday
+          pl.howmany = howmany
+          if (currentUser && cl.next === currentUser.uid) { // 내 차례일때
+            pl.myDies = true
+            pl.sort = howmany
+          } else {
+            pl.sort = 10000 + howmany // 내꺼 아니면 제일 나중 순위
+          }
+        }
+        list.push({ ...pl, id: snap.id, lastClean: cl || {} })
+        
         if (snapshot.size === list.length) {
-          const res = await getLastClean(snap.id)
-          console.log("real res", res)
           // 정렬
-          
-          setList(list)
+          list.sort((a, b) => { 
+            return a.sort - b.sort
+          })
+          setList(list.slice(0, maxCount))
+          // setList(list)
           setLoading(false)
         }
       });
@@ -68,7 +84,7 @@ const NewPlaces = () => {
     <>
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
-          <h2 className={styles.Flex}>⭐ {!currentUser ? '남의 청소 🧹 구역' : '내 청소 🧹 구역들'}
+          <h2 className={styles.Flex}>{!currentUser ? '남의 청소 구역' : '내 청소 구역들'}
             <IconButton sx={{ ml: 1 }}
               aria-label="show" onClick={() => setShowButton((cur) => !cur)}>
               {showButton ? <CloseIcon /> : <AddIcon />}
@@ -79,10 +95,8 @@ const NewPlaces = () => {
             :
             <>
               {showButton && <div><PlaceButtons list={list} /></div>}
-              <div>
-                {list.length >= maxCount && `최대 ${maxCount}개 표시됩니..`}
-                {list.length >= maxCount && <Link to='/profile'>더..</Link>}
-              </div>
+              {list.length >= maxCount && `최대 ${maxCount}개 표시됩니..`}
+              {list.length >= maxCount && <Link to='/profile'>더..</Link>}
             </>
           }
         </div>

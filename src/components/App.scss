@@ -30,6 +30,7 @@
 }
 
 .App {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   background-color: transparent;
   // background-attachment: fixed; // 모바일에서 안됨
   color: var(--text-color);
@@ -57,22 +58,6 @@
   --accent3: #00e676;
   .Back {
     background-image: url(../assets/lu.png);
-  }
-}
-
-button {
-  cursor: pointer;
-  border-radius: 0;
-  padding: 0.5em;
-  border: 2px solid var(--bg);
-  background-color: var(--text-color);
-  color: var(--bg);
-  transition: 0.3s;
-  &:hover {
-    // border: 2px solid var(--accent);
-    background-color: var(--accent);
-    color: var(--accent-opposite);
-    font-weight: bold;
   }
 }
 

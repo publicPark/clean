@@ -19,7 +19,7 @@ const Invitation = ({ data }) => {
   }
 
   return (
-    <Card sx={{ minWidth: 250, textAlign:'left' }}>
+    <Card sx={{ minWidth: 250, textAlign: 'left' }} elevation={ 2 } >
       <CardContent>
         <Typography gutterBottom>
           <Link to={`/place/${data.id}`}>{data.name}</Link>

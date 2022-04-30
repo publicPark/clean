@@ -75,20 +75,20 @@ const Dies = ({ clean, place }) => {
               <b>{ currentUser && data.next === currentUser.uid && '(나)'}</b>
               <span className={styles.Blur}>'s 차례 </span>
             </div>
-              {data.howmany === 0 &&
-                <>
-                  <Chip sx={{ mr: 1, mb: 1, mt: 1 }} label={`🚨 오늘 당장!`} color="error" />
-                </>
-              }
+            {data.howmany === 0 &&
+              <>
+                <Chip sx={{ mr: 1, mb: 1, mt: 1 }} label={`🚨 오늘 당장!`} color="error" />
+              </>
+            }
             {data.howmany > 0 &&
-              <Chip sx={{ mr: 1, mb: 1, mt: 1 }}
-                label={data.howmany > 3 ? `😎 ${data.howmany}일 남음` : `😨 ${data.howmany}일 남음`}
-                color={data.howmany > 3 ? "success" : "warning"}
-                />
-              }
-              {data.howmany < 0 &&
-                <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `💩 ${data.howmany * -1}일 지남` } color="error" />
-              }
+            <Chip sx={{ mr: 1, mb: 1, mt: 1 }}
+              label={data.howmany > 3 ? `😎 ${data.howmany}일 남음` : `😨 ${data.howmany}일 남음`}
+              color={data.howmany > 3 ? "success" : "warning"}
+              />
+            }
+            {data.howmany < 0 &&
+              <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `💩 ${data.howmany * -1}일 지남` } color="error" />
+            }
           </div>
           <div>
             <b className={styles.ColorAccent}>☄️ Dies irae:</b>

@@ -6,7 +6,7 @@ import { getDocs, doc, onSnapshot, query, where, collection } from "firebase/fir
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from 'react-router';
 import Members from './Members';
-import Voices from "../Dashboard/Voices";
+import Voices from "../List/Voices";
 import Cleans from './Cleans';
 import usePlace from '../../apis/usePlace';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';

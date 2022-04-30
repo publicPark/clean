@@ -109,8 +109,8 @@ const Places = () => {
             <CircularProgress color="primary" />
             :
             <>
-              {showButton && <PlaceButtons list={list} />}
-              {list.length >= maxCount && `최대 ${maxCount}개 표시됩니`}
+              {showButton && <div><PlaceButtons list={list} /></div>}
+              {list.length >= maxCount && `최대 ${maxCount}개 표시됩니..`}
               {list.length >= maxCount && <Link to='/profile'>더..</Link>}
             </>
           }

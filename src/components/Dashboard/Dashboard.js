@@ -1,7 +1,7 @@
 import stylesPaper from '../styles/Paper.module.scss'
 import News from "./News";
 import Places from "./Places";
-import Voices from "./Voices";
+import Voices from "../List/Voices";
 import { useAuth } from "../../contexts/AuthContext";
 import Clock from './Clock';
 import Invitations from './Invitations';
@@ -23,7 +23,7 @@ const Dashboard = ({ }) => {
       
       {currentUser && <Invitations /> }
       
-      <Places />
+      {/* <Places /> */}
       <NewPlaces />
 
       <div className={stylesPaper.Wrapper}>
