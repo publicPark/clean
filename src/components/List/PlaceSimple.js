@@ -46,7 +46,7 @@ const PlaceSimple = ({ place }) => {
             <Link to={`/place/${place.id}`}>{place.name}</Link>
           </Typography>
 
-          <Typography sx={{ fontSize: 14, mb: 1.5 }}>
+          <Typography sx={{ fontSize: 15, mb: 1.5 }}>
             <span className="accent">
               ☄️ Dies irae: 
             </span> <b>{format(place.doomsday, "yyyy-MM-dd")}</b> <span className="blur">{format(place.doomsday, "HH:mm:ss")}</span>
@@ -61,7 +61,7 @@ const PlaceSimple = ({ place }) => {
             justifyContent="space-between"
             alignItems="center"
             spacing={2}
-            variant="body2" sx={{ fontSize:14, flexWrap:'wrap' }}
+            variant="body2" sx={{ fontSize:15, flexWrap:'wrap' }}
           >
             <div>
               {place.myDies && <b className="accent3">내 차례 </b>}
