@@ -14,6 +14,8 @@ import format from 'date-fns/format';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Description from './Description';
+import { Box } from '@mui/system';
 
 const PlaceDetail = ({ currentUser, now }) => {
   let navigate = useNavigate();
@@ -71,20 +73,23 @@ const PlaceDetail = ({ currentUser, now }) => {
                 <div className={ styles.Title }>{place.name}</div>
                 
                 <div>
-                  <div className={styles.Label}>멤버들에게 알립니다: </div>
-                  <div className={styles.Paper}>
+                  <div className={styles.Label}>구역의 공지사항 </div>
+                  <Box sx={{mt:1}}>
+                    <Description description={place.description}/>
+                  </Box>
+                  {/* <div className={styles.Paper}>
                     {place.description}
-                  </div>
+                  </div> */}
                 </div>
-                <div><span className={styles.Label}>⌛ 최대 청소 주기(제한 기간): </span><b>{place.days}</b>일<br /></div>
+                <div><span className={styles.Label}>⏳ 최대 청소 주기(제한 기간) <br/></span><b>{place.days}</b>일<br /></div>
                 <div>
-                  <div className={styles.Label}>지났을 때 벌칙: </div>
+                  <div className={styles.Label}>지났을 때 벌칙 </div>
                   <div className={styles.Penalty}>
                     {place.penalty}
                   </div>
                 </div>
                 <div>
-                  <div className={styles.Label}> 멤버들: </div>
+                  <div className={styles.Label}>멤버들 </div>
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
                 

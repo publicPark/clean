@@ -87,7 +87,7 @@ const Dies = ({ clean, place }) => {
               />
             }
             {data.howmany < 0 &&
-              <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `💩 ${data.howmany * -1}일 지남` } color="error" />
+              <Chip sx={{ mr:1, mb:1, mt:1 }} label={ `⌛ ${data.howmany * -1}일 지남` } color="error" />
             }
           </div>
           <div>

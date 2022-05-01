@@ -1,10 +1,12 @@
-import { useEffect, useState, forwardRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import styles from './CleanForm.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, addDoc, onSnapshot, doc, getDocs, query, where, orderBy, limit } from "firebase/firestore"; 
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore"; 
+import Alerts from './Alerts'
 
+import usePlace from "../../apis/usePlace";
 import endOfDay from 'date-fns/endOfDay'
 import format from 'date-fns/format'
 import differenceInDays from 'date-fns/differenceInDays'
@@ -22,20 +24,16 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
-import Collapse from '@mui/material/Collapse';
-import MuiAlert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import useEmail from "../../apis/useEmail"
+import { Paper } from '@mui/material';
+import { Box } from '@mui/system';
+import Description from '../Detail/Description';
 
-
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const CleanForm = ({ currentUser }) => {
   let navigate = useNavigate();
   const { id } = useParams()
+  const { loading, getLastClean, getPlace } = usePlace()
   const [value, setValue] = useState(new Date());
   const [text, setText] = useState('');
   
@@ -47,14 +45,14 @@ const CleanForm = ({ currentUser }) => {
   const [judgement, setJudgement] = useState(0)
 
   const [pending, setPending] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const [err, setErr] = useState('');
-  const [err2, setErr2] = useState('');
-  const [err3, setErr3] = useState('');
 
   const [userMap, setUserMap] = useState()
   const { sendCleanNews } = useEmail()
+
+  const [errMsg, setErrMsg] = useState('')
+  const [warnMsg, setWarnMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
+  const [checked, setChecked] = useState(false)
   
   const getUsers = async (members) => {
     const q = query(collection(db, "users"), where('id', 'in', members))
@@ -79,6 +77,11 @@ const CleanForm = ({ currentUser }) => {
 
     if (!currentUser) {
       handleErr("안 돼요! 로그인 안 하면 구경만 가능!")
+      return
+    }
+
+    if (!checked) {
+      handleErr("구역의 공지사항을 확인했나요?")
       return
     }
 
@@ -126,51 +129,26 @@ const CleanForm = ({ currentUser }) => {
     }
   }
 
-  const getPlace = (id) => {
-    const docRef = doc(db, "places", id);
-    const unsubscribe = onSnapshot(docRef, (snap) => {
-      let d = snap.data()
-      d.id = snap.id
-      setPlace(d)
-      setPlayers(d.members)
-      getUsers(d.members)
-    },
-    (error) => {
-      console.log("querySnapshot", error)
-    });
-    return unsubscribe
+  const initClean = async () => {
+    const d= await getPlace(id)
+    setPlace(d)
+    setPlayers(d.members)
+    getUsers(d.members)
+    const cl = await getLastClean(id)
+    setClean(cl)
   }
-
-  const getLastClean = async (id) => {
-    const q = query(collection(db, "cleans"),
-      where("where", "==", id),
-      orderBy("date", "desc"),
-      orderBy("created", "desc"),
-      limit(1)
-    );
-    setLoading(true)
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // console.log(`CLEAN: ${doc.id} => ${doc.data()}`);
-      const data = doc.data()
-      setClean(data)
-    });
-    setLoading(false)
-  }
-
+  
   //
   useEffect(() => {
-    const unsub = getPlace(id)
-    getLastClean(id)
-    return () => unsub()
-  }, [id])
+    initClean(id)
+  }, [])
 
   useEffect(() => {
     if (currentUser && place && !place.members.includes(currentUser.uid)){
-      setErr3("당신은 멤버가 아닌데 청소를 하신다고요? 막지 않겠어요.")
+      setSuccessMsg("당신은 멤버가 아닌데 청소를 하신다고요? 막지 않겠어요.")
     }
     if (currentUser && clean && clean.next !== currentUser.uid) {
-      setErr3("당신은 차례가 아닌데 청소를 하신다고요? 청소 애호가!")
+      setSuccessMsg("당신은 차례가 아닌데 청소를 하신다고요? 청소 애호가!")
     }
   }, [currentUser, place, clean])
 
@@ -187,9 +165,9 @@ const CleanForm = ({ currentUser }) => {
 
     if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
       let msg = '청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요!'
-      setErr2(msg);
+      setWarnMsg(msg);
     } else {
-      setErr2('')
+      setWarnMsg('')
     }
   }, [value, place, clean])
 
@@ -205,24 +183,11 @@ const CleanForm = ({ currentUser }) => {
   }
 
   const handleErr = (msg) => {
-    setErr(msg);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setErr('');
+    setErrMsg(msg);
   };
   
   return (
     <div className={`${stylesPaper.Wrapper} ${stylesPaper.WrapperWide}`}>
-      {/* <Snackbar open={err?true:false} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-          {err}
-        </Alert>
-      </Snackbar> */}
       <div className={stylesPaper.Content}>
         <form className={styles.Form} onSubmit={ onSubmit }>
           <div className={styles.Title}>
@@ -243,6 +208,12 @@ const CleanForm = ({ currentUser }) => {
             </LocalizationProvider>
           </div>
 
+          {place && <Description
+            description={place.description}
+            checked={checked}
+            handleChange={ (e)=>setChecked(e.target.checked) }
+          />}
+          
           <div className={styles.Row}>
             <TextField id="outlined-text" label="메모" variant="outlined"
             value={text} onChange={handleChangeText}/>
@@ -300,65 +271,10 @@ const CleanForm = ({ currentUser }) => {
                 </FormControl>
               </div>
 
-
-              <div>
-                <Collapse in={err?true:false} className={ styles.Inline }>
-                  <Alert variant="filled" severity="error"
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                          setErr('');
-                        }}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                  >{ err }</Alert>
-                </Collapse>
-              </div>
-              <div>
-                <Collapse in={err2?true:false} className={ styles.Inline }>
-                  <Alert variant="filled" severity="warning"
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                          setErr2('');
-                        }}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                  >{ err2 }</Alert>
-                </Collapse>
-              </div>
-
-              <div>
-                <Collapse in={err3?true:false} className={ styles.Inline }>
-                  <Alert variant="filled" severity="success"
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                          setErr3('');
-                        }}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                  >{ err3 }</Alert>
-                </Collapse>
-              </div>
+              <Alerts
+                errMsg={errMsg} warnMsg={warnMsg} successMsg={successMsg}
+                setErrMsg={setErrMsg} setWarnMsg={setWarnMsg} setSuccessMsg={setSuccessMsg}
+              />
               
               {pending ?
                 <LoadingButton loading variant="contained">

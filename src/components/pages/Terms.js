@@ -62,7 +62,7 @@ const list = [
     ]
   },
   {
-    title: '⌛ 최대 청소 주기(제한 기간)',
+    title: '⏳ 최대 청소 주기(제한 기간)',
     content: '내 차례가 되면 이 기간 안에 청소하면 된다.\n여유를 부려도 좋으나 시간은 흐른다. \n째깍째깍\n',
     // iframe: <iframe width="560" height="315" src="https://www.youtube.com/embed/O2IuJPh6h_A?start=57" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     iframe: [

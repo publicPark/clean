@@ -163,7 +163,7 @@ const PlaceForm = ({ currentUser }) => {
                     value={text} onChange={(e) => { setText(e.target.value )}}/>
                   </div>
 
-                  <div className={styles.Label}>멤버들에게 알립니다</div>
+                  <div className={styles.Label}>구역의 공지사항</div>
                   <div className={styles.Row}>
                     <TextareaAutosize className={styles.Textarea}
                       aria-label="Rules"
@@ -183,7 +183,7 @@ const PlaceForm = ({ currentUser }) => {
                   <TextField
                     value={days} onChange={handleChangeDays}
                     id="outlined-number"
-                    label="⌛ 최대 청소 주기(제한 기간)"
+                    label="⏳ 최대 청소 주기(제한 기간)"
                     placeholder='default: 14'
                     type="number"
                     InputLabelProps={{
@@ -237,7 +237,9 @@ const PlaceForm = ({ currentUser }) => {
                       <Divider variant="middle" />
                     </div>
                     <div className={ styles.FormGroup }>
-                      <div>영원히 삭제하려면 입력하세요. <span className={styles.Italic}>{place.name}</span> </div>
+                    <div>영원히 삭제하려면 입력하세요<br />
+                      <span className={styles.Italic}>{place.name}</span>
+                    </div>
                       <div>
                         <TextField 
                         value={textForDelete} onChange={handleChangeTextForDelete}

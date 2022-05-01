@@ -25,7 +25,6 @@ const maxCount = 4
 const NewPlaces = () => {
   const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [sorted, setSorted] = useState(false)
   const [list, setList] = useState([])
   const [showButton, setShowButton] = useState(false)
   const { getLastClean } = usePlace()

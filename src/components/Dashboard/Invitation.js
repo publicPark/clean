@@ -22,10 +22,10 @@ const Invitation = ({ data }) => {
     <Card sx={{ minWidth: 250, textAlign: 'left' }} elevation={ 2 } >
       <CardContent>
         <Typography gutterBottom>
-          <Link to={`/place/${data.id}`}>{data.name}</Link>
+          <Link to={`/place/${data.id}`}><b>{data.name}</b></Link>
         </Typography>
         <Typography sx={{ fontSize: 14, mb: 1.5 }} color="text.secondary" >
-          ⌛ 최대 청소 주기: {data.days}일
+          ⏳ 최대 청소 주기: {data.days}일
         </Typography>
         {data.test && 
           <Typography variant="body2">
