@@ -30,8 +30,10 @@ const PlaceSimple = ({ place }) => {
   }
 
   useEffect(() => {
-    // console.log("place simple", place)
-    formatData()
+    if (place.lastClean) {
+      // console.log("last", place.lastClean)
+      formatData()
+    }
   }, [])
 
   const handleClick = () => {
@@ -46,7 +48,7 @@ const PlaceSimple = ({ place }) => {
             <Link to={`/place/${place.id}`}><b>{place.name}</b></Link>
           </Typography>
 
-          {data && 
+          {data?
             <>
               <Typography sx={{ fontSize: 15, mb: 1.5 }}>
                 <span className="accent">
@@ -110,17 +112,23 @@ const PlaceSimple = ({ place }) => {
                 </div>
               </Stack>  
             </>
+            :
+            <>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" >
+                청소한 적이 없음
+              </Typography>
+            </>
           }
           
         </CardContent>
       </CardActionArea>
-      {/* <CardActions>
-        {place.myDies &&
-          <Link to={`/cleaned/${place.id}`}>
-            <Button size="small">청소했어!</Button>
-          </Link>
-        }
-      </CardActions> */}
+      {place.myDies &&
+        <CardActions>
+            <Link to={`/cleaned/${place.id}`}>
+              <Button size="small">청소했어!</Button>
+            </Link>
+        </CardActions>
+      }
     </Card>
   )
 }

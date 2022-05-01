@@ -58,8 +58,10 @@ const NewPlaces = () => {
           } else {
             pl.sort = 10000 + howmany // 내꺼 아니면 제일 나중 순위
           }
+        } else {
+          pl.sort = 0 // 청소 없을 때
         }
-        list.push({ ...pl, id: snap.id, lastClean: cl || {} })
+        list.push({ ...pl, id: snap.id, lastClean: cl })
         
         if (snapshot.size === list.length) {
           // 정렬

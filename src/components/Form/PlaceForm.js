@@ -131,7 +131,7 @@ const PlaceForm = ({ currentUser }) => {
   const handleDelete = async () => {
     if (amIFirst) {
       if (window.confirm("Do you really want to delete?")) {
-        await deletePlace(place.id)
+        await deletePlace(id)
         navigate("/", { replace: true });
       }
     } else {
