@@ -73,7 +73,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                 <div className={ styles.Title }>{place.name}</div>
                 
                 <div>
-                  <div className={styles.Label}>구역의 공지사항 </div>
+                  <div className={styles.Label}>⭐ 구역의 공지사항 </div>
                   <Box sx={{mt:1}}>
                     <Description description={place.description}/>
                   </Box>
@@ -81,7 +81,9 @@ const PlaceDetail = ({ currentUser, now }) => {
                     {place.description}
                   </div> */}
                 </div>
-                <div><span className={styles.Label}>⏳ 최대 청소 주기(제한 기간) <br/></span><b>{place.days}</b>일<br /></div>
+                <div>
+                  <span className={styles.Label}>⏳ 최대 청소 주기(제한 기간) <br /></span><b>{place.days}</b>일
+                </div>
                 <div>
                   <div className={styles.Label}>지났을 때 벌칙 </div>
                   <div className={styles.Penalty}>
@@ -131,13 +133,11 @@ const PlaceDetail = ({ currentUser, now }) => {
 
       {place && 
         <div className={stylesPaper.Wrapper}>
-          <div className={stylesPaper.Content}>
-            <div className={ styles.Buttons }>
-              <Link to={`/cleaned/${id}`}>
-                <Button variant="contained">청소했어! I've cleaned</Button>
-              </Link>
-            </div>
-          </div>
+          <Box sx={{pt:4, pb:3}}>
+            <Link to={`/cleaned/${id}`}>
+              <Button variant="contained">청소했어! I've cleaned</Button>
+            </Link>
+          </Box>
           <div className={styles.List}>
             {place && <Cleans place={{ ...place, id: id }} now={now} userMap={userMap} />}
           </div>

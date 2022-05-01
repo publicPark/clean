@@ -50,10 +50,10 @@ const NewPlaces = () => {
         const cl = await getLastClean(snap.id)
         if (cl) { // 청소가 없을 수도 있어
           const { howmany, doomsday } = getDoomsday(new Date(cl.date.seconds * 1000), pl.days)
-          pl.doomsday = doomsday
-          pl.howmany = howmany
+          cl.doomsday = doomsday
+          cl.howmany = howmany
           if (currentUser && cl.next === currentUser.uid) { // 내 차례일때
-            pl.myDies = true
+            cl.myDies = true
             pl.sort = howmany
           } else {
             pl.sort = 10000 + howmany // 내꺼 아니면 제일 나중 순위

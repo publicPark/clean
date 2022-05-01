@@ -12,14 +12,8 @@ import { useSearchParams } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Collapse from '@mui/material/Collapse';
-import MuiAlert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import Alerts from './Alerts';
 
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const JoinForm = () => {
   const { currentUser } = useAuth()
@@ -50,7 +44,7 @@ const JoinForm = () => {
     setLoading(false)
     if (docSnap.exists()) {
       let data = docSnap.data()
-      console.log("Document data:", data);
+      // console.log("Document data:", data);
       let isIn = false
       for (let i = 0; i < data.members.length; i++){
         if (data.members[i] === currentUser.uid) { // 이미 있으면
@@ -94,26 +88,7 @@ const JoinForm = () => {
           </div>
           }
           <div>
-            <Collapse in={err?true:false} className={ styles.Inline }>
-              {/* <Alert variant="filled" severity="error">
-                {err}
-              </Alert> */}
-              <Alert variant="filled" severity="error"
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setErr('')
-                    }}
-                  >
-                    <CloseIcon fontSize="inherit" />
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >{ err }</Alert>
-            </Collapse>
+            <Alerts errMsg={ err } setErrMsg={setErr} />
           </div>
           {loading ?
             <LoadingButton loading variant="contained">

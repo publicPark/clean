@@ -110,7 +110,7 @@ const PlaceForm = ({ currentUser }) => {
     setLoadingData(false)
     if (docSnap.exists()) {
       let data = docSnap.data()
-      console.log("Document data:", data);
+      // console.log("Document data:", data);
       setText(data.name)
       setText2(data.description)
       setText3(data.penalty)
@@ -163,7 +163,7 @@ const PlaceForm = ({ currentUser }) => {
                     value={text} onChange={(e) => { setText(e.target.value )}}/>
                   </div>
 
-                  <div className={styles.Label}>구역의 공지사항</div>
+                  <div className={styles.Label}>⭐ 구역의 공지사항</div>
                   <div className={styles.Row}>
                     <TextareaAutosize className={styles.Textarea}
                       aria-label="Rules"

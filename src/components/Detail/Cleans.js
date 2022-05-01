@@ -3,16 +3,24 @@ import { db } from '../../firebase'
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore"; 
 import Clean from './Clean';
 import Dies from './Dies'
+import DiesIrae from "../Detail/DiesIrae";
 import styles from './Clean.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
+import { getDoomsday } from '../../apis/getDoomsday';
+import { useAuth } from '../../contexts/AuthContext';
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Stack } from '@mui/material';
+import { Box } from '@mui/system';
 
 const Cleans = ({ place, userMap }) => {
+  const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [cleans, setCleans] = useState()
   const [nextCursor, setNextCursor] = useState()
@@ -47,10 +55,18 @@ const Cleans = ({ place, userMap }) => {
     if (more) {
       arr = [...cleans]
     }
-    snapshots.forEach((doc) => {
-      const data = doc.data()
-      // console.log(`CLEANs: ${doc.id} => ${data}`);
-      arr.push({...data, id: doc.id})
+    snapshots.forEach(async (snap) => {
+      const data = snap.data()
+      // console.log(`CLEANs: ${snap.id} => ${data}`);
+      if (arr.length === 0) {
+        const { howmany, doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
+        data.doomsday = doomsday
+        data.howmany = howmany
+        if (currentUser && data.next === currentUser.uid) {
+          data.myDies = true
+        }
+      }
+      arr.push({...data, id: snap.id})
     });
     
     setLoading(false)
@@ -65,15 +81,22 @@ const Cleans = ({ place, userMap }) => {
     <>
       { cleans && cleans.length > 0 ?
         <>
+          {cleans && cleans.length && cleans[0] && 
+            <Box sx={{ p: 1, pt: 0}}>
+              {/* {place && <Dies clean={c} place={place} />} */}
+              {place &&
+                <Card sx={{ minWidth: 250, textAlign: 'left' }}
+                  elevation={3}>
+                  <CardContent>
+                    <DiesIrae place={place} data={cleans[0]} />
+                  </CardContent>    
+                </Card>
+              }
+            </Box>
+          }
+          
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
             {cleans.map((c, i) => <div key={i}>
-              {i === 0 && 
-                <>
-                  <ListItem>
-                  {place && <Dies clean={c} place={place} />}
-                  </ListItem> <Divider component="li" sx={{ mt:1 }} />
-                </>
-              }
               <ListItem alignItems="flex-start">
                 <div className={ styles.Wrapper }>
                   <Clean clean={c} place={place} getCleans={getCleans} index={i} userMap={ userMap }/>
