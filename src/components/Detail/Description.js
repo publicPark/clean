@@ -16,7 +16,7 @@ const Description = ({ description, checked, handleChange }) => {
           whiteSpace: 'pre-line',
           textAlign: 'left',
           p: 2,
-          fontSize: 14
+          fontSize: 15
         }}
         >
           {handleChange && 
