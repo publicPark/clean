@@ -11,6 +11,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
@@ -54,7 +56,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
       console.log(err)
     }
     
-    setMemo(clean.text)
+    setMemo(newData.text)
     setData(newData)
   }
   useEffect(() => {
@@ -104,8 +106,15 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           <div className={styles.FlexSpace}>
             {memoForm && !loadingClean ?
               <div className={styles.Flex}>
-                <TextField id="standard-memo" variant="standard"
+                {/* <TextField id="standard-memo" variant="standard"
                 value={memo} onChange={(e)=>{setMemo(e.target.value)}}
+                /> */}
+                <TextareaAutosize
+                  aria-label="좀 더 넓은 메모"
+                  minRows={3}
+                  placeholder="메모"
+                  style={{ width: 200, resize: 'none' }}
+                  value={memo} onChange={(e) => { setMemo(e.target.value) }}
                 />
                 {data.amIWriter && <>
                   <IconButton aria-label="delete" size="small"
@@ -122,11 +131,15 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 }
               </div>
               :
-              <div className={`${styles.Memo} ${data.amIWriter?styles.Pointer:undefined}`} 
+              <div
+                className={`${styles.Memo} ${data.amIWriter ? styles.Pointer : undefined}`} 
                 onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}>
-                <span className={ styles.Quot }>" </span>
-                <span className={ styles.Ital }>{data.text}</span>
-                <span className={ styles.Quot }> " </span>
+                
+                <Typography variant="body2" sx={{whiteSpace:'pre-line'}}>
+                  <span className='blur'>"</span>
+                  <i>{data.text}</i>
+                  <span className='blur'> "</span>
+                </Typography>
               </div>
             }
             <div>
@@ -191,7 +204,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               <div>
                 {data.claps && data.claps.map((clap, i) => currentUser && clap === currentUser.uid ?
                   <Tooltip key={i} title="나 자신의 손">
-                    <span className={styles.Pointer} onClick={() => handleClap(false)} >👏</span>
+                    <span className={styles.Pointer} onDoubleClick={() => handleClap(false)} >👏</span>
                   </Tooltip>
                   :
                   <Tooltip key={i} title={ userMap && userMap[clap] ? userMap[clap].name : '도망자💀'}>

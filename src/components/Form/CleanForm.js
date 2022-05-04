@@ -11,6 +11,8 @@ import endOfDay from 'date-fns/endOfDay'
 import format from 'date-fns/format'
 import differenceInDays from 'date-fns/differenceInDays'
 import addDays from 'date-fns/addDays'
+import useEmail from "../../apis/useEmail"
+import Description from '../Detail/Description';
 
 import TextField from '@mui/material/TextField';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -24,10 +26,9 @@ import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
-import useEmail from "../../apis/useEmail"
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Paper } from '@mui/material';
 import { Box } from '@mui/system';
-import Description from '../Detail/Description';
 
 
 const CleanForm = ({ currentUser }) => {
@@ -215,8 +216,15 @@ const CleanForm = ({ currentUser }) => {
           />}
           
           <div className={styles.Row}>
-            <TextField id="outlined-text" label="메모" variant="outlined"
-            value={text} onChange={handleChangeText}/>
+            {/* <TextField id="outlined-text" label="메모" variant="outlined"
+            value={text} onChange={handleChangeText}/> */}
+            <TextareaAutosize className={styles.Textarea}
+              aria-label="좀 더 넓은 메모"
+              minRows={3}
+              placeholder="메모"
+              style={{ width: 200, resize: 'none' }}
+              value={text} onChange={handleChangeText}
+            />
           </div>
           
           {loading ? <CircularProgress color="primary" /> : 
