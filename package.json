@@ -1,5 +1,6 @@
 {
   "name": "clean-relay",
+  "homepage": "https://publicPark.github.io/clean",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -50,6 +51,8 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-plugin-react": "^7.29.4",
     "gh-pages": "^3.2.3"
   }
 }
