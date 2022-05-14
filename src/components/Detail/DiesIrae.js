@@ -30,7 +30,7 @@ const DiesIrae = ({ place, data }) => {
       // console.log("last", place.lastClean)
       formatData()
     }
-  }, [])
+  }, [data])
 
   return (
     <>
@@ -38,10 +38,6 @@ const DiesIrae = ({ place, data }) => {
         <span className="accent">
           ☄️ Dies irae: 
         </span> <b>{str1}</b> <span className="blur">{str2}</span>
-      
-        {/* {place.howmany === 0 &&
-          <span className="accent"> { nowDistance }</span>
-        } */}
       </Typography>
 
       <Stack
