@@ -30,7 +30,7 @@ function Layout() {
         <BrowserDetect />
       </div>
       <Routes>
-        <Route path="*" element={ <Error /> } />
+        {/* <Route path="*" element={ <Error /> } /> */}
         <Route path="/" element={<Dashboard currentUser={currentUser} />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/about" element={<About />} />
