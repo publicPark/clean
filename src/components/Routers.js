@@ -11,18 +11,30 @@ import Terms from './pages/Terms';
 import Contact from './pages/Contact';
 import Dashboard from './Dashboard/Dashboard';
 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import CleanForm from './Form/CleanForm';
-import  { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/AuthContext'
+import { useEffect } from 'react';
+
+const titles = {
+  '/': '즐청: 즐거운 청소',
+  '/about': 'About 즐청',
+  '/notice': '즐청 Notice',
+  '/profile': 'My profile'
+}
 
 const Routers = () => {
   const { currentUser } = useAuth()
+  const location = useLocation()
+  useEffect(() => { document.title = titles[location.pathname] ?? '즐청' },
+    [location],
+  )
 
   return (
     <Routes>
       <Route path="/" element={<Dashboard currentUser={currentUser} />} />
       <Route path="/terms" element={<Terms />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/about" element={<About />} title='about' />
       <Route path="/contact" element={<Contact />} />
       <Route path="/test" element={<Test />} />
       <Route path="/notice" element={<Notice />} />

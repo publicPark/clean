@@ -45,6 +45,8 @@ const PlaceDetail = ({ currentUser, now }) => {
       if (d) {
         getUsers(d.members)
       }
+      // 타이틀 세팅
+      document.title = d.name
       setLoading(false)
     },
     (error) => {
