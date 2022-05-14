@@ -1,6 +1,6 @@
 import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, query, where, limit, orderBy, getDocs } from "firebase/firestore"; 
+import { collection, query, where, limit, orderBy, getDocs, startAfter } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import PlaceSimple from '../List/PlaceSimple';
 import Stack from '@mui/material/Stack';
