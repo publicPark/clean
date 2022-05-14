@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore"; 
 import Clean from './Clean';
-import Dies from './Dies'
 import DiesIrae from "../Detail/DiesIrae";
 import styles from './Clean.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
@@ -16,7 +15,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
 
 const Cleans = ({ place, userMap }) => {

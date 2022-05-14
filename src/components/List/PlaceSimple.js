@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DiesIrae from "../Detail/DiesIrae";
 
-const PlaceSimple = ({ place }) => {
+const PlaceSimple = ({ place, hideDies }) => {
   let navigate = useNavigate();
 
   const handleClick = () => {
@@ -27,12 +27,22 @@ const PlaceSimple = ({ place }) => {
             <Link to={`/place/${place.id}`}><b>{place.name}</b></Link>
           </Typography>
 
-          {place.lastClean?
-            <DiesIrae data={place.lastClean} place={place}/>
+          {!hideDies ? (
+              place.lastClean ?
+              <DiesIrae data={place.lastClean} place={place}/>
+              :
+              <>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" >
+                  청소한 적이 없음
+                </Typography>
+              </>
+            )
             :
             <>
               <Typography sx={{ fontSize: 14 }} color="text.secondary" >
-                청소한 적이 없음
+                {place.members.map((m, i) => {
+                  return i%2===0? '💃' : '🕺'
+                })}
               </Typography>
             </>
           }

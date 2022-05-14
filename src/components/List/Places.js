@@ -1,16 +1,14 @@
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import { Link } from "react-router-dom";
-import { useAuth } from '../../contexts/AuthContext';
-import LastClean from "../Dashboard/LastClean";
-
-import styles from '../styles/List.module.scss'
+import stylesPaper from '../styles/Paper.module.scss'
 import { db } from '../../firebase'
-import { collection, query, where, limit, startAfter, getDocs, orderBy } from "firebase/firestore"; 
+import { collection, query, where, limit, orderBy, getDocs } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import PlaceSimple from '../List/PlaceSimple';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+import { useAuth } from '../../contexts/AuthContext';
 
 const placesRef = collection(db, "places");
 
@@ -50,7 +48,6 @@ const Places = () => {
     }
     snapshots.forEach((doc) => {
       const data = doc.data()
-      // console.log(`CLEANs: ${doc.id} => ${data}`);
       arr.push({...data, id: doc.id})
     });
     
@@ -64,23 +61,15 @@ const Places = () => {
 
   return (
     <>
-      {list.length > 0 && 
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {list.map((p, i) => <div key={i}>
-            <ListItem alignItems="flex-start">
-              <div className={ styles.Space }>
-                <div>
-                  <Link to={`/place/${p.id}`} className={ styles.Title }>
-                    <b>{p.name}</b>
-                  </Link>
-                  { p.test && ' (public)' }
-                </div>
-              </div>
-            </ListItem>
-            { i<list.length-1 && <Divider component="li" />}
-          </div>)}
-        </List>
-      }
+      <div className={stylesPaper.Wrapper}>
+        <div>
+          <Stack spacing={1}>
+            {list.length > 0 && 
+              list.map((p, i) => <PlaceSimple key={i} place={p} hideDies={true} /> )
+            }
+          </Stack>
+        </div>
+      </div>
 
       {loading && <div><CircularProgress color="primary" sx={{mb:2}}/></div>}
       { nextCursor &&
