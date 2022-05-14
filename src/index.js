@@ -18,12 +18,12 @@ const Wrapper = ({children}) => {
 
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <Wrapper>
         <ThemeProvider>
           <App tab="home" />
         </ThemeProvider>
       </Wrapper>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
