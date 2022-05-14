@@ -1,6 +1,5 @@
 {
   "name": "clean-relay",
-  "homepage": "https://publicPark.github.io/clean",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
