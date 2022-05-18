@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Chip from '@mui/material/Chip';
-v
+
 const action = (
   <a href='https://kinclean.netlify.app/'>
     {/* <Button color="primary" size="small">
