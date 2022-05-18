@@ -33,7 +33,7 @@ const Invitees = ({ people=[] }) => {
   return people.length>0 && (  
     <>
       <Typography sx={{ fontSize: 13, pt: 3 }}>
-        초대 명단
+        📓 초대 명단
       </Typography>
       <AvatarGroup>
         {userMap && people.map((u) => {
