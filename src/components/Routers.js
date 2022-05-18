@@ -39,7 +39,7 @@ const Routers = () => {
       <Route path="/test" element={<Test />} />
       <Route path="/notice" element={<Notice />} />
       
-      <Route path="place/:id" element={<PlaceDetail currentUser={currentUser} />} />
+      <Route path="place/:id" element={<PlaceDetail />} />
       <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser} />} />
       <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
 

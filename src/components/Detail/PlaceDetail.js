@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router';
 import Members from './Members';
 import Voices from "../List/Voices";
 import Cleans from './Cleans';
-import usePlace from '../../apis/usePlace';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import format from 'date-fns/format';
 
@@ -16,14 +15,15 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Description from './Description';
 import { Box } from '@mui/system';
+import Buttons from './Buttons';
+import  { useAuth } from '../../contexts/AuthContext'
 
-const PlaceDetail = ({ currentUser, now }) => {
+const PlaceDetail = ({ }) => {
+  const { currentUser } = useAuth()
   let navigate = useNavigate();
   const {id} = useParams() 
   const [place, setPlace] = useState()
   const [loading, setLoading] = useState(true)
-  const { loading: loadingPlace, getout } = usePlace(id)
-
   const [userMap, setUserMap] = useState()
   
   const getUsers = async (members) => {
@@ -35,7 +35,6 @@ const PlaceDetail = ({ currentUser, now }) => {
     });
     setUserMap(obj)
   }
-
 
   useEffect(() => {
     const docRef = doc(db, "places", id);
@@ -54,16 +53,6 @@ const PlaceDetail = ({ currentUser, now }) => {
     });
     return () => unsubscribe() // 아놔..
   }, [])
-  
-  const handleGetOut = async () => {
-    if (window.confirm("Do you really want to get out? 다시 들어올 수 있어요.")) {
-      try {
-        await getout(id, currentUser.uid)
-      } catch (err) {
-        alert(err)
-      }
-    }
-  }
 
   return (
     <div className={stylesPaper.Flex}>
@@ -97,33 +86,7 @@ const PlaceDetail = ({ currentUser, now }) => {
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
                 
-                {currentUser &&
-                  (
-                    !place.members.includes(currentUser.uid) &&
-                    <Link to={ `/placejoin?code=${id}` }>
-                      <Button sx={{ m: 1 }} variant="contained" color="primary">참가하기! JOIN!</Button>
-                    </Link>
-                  ) 
-                }
-                
-                {currentUser && place.members.includes(currentUser.uid) && !loadingPlace && <div>
-                  <>
-                    <Link to={`/invite/${id}`}>
-                      <Button variant="outlined" color="info">초대하기</Button>
-                    </Link>
-                    <Link to={`/placeform/${id}`}>
-                      <Button sx={{ ml: 1 }} variant="outlined" color="neutral">수정하기</Button>
-                    </Link>
-                  </>
-                  {place.members[0] === currentUser.uid && place.members.length === 1 ?
-                    <Link to={`/placeform/${id}`}>
-                      <Button sx={{ ml: 1 }} variant="outlined" color="neutral">영원히 나가고 삭제</Button>
-                    </Link>
-                    :
-                    <Button sx={{ ml: 1 }} variant="outlined" color="neutral" onClick={handleGetOut}>나가기</Button>
-                  }
-                </div>
-                }
+                <Buttons place={place} id={id} />
               </div>
             </>
             :
@@ -131,7 +94,6 @@ const PlaceDetail = ({ currentUser, now }) => {
           }
         </div>
       </div>
-
 
       {place && 
         <div className={stylesPaper.Wrapper}>
@@ -141,7 +103,7 @@ const PlaceDetail = ({ currentUser, now }) => {
             </Link>
           </Box>
           <div className={styles.List}>
-            {place && <Cleans place={{ ...place, id: id }} now={now} userMap={userMap} />}
+            {place && <Cleans place={{ ...place, id: id }} userMap={userMap} />}
           </div>
         </div>
       }
