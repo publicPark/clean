@@ -4,10 +4,14 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<url>
-  <loc>https://kinclean.netlify.app/</loc>
-  <lastmod>2022-05-14T13:25:19+00:00</lastmod>
-</url>
 
+<url>
+  <loc>https://kinclean-test.netlify.app/</loc>
+  <lastmod>2022-05-18T06:01:24+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kinclean-test.netlify.app/about</loc>
+  <lastmod>2022-05-18T06:01:24+00:00</lastmod>
+</url>
 
 </urlset>
