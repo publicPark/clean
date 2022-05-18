@@ -17,6 +17,7 @@ import Collapse from '@mui/material/Collapse';
 import MuiAlert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import ConfirmDialog from '../Utils/ConfirmDialog';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -26,6 +27,7 @@ const PlaceForm = ({ currentUser }) => {
   let navigate = useNavigate();
   let { id } = useParams();
   const { loading: loadingPlace, deletePlace } = usePlace()
+  const [openDelete, setOpenDelete] = useState(false)
 
   const [place, setPlace] = useState()
   const [amIFirst, setAmIFirst] = useState(false)
@@ -130,14 +132,15 @@ const PlaceForm = ({ currentUser }) => {
   // 삭제하기
   const handleDelete = async () => {
     if (amIFirst) {
-      if (window.confirm("Do you really want to delete?")) {
-        await deletePlace(id)
-        navigate("/", { replace: true });
-      }
+      setOpenDelete(true)
     } else {
       // 빼기
       setErr("You can't! You are not the owner.")
     }
+  }
+  const handleDeleteForever = async () => {
+    await deletePlace(id)
+    navigate("/", { replace: true });
   }
 
   useEffect(() => {
@@ -149,7 +152,14 @@ const PlaceForm = ({ currentUser }) => {
   return (
     <div>
       {loadingData ? <CircularProgress color="primary" /> : 
-        <form className={styles.Form} onSubmit={ onSubmit }>
+        <form className={styles.Form} onSubmit={onSubmit}>
+          <ConfirmDialog
+            msg1="Do you really want to delete?"
+            msg2="영원히 삭제하시겠습니까?"
+            open={openDelete}
+            setOpen={setOpenDelete}
+            callback={handleDeleteForever}
+          />
           <div className={stylesPaper.Flex}>
             <div className={stylesPaper.Wrapper}>
               <div className={stylesPaper.Content}>

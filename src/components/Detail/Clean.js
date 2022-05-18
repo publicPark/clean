@@ -13,6 +13,7 @@ import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import ConfirmDialog from '../Utils/ConfirmDialog';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
@@ -22,6 +23,9 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const [data, setData] = useState()
   const [memoForm, setMemoForm] = useState(false)
   const [memo, setMemo] = useState('')
+  const [openDelete, setOpenDelete] = useState(false)
+  const [openRegret, setOpenRegret] = useState(false)
+  const [openRegret2, setOpenRegret2] = useState(false)
   const { loading: loadingClean, deleteClean, regret, editText, clap, getClean } = useClean()
 
   const formatClean = (c) => {
@@ -69,21 +73,15 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     console.log(data)
   }
 
-  const handleClick = async (e) => {
-    console.log(data)
-    if (window.confirm("Do you really want to delete?")) {
-      await deleteClean(data.id)
-      getCleans()
-    }
+  const handleDelete = async () => {
+    await deleteClean(data.id)
+    getCleans()
   }
 
   const handleRegret = async (val) => {
-    let msg = val? "벌칙을 수행하고 반성했습니까?": '반성 취소?'
-    if (window.confirm(msg)) {
-      await regret(data.id, val)
-      const res = await getClean(data.id)
-      formatClean(res)
-    }
+    await regret(data.id, val)
+    const res = await getClean(data.id)
+    formatClean(res)
   }
 
   const handleEdit = async () => {
@@ -143,9 +141,16 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               </div>
             }
             <div>
+              <ConfirmDialog
+                msg1="Do you really want to delete?"
+                msg2="삭제하시겠습니까?"
+                open={openDelete}
+                setOpen={setOpenDelete}
+                callback={handleDelete}
+              />
               {index === 0 && data.amIWriter &&
                 <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}
-                  onClick={handleClick}
+                  onClick={()=>setOpenDelete(true)}
                   disabled={ loadingClean?true:false }
                 >
                   <DeleteIcon fontSize="inherit" />
@@ -185,11 +190,23 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 </b>
               </div>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
+                <ConfirmDialog
+                  msg2="벌칙을 수행하고 반성했습니까?"
+                  open={openRegret}
+                  setOpen={setOpenRegret}
+                  callback={()=>handleRegret(true)}
+                />
+                <ConfirmDialog
+                  msg2="반성 취소?"
+                  open={openRegret2}
+                  setOpen={setOpenRegret2}
+                  callback={()=>handleRegret(false)}
+                />
                 {data.amITarget && !data.regret &&
-                  <Button variant="contained" onClick={ ()=>handleRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
+                  <Button variant="contained" onClick={ ()=>setOpenRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
                 }
                 {data.amITarget && data.regret && 
-                  <div className={ styles.Blur } onClick={ ()=>handleRegret(false) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성했습니다</div>
+                  <div className={ styles.Blur } onClick={ ()=>setOpenRegret2(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성했습니다</div>
                 }
                 {!data.amITarget && data.regret &&
                   <Button variant="contained" disabled>이 자는 벌칙을 수행하고 반성했습니다</Button>

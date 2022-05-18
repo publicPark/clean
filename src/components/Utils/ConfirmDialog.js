@@ -20,7 +20,8 @@ const AlertDialog = ({
   };
 
   const handleYeah = () => {
-    callback()
+    callback();
+    setOpen(false);
   }
 
   return (
