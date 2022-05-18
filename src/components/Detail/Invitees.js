@@ -25,7 +25,6 @@ const Invitees = ({ people=[] }) => {
   }
 
   useEffect(() => {
-    console.log("P", people)
     if (people.length > 0) {
       getUsers(people)
     }

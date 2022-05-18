@@ -39,7 +39,7 @@ const PlaceDetail = ({ }) => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
-      console.log(d)
+      // console.log(d)
       setPlace(d)
       if (d) {
         getUsers(d.members)
