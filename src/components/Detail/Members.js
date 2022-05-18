@@ -1,8 +1,7 @@
 import styles from './Place.module.scss'
-
+import { useAuth } from '../../contexts/AuthContext';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import { useAuth } from '../../contexts/AuthContext';
 
 
 const ListItem = styled('li')(({ theme }) => ({

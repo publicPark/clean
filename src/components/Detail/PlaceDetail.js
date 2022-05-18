@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router';
 import Members from './Members';
 import Voices from "../List/Voices";
 import Cleans from './Cleans';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import format from 'date-fns/format';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -17,6 +15,7 @@ import Description from './Description';
 import { Box } from '@mui/system';
 import Buttons from './Buttons';
 import  { useAuth } from '../../contexts/AuthContext'
+import Bottom from './Bottom';
 
 const PlaceDetail = ({ }) => {
   const { currentUser } = useAuth()
@@ -40,6 +39,7 @@ const PlaceDetail = ({ }) => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
+      console.log(d)
       setPlace(d)
       if (d) {
         getUsers(d.members)
@@ -64,7 +64,7 @@ const PlaceDetail = ({ }) => {
                 <div className={ styles.Title }>{place.name}</div>
                 
                 <div>
-                  <div className={styles.Label}>⭐ 구역의 공지사항 </div>
+                  <div className={styles.Label}>구역의 공지사항 </div>
                   <Box sx={{mt:1}}>
                     <Description description={place.description}/>
                   </Box>
@@ -82,7 +82,9 @@ const PlaceDetail = ({ }) => {
                   </div>
                 </div>
                 <div>
-                  <div className={styles.Label}>멤버들 </div>
+                  <div className={styles.Label}>
+                    멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
+                  </div>
                   { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
                 
@@ -114,21 +116,7 @@ const PlaceDetail = ({ }) => {
         </div>
       }
 
-      {/* <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <span className={ stylesPaper.Blur }>
-            {place && place.modified &&
-              <>
-                <span>{ `modified by ${userMap ? userMap[place.modifier].name : ''} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}` }</span>
-                <br />
-              </>
-            }
-            {place && place.created &&
-              `created ${format(new Date(place.created.seconds * 1000), "yyyy-MM-dd")}`
-            }
-          </span>
-        </div>
-      </div> */}
+      {place && <Bottom place={place} userMap={ userMap } />}
     </div>
   )
 }

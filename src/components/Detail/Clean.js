@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import ConfirmDialog from '../Utils/ConfirmDialog';
+import Avatar from '@mui/material/Avatar';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
@@ -131,8 +132,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               :
               <div
                 className={`${styles.Memo} ${data.amIWriter ? styles.Pointer : undefined}`} 
-                onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}>
-                
+                onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}
+              >
                 <Typography variant="body2" sx={{whiteSpace:'pre-line'}}>
                   <span className='blur'>"</span>
                   <i>{data.text}</i>
@@ -166,12 +167,19 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
             </div>
             <div className={`${styles.Blur} ${styles.FlexSpace}`}>
-              <div>
-                by <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
-                { data.target && data.target !== data.who &&
-                  <> for <span className={currentUser && currentUser.uid === data.target ? 'accent3' : ''}>{data.targetText}</span>
-                  </>
-                }
+              <div className={ styles.Flex }>
+                by
+                <Avatar alt={ userMap[data.who].name }
+                  src={userMap[data.who].photoURL}
+                  sx={{ width: 24, height: 24, m:.6 }}
+                />
+                <div>
+                  <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
+                  { data.target && data.target !== data.who &&
+                    <> for <span className={currentUser && currentUser.uid === data.target ? 'accent3' : ''}>{data.targetText}</span>
+                    </>
+                  }
+                </div>
               </div>
             </div>
           </div>
