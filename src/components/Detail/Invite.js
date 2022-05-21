@@ -148,12 +148,12 @@ const Invite = () => {
             </code>
           </div>
           {(os === 'iOS' || os === 'Mac') &&
-            <a href={`sms:&body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+            <a href={`sms:&body=${place.name}에 귀하를 초대합니다. https://kinclean.netlify.app/place/${id}`}>
               <Button variant="outlined" color="info">SMS 보내기</Button>
             </a> 
           }
           {os === 'Android' &&
-            <a href={`sms:?body=${place.name}에 귀하를 초대합니다. https://publicpark.github.io/clean/#/place/${id}`}>
+            <a href={`sms:?body=${place.name}에 귀하를 초대합니다. https://kinclean.netlify.app/place/${id}`}>
               <Button variant="outlined" color="info">SMS 보내기</Button>
             </a> 
           }
