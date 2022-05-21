@@ -169,10 +169,18 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
             <div className={`${styles.Blur} ${styles.FlexSpace}`}>
               <div className={ styles.Flex }>
                 by
-                <Avatar alt={ userMap[data.who].name }
-                  src={userMap[data.who].photoURL}
-                  sx={{ width: 24, height: 24, m:.6 }}
-                />
+                { userMap[data.who]?
+                  <Avatar alt={ userMap[data.who].name }
+                    src={userMap[data.who].photoURL}
+                    sx={{ width: 24, height: 24, m:.6 }}
+                  />
+                  :
+                  <Avatar alt={ '도망자' }
+                    src={''}
+                    sx={{ width: 24, height: 24, m:.6 }}
+                  />
+                }
+                
                 <div>
                   <b className={currentUser && currentUser.uid === data.who ? 'accent3' : ''}>{data.whoText}</b>
                   { data.target && data.target !== data.who &&

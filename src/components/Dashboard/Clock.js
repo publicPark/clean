@@ -11,7 +11,7 @@ const Clock = () => {
       <h2>즐거운 청소!</h2>
       <p><Link to="/about"><b>여긴 어떤 곳입니까?</b></Link></p>
       {/* <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3> */}
-      <h2 className="accent2">{format(now, 'HH:mm:ss')}</h2>
+      <h2 className="accent">{format(now, 'HH:mm:ss')}</h2>
       {currentUser ?
         <>
           <p><b className="accent3">{currentUser.displayName}</b> 하이</p>

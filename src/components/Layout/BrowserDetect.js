@@ -68,7 +68,7 @@ const BrowserDetect = () => {
           :
           <>
             <span className={ styles.Hello }>즐거운 청소! <b className="accent3">{currentUser.displayName}</b> 하이</span>
-            <b className="accent2">{format(now, 'HH:mm:ss')}</b>
+            <b className="accent">{format(now, 'HH:mm:ss')}</b>
             <div>{ randomList[indexMsg]}</div>
           </>
         }
