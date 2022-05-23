@@ -85,7 +85,7 @@ const PlaceDetail = ({ }) => {
                   <div className={styles.Label}>
                     멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
                   </div>
-                  { userMap && <Members members={place.members} userMap={userMap} /> }
+                  { userMap && <Members members={place.members} userMap={userMap} id={id} /> }
                 </div>
                 
                 <Buttons place={place} id={id} />

@@ -6,7 +6,6 @@ editor: 22-05-18 박지윤
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import { db } from '../../firebase'
 import { getDocs, query, where, collection } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
@@ -35,6 +34,14 @@ const Invitees = ({ people=[] }) => {
       <Typography sx={{ fontSize: 13, pt: 3 }}>
         📓 초대 명단
       </Typography>
+      {/* {userMap && people.map((u) => {
+        return <Typography
+          color="text.secondary" 
+          sx={{ fontSize: 13 }}
+        >
+          {userMap[u].name}
+        </Typography>
+      })} */}
       <AvatarGroup>
         {userMap && people.map((u) => {
           return <>

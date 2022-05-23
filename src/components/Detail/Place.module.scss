@@ -64,7 +64,10 @@
   position: relative;
 }
 .Crown {
-  position: absolute;
-  left: calc(50% - 0.5em);
-  top: -1em;
+  position: absolute; 
+  width:24px; 
+  text-align:center;
+  left: 5px;
+  top: -10px;
+  z-index:1;
 }
