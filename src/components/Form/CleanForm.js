@@ -146,7 +146,7 @@ const CleanForm = ({ currentUser }) => {
 
   useEffect(() => {
     if (currentUser && place && !place.members.includes(currentUser.uid)){
-      setSuccessMsg("당신은 멤버가 아닌데 청소를 하신다고요? 막지 않겠어요.")
+      setSuccessMsg("당신은 멤버가 아닌데 청소를 하신다고요? 우렁각시.")
     }
     if (currentUser && clean && clean.next !== currentUser.uid) {
       setSuccessMsg("당신은 차례가 아닌데 청소를 하신다고요? 청소 애호가!")
