@@ -2,7 +2,7 @@
 import stylesPaper from '../styles/Paper.module.scss'
 import { useState } from 'react';
 import imgA from './asdf.png';
-import Terms from './Terms';
+import Icons from './Icons';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -46,7 +46,7 @@ const About = () => {
           </div>
         </div>
 
-        <Terms />
+        <Icons />
       </div>
       <Box sx={{ width: '100%', mt: 2 }}>
         <Stack spacing={2}>

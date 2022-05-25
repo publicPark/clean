@@ -7,7 +7,7 @@ import JoinForm from './Form/JoinForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
 import PlaceDetail from './Detail/PlaceDetail';
-import Terms from './pages/Terms';
+import Icons from './pages/Icons';
 import Contact from './pages/Contact';
 import Dashboard from './Dashboard/Dashboard';
 
@@ -33,7 +33,7 @@ const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Dashboard currentUser={currentUser} />} />
-      <Route path="/terms" element={<Terms />} />
+      <Route path="/icons" element={<Icons />} />
       <Route path="/about" element={<About />} title='about' />
       <Route path="/contact" element={<Contact />} />
       <Route path="/test" element={<Test />} />
