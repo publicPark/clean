@@ -7,6 +7,7 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Voices from "../List/Voices";
 
 const About = () => {
   return (
@@ -20,7 +21,7 @@ const About = () => {
               같이 사는 공간에서<br />
               즐겁게 청소하기는 쉽지 않지.<br />
               그래서 청소 당번 규칙을 정했다.<br />
-              제한 기간 안에 청소를 해야하고,<br />
+              당번은 제한 기간 안에 청소를 해야하고,<br />
               기간이 지나면?<br />
               하루에 만원씩 벌금을 내기로 했다.<br />
               그걸 관리하도록 만든 곳이다 여긴.
@@ -47,14 +48,21 @@ const About = () => {
         </div>
 
         <Icons />
+
+        <div className={stylesPaper.Wrapper}>
+          <Voices />
+        </div>
       </div>
-      <Box sx={{ width: '100%', mt: 2 }}>
-        <Stack spacing={2}>
-          <Paper sx={{ p: 1, fontSize: 'small' }}>
-            <span className="blur">청소당번 바톤터치, 평화로운 청소마을 그리고 심판의 날, 즐거운 청소, 즐청</span>
-          </Paper>
-        </Stack>
-      </Box>
+
+      <div className={stylesPaper.bottomFixed}>
+        <Box sx={{ width: '100%', mt: 2, bottom: 0}}>
+          <Stack spacing={2}>
+            <Paper sx={{ p: 1, fontSize: 'small' }}>
+              <span className="blur">청소당번 바톤터치, 평화로운 청소마을 그리고 심판의 날, 즐거운 청소, 즐청</span>
+            </Paper>
+          </Stack>
+        </Box>
+      </div>
     </>
   )
 }

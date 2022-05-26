@@ -63,3 +63,13 @@
 .DisplayNone {
   display: none;
 }
+
+.bottomFixed{
+  height:50px;
+  >div{
+    position:absolute;
+    bottom:0;
+    z-index: 0;
+  }
+  // position:sticky;
+}

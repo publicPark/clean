@@ -2,7 +2,6 @@
 import stylesPaper from '../styles/Paper.module.scss'
 import Updates from './Updates'
 import Contact from './Contact'
-import Voices from "../List/Voices";
 
 const Notice = () => {
   return (
@@ -20,10 +19,6 @@ const Notice = () => {
       <Contact />
 
       <Updates />
-      
-      <div className={stylesPaper.Wrapper}>
-        <Voices />
-      </div>
     </div>
   )
 }
