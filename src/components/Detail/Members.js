@@ -29,11 +29,12 @@ const Members = ({ members, userMap, id }) => {
       setMsg("이방인은 권한이 없습니다.")
       return
     }
-    if(members[0] == currentUser.uid){
+    if(members[0] === currentUser.uid){
       try {
         await getout(id, mid)
       } catch (err) {
-        setMsg(err)
+        console.log(err)
+        setMsg("해방할 수 없었습니다!")
       }
     }else{
       setMsg("왕관을 쓴 자가 할 수 있습니다.")
