@@ -68,7 +68,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     if (clean) {
       formatClean(clean)
     }
-  }, [clean])
+  }, [clean, currentUser])
 
   const printData = () => {
     console.log(data)
