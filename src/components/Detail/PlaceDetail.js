@@ -112,12 +112,12 @@ const PlaceDetail = ({ }) => {
                 <Typography
                   variant="body2"
                 >
-                  멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
+                  { place.members.length }명의 멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <div className={styles.Content}>
-                  {userMap && <Members members={place.members} userMap={userMap} />}
+                  {userMap && <Members members={place.members} userMap={userMap} id={ id } />}
                   <div>
                     <Invitees people={place.membersInvited} />
                   </div>

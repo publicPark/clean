@@ -32,6 +32,7 @@ const Members = ({ members, userMap, id }) => {
     if(members[0] === currentUser.uid){
       try {
         await getout(id, mid)
+        setMsg("그는 자유를 찾아 떠났어요!")
       } catch (err) {
         console.log(err)
         setMsg("해방할 수 없었습니다!")
