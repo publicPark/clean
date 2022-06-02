@@ -49,7 +49,7 @@ const CleanForm = ({ currentUser }) => {
   const [pending, setPending] = useState(false)
 
   const [userMap, setUserMap] = useState()
-  const { sendCleanNews } = useEmail()
+  const { sendEmail } = useEmail()
 
   const [errMsg, setErrMsg] = useState('')
   const [warnMsg, setWarnMsg] = useState('')
@@ -115,13 +115,14 @@ const CleanForm = ({ currentUser }) => {
       console.log("Document written with ID: ", docRef.id);
 
       // 메일 보내기
-      await sendCleanNews({
+      await sendEmail({
         place_name: place.name,
         place_id: place.id,
         to_email: userMap[next].email,
         to_name: userMap[next].name,
         from_name: userMap[currentUser.uid].name,
         message: text,
+        type: 'clean'
         // reply_to: userMap[currentUser.uid].email,
       })
 

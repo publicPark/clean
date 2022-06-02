@@ -2,7 +2,7 @@
 import emailjs from '@emailjs/browser';
 
 const useEmail = () => {
-  const sendCleanNews = async (templateParams) => {
+  const sendEmail = async (templateParams, type) => {
     if(!templateParams) templateParams = {
       place_name: '',
       place_id: '',
@@ -11,12 +11,19 @@ const useEmail = () => {
       from_email: '',
       from_name: '',
     };
+
+    let template_id = 'template_ge2bvfi'
+    if (type === 'clean') {
+      template_id = "template_ge2bvfi"
+    } else if(type === 'objection') {
+      template_id = "template_ge2bvfi"
+    }
     
     console.log("process.env", process.env.REACT_APP_EMAIL_SERVICE_ID, process.env.REACT_APP_EMAIL_PUBLIC_KEY)
     try {
       const res = await emailjs.send(
         process.env.REACT_APP_EMAIL_SERVICE_ID,
-        'template_ge2bvfi', // 청소메일
+        template_id, // 청소메일
         templateParams,
         process.env.REACT_APP_EMAIL_PUBLIC_KEY
       )
@@ -24,11 +31,9 @@ const useEmail = () => {
     } catch (err) {
       console.log(err);
     }
-
-
   }
 
-  return {sendCleanNews}
+  return {sendEmail}
 }
 
 export default useEmail

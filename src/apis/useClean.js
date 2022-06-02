@@ -1,10 +1,12 @@
 import { db } from '../firebase'
+import useEmail from "./useEmail"
 import {
   doc, deleteDoc, updateDoc, arrayUnion, arrayRemove, getDoc,
 } from "firebase/firestore";
 import { useState } from 'react';
 
 const useClean = () => {
+  const { sendEmail } = useEmail()
   const [loading, setLoading] = useState(false)
 
   const getClean = async (id) => {

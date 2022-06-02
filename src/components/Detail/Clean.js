@@ -227,14 +227,6 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   setOpen={setOpenRegret2}
                   callback={()=>handleRegret(false)}
                 />
-                <ConfirmDialog
-                  msg2={ data.objection?"유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언은 인정할 수 없습니다!"}
-                  msg1={ data.objection?"이의 신청을 기각합니다.":"정말로 이의신청 하시겠습니까?" }
-                  confirmText="그렇게 하겠습니다."
-                  open={openObjection}
-                  setOpen={setOpenObjection}
-                  callback={()=>data.objection?handleObjection(false):handleObjection(true)}
-                />
                 {data.amITarget && !data.regret &&
                   <Button variant="contained" onClick={ ()=>setOpenRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
                 }
@@ -248,6 +240,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
             </div>
           }
 
+          <ConfirmDialog
+            msg2={ data.objection?"유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언은 인정할 수 없습니다!"}
+            msg1={ data.objection?"이의 신청을 기각합니다.":"정말로 이의신청 하시겠습니까?" }
+            confirmText="그렇게 하겠습니다."
+            open={openObjection}
+            setOpen={setOpenObjection}
+            callback={()=>data.objection?handleObjection(false):handleObjection(true)}
+          />
 
           <div className={`${styles.FlexSpace} ${styles.MarginTop}`}>
             {loadingClean ? '...' : <>
@@ -264,13 +264,13 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               </div>
               {currentUser && place.members.includes(currentUser.uid) && !data.objection &&
                 <div>
-                  {index === 0 &&
-                    !data.amIWriter &&
+                  {index === 0 && // 다음 차례인 사람이 이의 신청 가능
+                    currentUser && data.next===currentUser.uid &&
                     <Chip
                       sx={{ mr:1 }}
                       label="재판장님 이의있습니다?"
                       variant="outlined" size="small"
-                      onClick={() => setOpenObjection(true)}
+                      onClick={()=>setOpenObjection(true)}
                     />
                   }
                   {(!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
@@ -282,7 +282,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 <Chip
                   label="이의제기된 기록입니다"
                   variant="outlined" size="small" color="primary"
-                  onClick={ !currentUser||data.amIWriter?undefined: ()=>setOpenObjection(true) }
+                  onClick={currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
                 />
               }
             </>
