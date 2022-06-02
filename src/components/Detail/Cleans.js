@@ -61,15 +61,19 @@ const Cleans = ({ place, userMap }) => {
     snapshots.forEach(async (snap) => {
       const data = snap.data()
       // console.log(`CLEANs: ${snap.id} => ${data}`);
-      if (!more && !tempLastClean && data.objection === false) {
-        const { howmany, doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
-        data.doomsday = doomsday
-        data.howmany = howmany
-        if (currentUser && data.next === currentUser.uid) {
-          data.myDies = true
+      if (!more && !tempLastClean) {
+        if (!data.objection) {
+          const { howmany, doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
+          data.doomsday = doomsday
+          data.howmany = howmany
+          if (currentUser && data.next === currentUser.uid) {
+            data.myDies = true
+          }
+          tempLastClean = data
+          setLastClean(tempLastClean)
+        } else {
+          setLastClean()
         }
-        tempLastClean = data
-        setLastClean(tempLastClean)
       }
       arr.push({...data, id: snap.id})
     });

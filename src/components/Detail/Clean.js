@@ -1,6 +1,8 @@
 import styles from './Clean.module.scss'
 import format from 'date-fns/format'
 import { useEffect, useState } from 'react';
+import differenceInDays from 'date-fns/differenceInDays'
+import endOfDay from 'date-fns/endOfDay'
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -35,6 +37,11 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     let theday = new Date(clean.date.seconds * 1000)
     newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
     newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
+
+    // 이의 신청 가능 기간 계산
+    let howmanyOld = differenceInDays(endOfDay(new Date()), new Date(clean.created.seconds * 1000))
+    newData.howmanyOld = howmanyOld
+
     if (place && userMap && userMap[clean.who]) {
       newData.whoText = userMap[clean.who].name
     } else {
@@ -102,8 +109,6 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const handleObjection = async (val) => {
     await objection(data.id, val, currentUser.uid)
     getCleans()
-    // const res = await getClean(data.id)
-    // formatClean(res)
   }
 
   return (
@@ -241,7 +246,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           }
 
           <ConfirmDialog
-            msg2={ data.objection?"유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언은 인정할 수 없습니다!"}
+            msg2={ data.objection?"정당하고 유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언은 인정할 수 없습니다!"}
             msg1={ data.objection?"이의 신청을 기각합니다.":"정말로 이의신청 하시겠습니까?" }
             confirmText="그렇게 하겠습니다."
             open={openObjection}
@@ -265,7 +270,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               {currentUser && place.members.includes(currentUser.uid) && !data.objection &&
                 <div>
                   {index === 0 && // 다음 차례인 사람이 이의 신청 가능
-                    currentUser && data.next===currentUser.uid &&
+                    currentUser && data.next === currentUser.uid &&
+                    data.howmanyOld < 3 &&
                     <Chip
                       sx={{ mr:1 }}
                       label="재판장님 이의있습니다?"
@@ -280,7 +286,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               }
               {data.objection &&
                 <Chip
-                  label="이의제기된 기록입니다"
+                  label="이의제기된 기록입니다!"
                   variant="outlined" size="small" color="primary"
                   onClick={currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
                 />

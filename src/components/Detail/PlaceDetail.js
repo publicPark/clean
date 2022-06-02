@@ -12,11 +12,11 @@ import Buttons from './Buttons';
 import  { useAuth } from '../../contexts/AuthContext'
 import Bottom from './Bottom';
 import Description from './Description';
+import Invitees from './Invitees';
 
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/system';
-
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -63,60 +63,72 @@ const PlaceDetail = ({ }) => {
   return (
     <div className={stylesPaper.Flex}>
       <div className={stylesPaper.Wrapper}>
-        {/* {place && 
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
+        {loading ?
+          <div className={stylesPaper.Content}><CircularProgress sx={{ mt: 2 }} color="primary" /></div> :
+          place ? <>
+            <Accordion
+              defaultExpanded={true}
             >
-              <Typography>{place.name}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div>dddd</div>
-            </AccordionDetails>
-          </Accordion>
-        } */}
-        
-        <div className={stylesPaper.Content}>
-          {loading? <CircularProgress sx={{ mt: 2 }} color="primary" /> : place?
-            <>
-              <div className={styles.Content}>
-                <div className={styles.Title}>
-                  {place.name}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography
+                  variant="h5"
+                >
+                  <b>{place.name}</b>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className={styles.Content}>
+                  <div>
+                    <div className={styles.Label}>구역의 공지사항 </div>
+                    <Box sx={{ mt: 1 }}>
+                      <Description description={place.description} />
+                    </Box>
+                  </div>
+                  <div>
+                    <span className={styles.Label}>⏳ 최대 청소 주기(제한 기간) <br /></span><b>{place.days}</b>일
+                  </div>
+                  <div>
+                    <div className={styles.Label}>지났을 때 벌칙 </div>
+                    <div className={styles.Penalty}>
+                      {place.penalty}
+                    </div>
+                  </div>
+                  <Bottom place={place} userMap={userMap} />
+                  <Buttons place={place} id={id} />
                 </div>
-                <div>
-                  <div className={styles.Label}>구역의 공지사항 </div>
-                  <Box sx={{mt:1}}>
-                    <Description description={place.description}/>
-                  </Box>
-                  {/* <div className={styles.Paper}>
-                    {place.description}
-                  </div> */}
-                </div>
-                <div>
-                  <span className={styles.Label}>⏳ 최대 청소 주기(제한 기간) <br /></span><b>{place.days}</b>일
-                </div>
-                <div>
-                  <div className={styles.Label}>지났을 때 벌칙 </div>
-                  <div className={styles.Penalty}>
-                    {place.penalty}
+              </AccordionDetails>
+            </Accordion>
+          
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography
+                  variant="body2"
+                >
+                  멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div className={styles.Content}>
+                  {userMap && <Members members={place.members} userMap={userMap} />}
+                  <div>
+                    <Invitees people={place.membersInvited} />
                   </div>
                 </div>
-                <div>
-                  <div className={styles.Label}>
-                    멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
-                  </div>
-                  { userMap && <Members members={place.members} userMap={userMap} /> }
-                </div>
-                
-                <Buttons place={place} id={id} />
-              </div>
-            </>
-            :
-            <h1>그런 구역은 없습니다!</h1>
-          }
-        </div>
+              </AccordionDetails>
+            </Accordion>
+          </>
+          
+          :
+          <div className={stylesPaper.Content}><h1>그런 구역은 없습니다!</h1></div>
+        }
       </div>
 
       {place && 
@@ -137,8 +149,6 @@ const PlaceDetail = ({ }) => {
           <Voices type={ id }/>
         </div>
       }
-
-      {place && <Bottom place={place} userMap={ userMap } />}
     </div>
   )
 }
