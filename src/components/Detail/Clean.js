@@ -99,7 +99,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   }
 
   const handleObjection = async (val) => {
-    alert("준비중")
+    alert("공사중")
   }
 
   return (
@@ -251,7 +251,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               </div>
               <div>
                 {index === 0 && currentUser && place.members.includes(currentUser.uid) &&
-                  (!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
+                  !data.amIWriter &&
                   <Chip
                     sx={{ mr:1 }}
                     label="재판장님 이의있습니다"
