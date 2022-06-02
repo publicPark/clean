@@ -8,14 +8,20 @@ import { useNavigate } from 'react-router';
 import Members from './Members';
 import Voices from "../List/Voices";
 import Cleans from './Cleans';
-
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Description from './Description';
-import { Box } from '@mui/system';
 import Buttons from './Buttons';
 import  { useAuth } from '../../contexts/AuthContext'
 import Bottom from './Bottom';
+import Description from './Description';
+
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/system';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const PlaceDetail = ({ }) => {
   const { currentUser } = useAuth()
@@ -57,12 +63,28 @@ const PlaceDetail = ({ }) => {
   return (
     <div className={stylesPaper.Flex}>
       <div className={stylesPaper.Wrapper}>
+        {/* {place && 
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>{place.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div>dddd</div>
+            </AccordionDetails>
+          </Accordion>
+        } */}
+        
         <div className={stylesPaper.Content}>
           {loading? <CircularProgress sx={{ mt: 2 }} color="primary" /> : place?
             <>
               <div className={styles.Content}>
-                <div className={ styles.Title }>{place.name}</div>
-                
+                <div className={styles.Title}>
+                  {place.name}
+                </div>
                 <div>
                   <div className={styles.Label}>구역의 공지사항 </div>
                   <Box sx={{mt:1}}>
@@ -85,7 +107,7 @@ const PlaceDetail = ({ }) => {
                   <div className={styles.Label}>
                     멤버들, 당신은 {currentUser && place.members.includes(currentUser.uid) ? '멤버' : '이방인'}
                   </div>
-                  { userMap && <Members members={place.members} userMap={userMap} id={id} /> }
+                  { userMap && <Members members={place.members} userMap={userMap} /> }
                 </div>
                 
                 <Buttons place={place} id={id} />

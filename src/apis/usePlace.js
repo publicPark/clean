@@ -10,10 +10,31 @@ const usePlace = () => {
   const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
 
+  const getObjections = async (placeId) => {
+    const q = query(collection(db, "cleans"),
+      where("where", "==", placeId),
+      where("objection", "==", true),
+      orderBy("date", "desc"),
+      orderBy("created", "desc"),
+      limit(1)
+    );
+    setLoading(true)
+    const snapshots = await getDocs(q);
+    let data;
+    await snapshots.forEach((doc) => {
+      // console.log(`CLEAN: ${doc.id} => ${doc.data()}`);
+      data = {id:doc.id, ...doc.data()}
+    });
+    setLoading(false)
+    return data
+  }
+
   // 이 장소의 마지막 clean
   const getLastClean = async (placeId) => {
     const q = query(collection(db, "cleans"),
       where("where", "==", placeId),
+      where("objection", "not-in", [true]),
+      orderBy("objection"),
       orderBy("date", "desc"),
       orderBy("created", "desc"),
       limit(1)
@@ -119,7 +140,8 @@ const usePlace = () => {
     loading, getout, deletePlace, getPlace,
     invite, inviteCancel,
     inviOk, inviNo,
-    getLastClean
+    getLastClean,
+    getObjections
   }
 }
 

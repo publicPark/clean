@@ -35,7 +35,7 @@ const AlertDialog = ({
       >
         <DialogTitle>{ msg1 }</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentText id="alert-dialog-slide-description" sx={{whiteSpace:'pre-line'}}>
             { msg2 }
           </DialogContentText>
         </DialogContent>

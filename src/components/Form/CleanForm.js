@@ -44,6 +44,7 @@ const CleanForm = ({ currentUser }) => {
 
   const [next, setNext] = useState('');
   const [judgement, setJudgement] = useState(0)
+  const [howlong, setHowlong] = useState(0)
 
   const [pending, setPending] = useState(false)
 
@@ -102,6 +103,8 @@ const CleanForm = ({ currentUser }) => {
         date: endOfDay(value),
         text: text,
         judgement: judgement,
+        howlong: howlong,
+        objection: false,
         created: new Date()
       }
       if (clean) { // 다음 타자가 있을 때 저장
@@ -157,11 +160,13 @@ const CleanForm = ({ currentUser }) => {
     if (clean && place) {
       console.log("마지막 청소날짜", format(new Date(clean.date.seconds * 1000), "yyyy-MM-dd"))
       // 날짜 바뀔때 패널티 계산
-      let judgement = 0;
+      let judgement, howlong = 0;
       let lastday = endOfDay(new Date(clean.date.seconds * 1000))
       let doomsday = addDays(lastday, place.days)
+      howlong = differenceInDays(endOfDay(value), lastday) // 심판의 날이 얼마나 남았는지
       judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
       setJudgement(judgement)
+      setHowlong(howlong)
     }
 
     if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {

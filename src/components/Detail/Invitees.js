@@ -43,13 +43,11 @@ const Invitees = ({ people=[] }) => {
         </Typography>
       })} */}
       <AvatarGroup>
-        {userMap && people.map((u) => {
-          return <>
-            <Avatar alt={ userMap[u].name }
-              src={userMap[u].photoURL}
-              sx={{ width: 24, height: 24 }}
-            />
-          </>
+        {userMap && people.map((u, i) => {
+          return <Avatar key={ i } alt={ userMap[u].name }
+            src={userMap[u].photoURL}
+            sx={{ width: 24, height: 24 }}
+          />
         })}
       </AvatarGroup>
     </>

@@ -21,6 +21,7 @@ const Cleans = ({ place, userMap }) => {
   const { currentUser } = useAuth()
   const [loading, setLoading] = useState(false)
   const [cleans, setCleans] = useState()
+  const [lastClean, setLastClean] = useState()
   const [nextCursor, setNextCursor] = useState()
   
   const moreCleans = async () => {
@@ -33,13 +34,15 @@ const Cleans = ({ place, userMap }) => {
     let args = [
       collection(db, "cleans"),
       where("where", "==", place.id),
+      // where("objection", "!=", true),
+      // orderBy("objection"),
       orderBy("date", "desc"),
       orderBy("created", "desc"),
     ]
     if (more) {
       args.push(startAfter(nextCursor))
     }
-    args.push(limit(5))
+    args.push(limit(4))
     q = query(...args);
 
     setLoading(true)
@@ -53,16 +56,20 @@ const Cleans = ({ place, userMap }) => {
     if (more) {
       arr = [...cleans]
     }
+
+    let tempLastClean = null
     snapshots.forEach(async (snap) => {
       const data = snap.data()
       // console.log(`CLEANs: ${snap.id} => ${data}`);
-      if (arr.length === 0) {
+      if (!more && !tempLastClean && data.objection === false) {
         const { howmany, doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
         data.doomsday = doomsday
         data.howmany = howmany
         if (currentUser && data.next === currentUser.uid) {
           data.myDies = true
         }
+        tempLastClean = data
+        setLastClean(tempLastClean)
       }
       arr.push({...data, id: snap.id})
     });
@@ -79,14 +86,14 @@ const Cleans = ({ place, userMap }) => {
     <>
       { cleans && cleans.length > 0 ?
         <>
-          {cleans && cleans.length && cleans[0] && 
+          {cleans && cleans.length && lastClean && 
             <Box sx={{ p: 1, pt: 0}}>
               {/* {place && <Dies clean={c} place={place} />} */}
               {place &&
                 <Card sx={{ minWidth: 250, textAlign: 'left' }}
                   elevation={3}>
                   <CardContent>
-                    <DiesIrae place={place} data={cleans[0]} />
+                    <DiesIrae place={place} data={lastClean} />
                   </CardContent>    
                 </Card>
               }

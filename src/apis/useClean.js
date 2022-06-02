@@ -33,15 +33,6 @@ const useClean = () => {
     setLoading(false)
   }
 
-  const objection = async (id, val) => {
-    const docRef = doc(db, "cleans", id);
-    setLoading(true)
-    await updateDoc(docRef, {
-      objection: val,
-    });
-    setLoading(false)
-  }
-
   const editText = async (id, val) => {
     const docRef = doc(db, "cleans", id);
     setLoading(true)
@@ -65,6 +56,15 @@ const useClean = () => {
         claps: arrayRemove(uid),
       });
     }
+    setLoading(false)
+  }
+
+  const objection = async (id, val) => {
+    const docRef = doc(db, "cleans", id);
+    setLoading(true)
+    await updateDoc(docRef, {
+      objection: val,
+    });
     setLoading(false)
   }
 

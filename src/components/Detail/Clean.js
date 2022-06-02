@@ -27,7 +27,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const [openDelete, setOpenDelete] = useState(false)
   const [openRegret, setOpenRegret] = useState(false)
   const [openRegret2, setOpenRegret2] = useState(false)
-  const { loading: loadingClean, deleteClean, regret, editText, clap, getClean } = useClean()
+  const [openObjection, setOpenObjection] = useState(false)
+  const { loading: loadingClean, deleteClean, regret, editText, clap, getClean, objection } = useClean()
 
   const formatClean = (c) => {
     let newData = { ...c }
@@ -99,7 +100,10 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   }
 
   const handleObjection = async (val) => {
-    alert("공사중")
+    await objection(data.id, val, currentUser.uid)
+    getCleans()
+    // const res = await getClean(data.id)
+    // formatClean(res)
   }
 
   return (
@@ -165,7 +169,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           </div>
           <div className={`${styles.MarginTop} ${styles.Dates}`}>
             <div className={styles.Blur}>
-              cleaned <b>{data.theday }</b>
+              <span className={data.objection ? styles.LineThrough : undefined}>cleaned <b>{data.theday}</b></span>
+              { data.objection && <span> ❌</span> }
             </div>
             <div className={styles.Blur}>
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
@@ -222,6 +227,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   setOpen={setOpenRegret2}
                   callback={()=>handleRegret(false)}
                 />
+                <ConfirmDialog
+                  msg2={ data.objection?"유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언은 인정할 수 없습니다!"}
+                  msg1={ data.objection?"이의 신청을 기각합니다.":"정말로 이의신청 하시겠습니까?" }
+                  confirmText="그렇게 하겠습니다."
+                  open={openObjection}
+                  setOpen={setOpenObjection}
+                  callback={()=>data.objection?handleObjection(false):handleObjection(true)}
+                />
                 {data.amITarget && !data.regret &&
                   <Button variant="contained" onClick={ ()=>setOpenRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
                 }
@@ -249,21 +262,29 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   </Tooltip>
                 )}
               </div>
-              <div>
-                {index === 0 && currentUser && place.members.includes(currentUser.uid) &&
-                  !data.amIWriter &&
-                  <Chip
-                    sx={{ mr:1 }}
-                    label="재판장님 이의있습니다"
-                    variant="outlined" size="small"
-                    onClick={() => handleObjection(true)}
-                  />
-                }
-                {currentUser && place.members.includes(currentUser.uid) &&
-                  (!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
-                  <Chip label="박수" variant="outlined" size="small" onClick={() => handleClap(true)} />
-                }
-              </div>
+              {currentUser && place.members.includes(currentUser.uid) && !data.objection &&
+                <div>
+                  {index === 0 &&
+                    !data.amIWriter &&
+                    <Chip
+                      sx={{ mr:1 }}
+                      label="재판장님 이의있습니다?"
+                      variant="outlined" size="small"
+                      onClick={() => setOpenObjection(true)}
+                    />
+                  }
+                  {(!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
+                    <Chip label="박수" variant="outlined" size="small" onClick={() => handleClap(true)} />
+                  }
+                </div>
+              }
+              {data.objection &&
+                <Chip
+                  label="이의제기된 기록입니다"
+                  variant="outlined" size="small" color="primary"
+                  onClick={ data.amIWriter?undefined: ()=>setOpenObjection(true) }
+                />
+              }
             </>
             }
           </div>
