@@ -47,15 +47,15 @@ const Members = ({ members, userMap, id }) => {
           <ListItem key={i} className={ styles.Member }>
             {i === 0 && <span className={ styles.Crown }>👑</span>}
             <Chip
-              onClick={()=>handleClick(m)}
-              avatar={<Avatar alt="프사" src={userMap[m].photoURL} />}
-              label={userMap[m]? userMap[m].name : '(new)'}
+              onClick={currentUser?()=>handleClick(m):undefined}
+              avatar={<Avatar alt="프사" src={userMap[m]?userMap[m].photoURL:''} />}
+              label={userMap[m]? userMap[m].name : '?'}
               color={currentUser&&userMap[m]&&currentUser.uid===userMap[m].id?"success":"default"} 
               variant="contained"  />
           </ListItem>
         ))}
         <ConfirmDialog 
-          msg1={mid?userMap[mid].name:''}
+          msg1={userMap[mid]?userMap[mid].name:''}
           msg2="이 자를 해방시키시겠습니까?"
           open={openOut}
           setOpen={setOpenOut}

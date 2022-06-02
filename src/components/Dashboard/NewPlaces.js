@@ -41,8 +41,11 @@ const NewPlaces = () => {
     }
     setLoading(true)
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      // console.log("querySnapshot2", querySnapshot)
+      console.log("querySnapshot2", snapshot, snapshot.size)
       let list = []
+      if (!snapshot.size) {
+        setLoading(false)
+      }
       snapshot.forEach(async (snap) => {
         let pl = snap.data() // 구역
 
