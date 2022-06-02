@@ -98,6 +98,10 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     formatClean(res)
   }
 
+  const handleObjection = async (val) => {
+    alert("준비중")
+  }
+
   return (
     <>
       { data &&
@@ -246,9 +250,18 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 )}
               </div>
               <div>
+                {index === 0 && currentUser && place.members.includes(currentUser.uid) &&
+                  (!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
+                  <Chip
+                    sx={{ mr:1 }}
+                    label="재판장님 이의있습니다"
+                    variant="outlined" size="small"
+                    onClick={() => handleObjection(true)}
+                  />
+                }
                 {currentUser && place.members.includes(currentUser.uid) &&
                   (!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
-                  <Chip label="박수" variant="outlined" size="small" onClick={()=>handleClap(true)} />
+                  <Chip label="박수" variant="outlined" size="small" onClick={() => handleClap(true)} />
                 }
               </div>
             </>
