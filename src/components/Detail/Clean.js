@@ -282,7 +282,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 <Chip
                   label="이의제기된 기록입니다"
                   variant="outlined" size="small" color="primary"
-                  onClick={ data.amIWriter?undefined: ()=>setOpenObjection(true) }
+                  onClick={ !currentUser||data.amIWriter?undefined: ()=>setOpenObjection(true) }
                 />
               }
             </>
