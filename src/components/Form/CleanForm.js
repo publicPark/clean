@@ -122,9 +122,8 @@ const CleanForm = ({ currentUser }) => {
         to_name: userMap[next].name,
         from_name: userMap[currentUser.uid].name,
         message: text,
-        type: 'clean'
         // reply_to: userMap[currentUser.uid].email,
-      })
+      }, 'clean')
 
       setPending(false)
       navigate(-1, { replace: true });
@@ -198,7 +197,8 @@ const CleanForm = ({ currentUser }) => {
       <div className={stylesPaper.Content}>
         <form className={styles.Form} onSubmit={ onSubmit }>
           <div className={styles.Title}>
-            {place && <h1>{ place.name } 청소했다!</h1>}
+            {place && <h2>{place.name}</h2>}
+            <h1>깨끗하게 청소했나요?</h1>
           </div>
 
           <div className={styles.Row}>

@@ -20,8 +20,10 @@ import Avatar from '@mui/material/Avatar';
 
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
+import useEmail from "../../apis/useEmail"
 
 const Clean = ({ clean, place, getCleans, index, userMap }) => {
+  const { sendEmail } = useEmail()
   const { currentUser } = useAuth()
   const [data, setData] = useState()
   const [memoForm, setMemoForm] = useState(false)
@@ -108,6 +110,19 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
 
   const handleObjection = async (val) => {
     await objection(data.id, val, currentUser.uid)
+
+    if (val) {
+      // 메일 보내기
+      await sendEmail({
+        place_name: place.name,
+        place_id: place.id,
+        to_email: userMap[data.who].email,
+        to_name: userMap[data.who].name,
+        from_name: userMap[currentUser.uid].name,
+        message: data.createdFormatted,
+      }, 'objection')
+    }
+    
     getCleans()
   }
 

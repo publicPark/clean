@@ -1,10 +1,4 @@
-import useEmail from "../../apis/useEmail"
-
-
-
 const Test = () => {
-  return <>
-    test
-  </>
+  return 
 }
 export default Test

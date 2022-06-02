@@ -16,7 +16,7 @@ const useEmail = () => {
     if (type === 'clean') {
       template_id = "template_ge2bvfi"
     } else if(type === 'objection') {
-      template_id = "template_ge2bvfi"
+      template_id = "template_3e9h6u6"
     }
     
     console.log("process.env", process.env.REACT_APP_EMAIL_SERVICE_ID, process.env.REACT_APP_EMAIL_PUBLIC_KEY)
