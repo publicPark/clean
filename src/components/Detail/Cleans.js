@@ -125,7 +125,7 @@ const Cleans = ({ place, userMap }) => {
             </Button>
           }
         </>
-        :
+        : cleans &&
         <div className={ stylesPaper.Content }>
           <div>여기는 청소한 적이 없음.</div>
         </div>
