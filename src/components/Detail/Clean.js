@@ -303,7 +303,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 <Chip
                   label="이의제기된 기록입니다!"
                   variant="outlined" size="small" color="primary"
-                  onClick={currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
+                  onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
                 />
               }
             </>
