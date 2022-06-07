@@ -79,7 +79,7 @@ const usePlace = () => {
     if (docSnap.exists()) {
       let data = docSnap.data()
       data.id = docSnap.id
-      if(data.members.includes(currentUser.uid)) data.amIMember = true
+      if(currentUser && data.members.includes(currentUser.uid)) data.amIMember = true
       return data
     }else return null
   }
