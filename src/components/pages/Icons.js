@@ -19,18 +19,18 @@ const list = [
       ]
   },
   {
-    title: '👏 박수쳐',
-    content: '즐겁게 청소하고 깨끗하고 행복하다면\n박수를 쳐줘라!',
-    iframe: [
-      `<iframe width="560" height="315" src="https://www.youtube.com/embed/gyds04mi_Z0?start=76" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-    ]
-  },
-  {
     title: '⏳ 최대 청소 주기(제한 기간)',
     content: '내 차례가 되면 이 기간 안에 청소하면 됩니다.\n여유를 부려도 좋으나 시간은 항상 흐르죠.\n\n째깍째깍째깍째깍째깍째깍\n',
     // iframe: <iframe width="560" height="315" src="https://www.youtube.com/embed/O2IuJPh6h_A?start=57" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     iframe: [
       `<iframe iframe width="560" height="315" src="https://www.youtube.com/embed/K28H04Y2IdE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    ]
+  },
+  {
+    title: '👏 박수쳐',
+    content: '즐겁게 청소하고 깨끗하고 행복하다면\n박수를 쳐줘라!',
+    iframe: [
+      `<iframe width="560" height="315" src="https://www.youtube.com/embed/gyds04mi_Z0?start=76" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
     ]
   },
   {
