@@ -1,5 +1,6 @@
 import { db } from '../../firebase'
 import { collection, addDoc } from "firebase/firestore"; 
+import { useState } from 'react';
 
 const docRef = collection(db, "notifications");
 

@@ -49,7 +49,7 @@ const Members = ({ members, userMap, id }) => {
           <ListItem key={i} className={ styles.Member }>
             {i === 0 && <span className={ styles.Crown }>👑</span>}
             <Chip
-              onClick={currentUser?()=>handleClick(m):undefined}
+              onClick={currentUser && m!==currentUser.uid?()=>handleClick(m):undefined}
               avatar={<Avatar alt="프사" src={userMap[m]?userMap[m].photoURL:''} />}
               label={userMap[m]? userMap[m].name : '?'}
               color={currentUser&&userMap[m]&&currentUser.uid===userMap[m].id?"success":"default"} 
