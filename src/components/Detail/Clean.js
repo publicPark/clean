@@ -41,8 +41,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     newData.createdFormatted = format(new Date(clean.created.seconds * 1000), "yyyy-MM-dd")
 
     // 이의 신청 가능 기간 계산
-    let howmanyOld = differenceInDays(new Date(), new Date(clean.created.seconds * 1000))
-    newData.howmanyOld = howmanyOld
+    let howold = differenceInDays(new Date(), new Date(clean.created.seconds * 1000))
+    newData.howold = howold
 
     if (place && userMap && userMap[clean.who]) {
       newData.whoText = userMap[clean.who].name
@@ -56,6 +56,12 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     } else {
       // if(place && place.membersMap) newData.targetText = place.membersMap[clean.target].name
       newData.targetText = '도망자💀'
+    }
+
+    if (place && userMap && userMap[clean.next]) {
+      newData.nextText = userMap[clean.next].name
+    } else {
+      newData.nextText = '도망자💀'
     }
 
     try {
@@ -189,8 +195,12 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           </div>
           <div className={`${styles.MarginTop} ${styles.Dates}`}>
             <div className={styles.Blur}>
-              <span className={data.objection ? styles.LineThrough : undefined}>cleaned <b>{data.theday}</b></span>
-              { data.objection && <span> ❌</span> }
+              <span className={data.objection ? styles.LineThrough : undefined}>cleaned <b>{data.theday}</b>
+                {/* {!data.objection && typeof data.howlong === 'number' && (
+                  data.howlong===0?<span> = 또청소!</span> :<span> = { data.howlong }일 만에!</span>  
+                )} */}
+              </span>
+              {data.objection && <span> ❌</span>}
             </div>
             <div className={styles.Blur}>
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
@@ -286,7 +296,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 <div>
                   {index === 0 && // 다음 차례인 사람이 이의 신청 가능
                     currentUser && data.next === currentUser.uid &&
-                    data.howmanyOld < 2 &&
+                    data.howold < 2 && (data.claps && !data.claps.includes(currentUser.uid)) &&
                     <Chip
                       sx={{ mr:1 }}
                       label="이의있습니다!"
@@ -301,7 +311,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               }
               {data.objection &&
                 <Chip
-                  label="이의제기된 기록입니다!"
+                  label={ `${data.nextText}의 이의 신청` }
                   variant="outlined" size="small" color="primary"
                   onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
                 />

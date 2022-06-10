@@ -53,7 +53,7 @@ const Icons = () => {
     <div className={`${stylesPaper.Wrapper}`}>
       <div className={stylesPaper.Content}>
         <h1>
-          ☄️ 👏 ⏳
+          ☄️ ⏳ 👏 
         </h1>
         {/* <h3 class="blur">: DJ DROP THE BEAT</h3> */}
       </div>

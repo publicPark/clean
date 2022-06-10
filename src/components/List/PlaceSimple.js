@@ -52,7 +52,7 @@ const PlaceSimple = ({ place, hideDies }) => {
       {/* {place.myDies &&
         <CardActions>
             <Link to={`/cleaned/${place.id}`}>
-              <Button size="small">청소했어!</Button>
+              <Button size="small">청소했어요!</Button>
             </Link>
         </CardActions>
       } */}

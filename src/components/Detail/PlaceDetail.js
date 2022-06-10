@@ -135,7 +135,7 @@ const PlaceDetail = ({ }) => {
         <div className={stylesPaper.Wrapper}>
           <Box sx={{pt:4, pb:3}}>
             <Link to={`/cleaned/${id}`}>
-              <Button variant="contained">청소했어! I've cleaned</Button>
+              <Button variant="contained">청소했어요! I've cleaned</Button>
             </Link>
           </Box>
           <div className={styles.List}>

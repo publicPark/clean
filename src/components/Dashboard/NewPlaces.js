@@ -8,8 +8,6 @@ import { useEffect, useState } from 'react';
 import PlaceButtons from "./PlaceButtons";
 import PlaceSimple from '../List/PlaceSimple';
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -24,15 +22,15 @@ const maxCount = 4
 
 const NewPlaces = () => {
   const { currentUser } = useAuth()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [list, setList] = useState([])
   const [showButton, setShowButton] = useState(false)
   const { getLastClean } = usePlace()
 
   useEffect(() => {
     if (list && list.length > 0) setShowButton(false)
-    else setShowButton(true)
-  }, [list])
+    else if(!loading) setShowButton(true)
+  }, [list, loading])
 
   useEffect(() => {
     let q = query(placesRef, where("test", "==",  true));
@@ -44,7 +42,9 @@ const NewPlaces = () => {
       // console.log("querySnapshot2", snapshot, snapshot.size)
       let list = []
       if (!snapshot.size) {
+        setList([])
         setLoading(false)
+        return
       }
       snapshot.forEach(async (snap) => {
         let pl = snap.data() // 구역
