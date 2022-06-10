@@ -1,5 +1,5 @@
 import { db } from '../firebase'
-import { collection, addDoc, arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore"; 
+import { collection, addDoc, arrayRemove, arrayUnion, doc, updateDoc, deleteDoc } from "firebase/firestore"; 
 import { useState } from 'react';
 
 const docRef = collection(db, "notifications");
@@ -23,13 +23,24 @@ const useNotification = () => {
   }
 
   // 삭제
-  const deleteNoti = async (id, userId) => {
+  const deleteNoti = async (noti, userId, remove = false, read = false) => {
     setLoading(true)
-    const docRef = doc(db, "notifications", id);
-    await updateDoc(docRef, {
-      to: arrayRemove(userId),
-      toRead: arrayRemove(userId)
-    });
+    const docRef = doc(db, "notifications", noti.id);
+    let obj = {}
+    if (read) {
+      obj = {
+        toRead: arrayRemove(userId)
+      }
+    } else {
+      obj = {
+        to: arrayRemove(userId)
+      }
+    }
+    if (remove) {
+      await deleteDoc(docRef)
+    } else {
+      await updateDoc(docRef, obj);
+    }
     setLoading(false)
   }
 
@@ -37,7 +48,6 @@ const useNotification = () => {
   const readNoti = async (id, userId) => {
     setLoading(true)
     const docRef = doc(db, "notifications", id);
-    console.log("here", id, userId)
     await updateDoc(docRef, {
       to: arrayRemove(userId),
       toRead: arrayUnion(userId)

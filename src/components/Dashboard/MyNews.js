@@ -1,8 +1,8 @@
 import { db } from '../../firebase'
 import { Link } from "react-router-dom";
 import stylesPaper from '../styles/Paper.module.scss'
-import { collection, query, orderBy, limit, doc, onSnapshot, getDoc, where } from "firebase/firestore"; 
-import { useEffect, useState, cloneElement } from 'react';
+import { collection, query, orderBy, limit, onSnapshot, where } from "firebase/firestore"; 
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import useNotification from '../../apis/useNotification';
@@ -20,6 +20,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import MyReadNews from '../Detail/MyReadNews';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -30,15 +31,14 @@ const MyNews = ({ maxCount=4 }) => {
   let navigate = useNavigate();
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(true)
-  const [dense, setDense] = useState(false);
   const { deleteNoti, readNoti } = useNotification()
 
   useEffect(() => {
     const cRef = collection(db, "notifications");
     let q = query(cRef,
       where("to", "array-contains", currentUser.uid),
-      orderBy("date", "desc"),
-      limit(maxCount));
+      orderBy("date", "desc")
+    );
     setLoading(true)
     const unsubscribe = onSnapshot(q, async (querySnapshot) => {
       // console.log("mynews", querySnapshot.size)
@@ -64,19 +64,20 @@ const MyNews = ({ maxCount=4 }) => {
 
   const goTo = async (noti) => {
     console.log(noti)
-    await readNoti(noti.id, currentUser.uid)
     navigate(noti.url)
+    await readNoti(noti.id, currentUser.uid)
   }
 
-  const deleteNews = (id) => {
-    console.log("del", id)
-    deleteNoti(id, currentUser.uid)
+  const deleteNews = (noti) => {
+    let remove = false
+    if(noti.to.length===1 && noti.toRead.length===0) remove = true
+    deleteNoti(noti, currentUser.uid, remove)
   }
 
   return (
     <div className={stylesPaper.Wrapper}>
       <div className={stylesPaper.Content}>
-        <h2>✨ 내게 온 소식 (공사 중)</h2>
+        <h2>✨ 내게 들려온 한마디 (공사 중)</h2>
         <Typography
           component="span"
           variant="body2"
@@ -101,11 +102,11 @@ const MyNews = ({ maxCount=4 }) => {
           </Demo>
         :
         <Demo>
-          <List dense={dense}>
+          <List>
             {list.map((el, idx) => <ListItem key={idx}
-              onDoubleClick={() => print(el)}
+              onMouseEnter={ ()=>print(el) }
               secondaryAction={
-                <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el.id) }>
+                <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el) }>
                   <CloseIcon />
                 </IconButton>
               }
@@ -138,6 +139,10 @@ const MyNews = ({ maxCount=4 }) => {
           </List>
         </Demo>
       )}
+
+      <div className="blur">
+        <MyReadNews/>
+      </div>
     </div>
   )
 }

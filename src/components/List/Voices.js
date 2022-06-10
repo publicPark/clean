@@ -51,9 +51,9 @@ const Voices = ({ type = "all", place }) => {
     }
     
     if (place && place.members) {
-      let idx = null
+      let idx = -1
       if (currentUser) idx = place.members.indexOf(currentUser.uid)
-      console.log("test", idx, place.members, currentUser.uid)
+      // console.log("testvoices", idx, place.members, currentUser.uid)
       await sendNoti(
         'voice-district',
         place.members,
