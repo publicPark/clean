@@ -19,7 +19,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 const ProfileForm = () => {
-  const { currentUser:user, userUpdate } = useAuth()
+  const { currentUser:user, userUpdate, userDetail } = useAuth()
   const [imgFile, setImgFile] = useState()
   const [newName, setNewName] = useState(user.displayName)
   const [pending, setPending] = useState(false)
@@ -105,7 +105,8 @@ const ProfileForm = () => {
         {pending ?
           <div>...</div> : 
           <>
-            <h2><span className="accent3">{ user.displayName }</span>'s Profile</h2>
+            <h2><span className="accent3">{user.displayName}</span>'s Profile</h2>
+            { userDetail && userDetail.tester && <h4 className="accent">Secret Agent</h4> }
             <div className={stylesPaper.FlexCenter}>
               <label htmlFor="fileInput">
                 <Avatar className={ styles.ButtonFile }
