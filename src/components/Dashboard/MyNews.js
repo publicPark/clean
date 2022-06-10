@@ -10,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import { yellow } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
@@ -116,7 +116,7 @@ const MyNews = ({ maxCount=4 }) => {
                 alignItems="flex-start"
                 onClick={() => goTo(el)} >
                 <ListItemAvatar>
-                  <Avatar>
+                  <Avatar sx={{ bgcolor: yellow[600] }}>
                     <ChatBubbleIcon />
                   </Avatar>
                 </ListItemAvatar>
