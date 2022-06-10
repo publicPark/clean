@@ -1,5 +1,5 @@
-import { db } from '../../firebase'
-import { collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebase'
+import { collection, addDoc, arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore"; 
 import { useState } from 'react';
 
 const docRef = collection(db, "notifications");
@@ -7,12 +7,13 @@ const docRef = collection(db, "notifications");
 const useNotification = () => {
   const [loading, setLoading] = useState(false)
 
-  // 해방시
+  // 보내기
   const sendNoti = async (type, to, url, content) => {
     setLoading(true)
     let obj = {
       type: type,
       to: to, // array
+      toRead: [],
       url: url,
       date: new Date(),
       content: content,
@@ -21,9 +22,34 @@ const useNotification = () => {
     setLoading(false)
   }
 
+  // 삭제
+  const deleteNoti = async (id, userId) => {
+    setLoading(true)
+    const docRef = doc(db, "notifications", id);
+    await updateDoc(docRef, {
+      to: arrayRemove(userId),
+      toRead: arrayRemove(userId)
+    });
+    setLoading(false)
+  }
+
+  // 읽음
+  const readNoti = async (id, userId) => {
+    setLoading(true)
+    const docRef = doc(db, "notifications", id);
+    console.log("here", id, userId)
+    await updateDoc(docRef, {
+      to: arrayRemove(userId),
+      toRead: arrayUnion(userId)
+    });
+    setLoading(false)
+  }
+
   return {
     loading,
-    sendNoti, 
+    sendNoti,
+    deleteNoti,
+    readNoti
   }
 }
 

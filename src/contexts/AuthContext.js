@@ -7,13 +7,13 @@ import Comet from "../components/Layout/Comet";
 const provider = new GoogleAuthProvider();
 
 const AuthContext = createContext()
-
 export const useAuth = () => {
   return useContext(AuthContext)
 }
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState()
+  const [userDetail, setUserDetail] = useState()
   const [loading, setLoading] = useState(true)
 
   const googleAuth = () => {
@@ -67,6 +67,7 @@ export const AuthProvider = ({ children }) => {
       }
     } 
     await setDoc(docRef, obj);
+    setUserDetail(userData)
   }
 
   useEffect(() => {
@@ -81,12 +82,14 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe()
   }, [])
 
+
   const value = {
     loading, 
     currentUser,
     googleAuth,
     userSignOut,
-    userUpdate
+    userUpdate,
+    userDetail
   }
 
   return (

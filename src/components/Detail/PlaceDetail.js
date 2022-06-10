@@ -46,6 +46,7 @@ const PlaceDetail = ({ }) => {
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
       // console.log(d)
+      d.id = id
       setPlace(d)
       if (d) {
         getUsers(d.members)
@@ -146,7 +147,7 @@ const PlaceDetail = ({ }) => {
 
       {place && 
         <div className={stylesPaper.Wrapper}>
-          <Voices type={ id }/>
+          <Voices type={id} place={ place }/>
         </div>
       }
     </div>

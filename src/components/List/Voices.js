@@ -15,11 +15,13 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
+import useNotification from '../../apis/useNotification';
 
 const voicesRef = collection(db, "voices")
 
-const Voices = ({ type = "all" }) => {
+const Voices = ({ type = "all", place }) => {
   const { currentUser } = useAuth()
+  const { loading:loadingNoti, sendNoti } = useNotification()
   const [say, setSay] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingSubmit, setLoadingSubmit] = useState(false)
@@ -47,6 +49,18 @@ const Voices = ({ type = "all" }) => {
         lastDate: new Date()
       });
     }
+    
+    if (place && place.members) {
+      let idx = null
+      if (currentUser) idx = place.members.indexOf(currentUser.uid)
+      console.log("test", idx, place.members, currentUser.uid)
+      await sendNoti(
+        'voice-district',
+        place.members,
+        `/place/${place.id}#voices`,
+        `${place.name}에서 '${say}' 라는 한마디가 나지막하게 들려온다. 찾아가보자!`
+      )
+    }
 
     setSay('')
     setLoadingSubmit(false)
@@ -63,6 +77,7 @@ const Voices = ({ type = "all" }) => {
   }
 
   useEffect(() => {
+    // console.log("place", place)
     setLoading(true)
     let queryArr = [voicesRef, where("target", "==", type), orderBy("lastDate", "desc")]
     if(type==='all') queryArr.push(limit(10))
@@ -98,7 +113,7 @@ const Voices = ({ type = "all" }) => {
   
   return (
     <>
-      <div className={stylesPaper.Content}>
+      <div className={stylesPaper.Content} id="voices">
         {type === 'all' ?
           <h2>청소 애호가들의 한마디</h2>
           :

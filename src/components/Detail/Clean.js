@@ -200,7 +200,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   data.howlong===0?<span> = 또청소!</span> :<span> = { data.howlong }일 만에!</span>  
                 )} */}
               </span>
-              {data.objection && <span> ❌</span>}
+              {data.objection && <b className='accent'> ❌ 무효!</b>}
             </div>
             <div className={styles.Blur}>
               wrote <span className={ data.theday !== data.createdFormatted? styles.ColorAccent2:undefined }>{ data.createdFormatted }</span>
@@ -272,7 +272,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
 
           <ConfirmDialog
             msg2={ data.objection?"정당하고 유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언, 그리고 더러운 청소는\n이 마을을 위협하는 일입니다!"}
-            msg1={ data.objection?"이의 신청을 기각합니다.":"정말로 이의신청 하시겠습니까?" }
+            msg1={ data.objection?"이의 신청을 취소하시겠습니까?":"정말로 이의신청 하시겠습니까?" }
             confirmText="그렇게 하겠습니다."
             open={openObjection}
             setOpen={setOpenObjection}
@@ -311,9 +311,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               }
               {data.objection &&
                 <Chip
-                  label={ `${data.nextText}의 이의 신청` }
-                  variant="outlined" size="small" color="primary"
-                  onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
+                label={<>
+                  <span className={currentUser && currentUser.uid === data.next ? 'accent3':''}>
+                    {data.nextText}
+                  </span>
+                  <span>의 이의 신청</span>
+                </>}
+                variant="outlined" size="small" color="primary"
+                onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
                 />
               }
             </>

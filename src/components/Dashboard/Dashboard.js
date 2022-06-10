@@ -4,9 +4,10 @@ import { useAuth } from "../../contexts/AuthContext";
 import Clock from './Clock';
 import Invitations from './Invitations';
 import NewPlaces from './NewPlaces';
+import MyNews from './MyNews';
 
 const Dashboard = ({ }) => {
-  const { currentUser } = useAuth()
+  const { currentUser, userDetail } = useAuth()
   
   return (
     <div className={ stylesPaper.Flex }>
@@ -20,8 +21,9 @@ const Dashboard = ({ }) => {
       }
       
       {currentUser && <Invitations /> }
-      
       <NewPlaces />
+
+      { userDetail && userDetail.tester && <MyNews /> }
 
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
