@@ -28,29 +28,31 @@ const MyReadNews = ({ maxCount=4 }) => {
   const { deleteNoti } = useNotification()
 
   useEffect(() => {
-    const cRef = collection(db, "notifications");
-    let q = query(cRef,
-      where("toRead", "array-contains", currentUser.uid),
-      orderBy("date", "desc"),
-      limit(maxCount));
-    setLoading(true)
-    const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-      // console.log("MyReadNews", querySnapshot.size)
-      let arr = []
-      querySnapshot.forEach((snap) => {
-        let d = snap.data()
-        d.id = snap.id
-        arr.push(d)
+    if (currentUser) {
+      const cRef = collection(db, "notifications");
+      let q = query(cRef,
+        where("toRead", "array-contains", currentUser.uid),
+        orderBy("date", "desc"),
+        limit(maxCount));
+      setLoading(true)
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        // console.log("MyReadNews", querySnapshot.size)
+        let arr = []
+        querySnapshot.forEach((snap) => {
+          let d = snap.data()
+          d.id = snap.id
+          arr.push(d)
+        });
+        setList(arr)
+        setLoading(false)
+      },
+      (error) => {
+        console.log("querySnapshot in mynews", error)
       });
-      setList(arr)
-      setLoading(false)
-    },
-    (error) => {
-      console.log("querySnapshot in mynews", error)
-    });
 
-    return () => unsubscribe()
-  }, [])
+      return () => unsubscribe()
+    }
+  }, [currentUser])
 
   const print = (val) => {
     console.log(val)

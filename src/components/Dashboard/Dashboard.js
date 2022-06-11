@@ -23,7 +23,7 @@ const Dashboard = ({ }) => {
       {currentUser && <Invitations /> }
       <NewPlaces />
 
-      { userDetail && userDetail.tester && <MyNews /> }
+      { currentUser && userDetail && userDetail.tester && <MyNews /> }
 
       <div className={stylesPaper.Wrapper}>
         <div className={stylesPaper.Content}>
