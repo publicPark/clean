@@ -7,7 +7,6 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Voices from "../List/Voices";
 
 const About = () => {
   return (
@@ -48,10 +47,6 @@ const About = () => {
         </div>
 
         <Icons />
-
-        <div className={stylesPaper.Wrapper}>
-          <Voices />
-        </div>
       </div>
 
       <div className={stylesPaper.bottomFixed}>

@@ -1,5 +1,4 @@
 import stylesPaper from '../styles/Paper.module.scss'
-import News from "./News";
 import { useAuth } from "../../contexts/AuthContext";
 import Clock from './Clock';
 import Invitations from './Invitations';
@@ -24,12 +23,6 @@ const Dashboard = ({ }) => {
       <NewPlaces />
 
       { currentUser && userDetail && userDetail.tester && <MyNews /> }
-
-      <div className={stylesPaper.Wrapper}>
-        <div className={stylesPaper.Content}>
-          <News currentUser={ currentUser } />
-        </div>
-      </div>
     </div>
   )
 }

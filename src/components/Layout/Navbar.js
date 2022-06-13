@@ -17,9 +17,13 @@ import { styled } from '@mui/material/styles';
 import { useAuth } from "../../contexts/AuthContext";
 
 const pages = [
+  // {
+  //   name: '= Dashboard',
+  //   link: '/'
+  // },
   {
-    name: '= Dashboard',
-    link: '/'
+    name: 'World',
+    link: '/world'
   },
   {
     name: '👋 About',

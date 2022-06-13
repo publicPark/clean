@@ -15,6 +15,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import CleanForm from './Form/CleanForm';
 import { useAuth } from '../contexts/AuthContext'
 import { useEffect } from 'react';
+import World from './pages/World';
 
 const titles = {
   '/': '즐청: 즐거운 청소',
@@ -38,6 +39,7 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/test" element={<Test />} />
       <Route path="/notice" element={<Notice />} />
+      <Route path="/world" element={<World />} />
       
       <Route path="place/:id" element={<PlaceDetail />} />
       <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser} />} />
