@@ -12,6 +12,7 @@ import format from 'date-fns/format'
 import differenceInDays from 'date-fns/differenceInDays'
 import addDays from 'date-fns/addDays'
 import useEmail from "../../apis/useEmail"
+import useNotification from '../../apis/useNotification';
 import Description from '../Detail/Description';
 
 import TextField from '@mui/material/TextField';
@@ -50,6 +51,7 @@ const CleanForm = ({ currentUser }) => {
 
   const [userMap, setUserMap] = useState()
   const { sendEmail } = useEmail()
+  const { sendNoti } = useNotification()
 
   const [errMsg, setErrMsg] = useState('')
   const [warnMsg, setWarnMsg] = useState('')
@@ -124,6 +126,14 @@ const CleanForm = ({ currentUser }) => {
         message: text,
         // reply_to: userMap[currentUser.uid].email,
       }, 'clean')
+
+      // 알림 보내기
+      await sendNoti(
+        'district-clean',
+        place.members,
+        `/place/${place.id}`,
+        `${place.name}에서 ${userMap[currentUser.uid].name}님이 청소를 했습니다! 다음 차례는 ${userMap[next].name}!`
+      )
 
       setPending(false)
       navigate(-1, { replace: true });

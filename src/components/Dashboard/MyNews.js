@@ -99,7 +99,7 @@ const MyNews = ({ maxCount=4 }) => {
               variant="body2"
               color="text.primary"
             >
-              깨끗해요 ✨
+              새로운 소식은 깨끗해요 ✨
             </Typography>
           </Demo>
         :
