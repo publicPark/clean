@@ -21,10 +21,12 @@ import Avatar from '@mui/material/Avatar';
 import useClean from '../../apis/useClean';
 import { useAuth } from '../../contexts/AuthContext';
 import useEmail from "../../apis/useEmail"
+import useNotification from '../../apis/useNotification';
 
 const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const { sendEmail } = useEmail()
   const { currentUser } = useAuth()
+  const { sendNoti } = useNotification()
   const [data, setData] = useState()
   const [memoForm, setMemoForm] = useState(false)
   const [memo, setMemo] = useState('')
@@ -110,6 +112,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
 
   const handleClap = async (val) => {
     await clap(data.id, val, currentUser.uid)
+    if(val){
+      await sendNoti(
+        'district-clap',
+        [data.who],
+        `/place/${place.id}`,
+        `${place.name}에서 "${data.text.slice(0,10)}${data.text.length>10?'...':''} - ${data.theday}" 청소에 박수를 받았어요!`
+      )
+    }
     const res = await getClean(data.id)
     formatClean(res)
   }

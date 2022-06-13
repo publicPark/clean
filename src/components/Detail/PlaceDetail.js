@@ -45,14 +45,13 @@ const PlaceDetail = ({ }) => {
     const docRef = doc(db, "places", id);
     const unsubscribe = onSnapshot(docRef, (snap) => {
       let d = snap.data()
-      // console.log(d)
-      d.id = id
       setPlace(d)
       if (d) {
+        d.id = id
         getUsers(d.members)
+        // 타이틀 세팅
+        document.title = d.name
       }
-      // 타이틀 세팅
-      document.title = d.name
       setLoading(false)
     },
     (error) => {

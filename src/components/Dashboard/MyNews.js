@@ -10,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import { yellow } from '@mui/material/colors';
+import { blue, green, yellow } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
@@ -21,6 +21,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import MyReadNews from '../Detail/MyReadNews';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -77,7 +79,7 @@ const MyNews = ({ maxCount=4 }) => {
   return (
     <div className={stylesPaper.Wrapper}>
       <div className={stylesPaper.Content}>
-        <h2>✨ 내게 들려온 한마디 (공사 중)</h2>
+        <h2>✨ 내게 들려온 소식 (공사 중)</h2>
         <Typography
           component="span"
           variant="body2"
@@ -116,9 +118,20 @@ const MyNews = ({ maxCount=4 }) => {
                 alignItems="flex-start"
                 onClick={() => goTo(el)} >
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: yellow[600] }}>
+                  {el.type==='voice-district' ?
+                  <Avatar sx={{ bgcolor: green[500] }}>
                     <ChatBubbleIcon />
                   </Avatar>
+                  :
+                  el.type==='district-clap' ?
+                  <Avatar sx={{ bgcolor: yellow[600] }}>
+                    <HandshakeIcon />
+                  </Avatar>
+                  :
+                  <Avatar sx={{ bgcolor: yellow[600] }}>
+                    <NewReleasesIcon />
+                  </Avatar>
+                  }
                 </ListItemAvatar>
                 <ListItemText
                   primary={<>
@@ -140,7 +153,7 @@ const MyNews = ({ maxCount=4 }) => {
         </Demo>
       )}
 
-      <div className="blur">
+      <div>
         <MyReadNews/>
       </div>
     </div>

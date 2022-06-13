@@ -20,7 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 
-const MyReadNews = ({ maxCount=4 }) => {
+const MyReadNews = ({ maxCount=2 }) => {
   const { currentUser } = useAuth()
   let navigate = useNavigate();
   const [list, setList] = useState([])
@@ -71,7 +71,7 @@ const MyReadNews = ({ maxCount=4 }) => {
   return (
     <List>
       {list.map((el, idx) => <ListItem key={idx}
-        onDoubleClick={() => print(el)}
+        onMouseEnter={ ()=>print(el) }
         secondaryAction={
           <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el) }>
             <CloseIcon />
