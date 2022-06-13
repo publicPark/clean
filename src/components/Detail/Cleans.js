@@ -5,7 +5,6 @@ import Clean from './Clean';
 import DiesIrae from "../Detail/DiesIrae";
 import styles from './Clean.module.scss'
 import stylesPaper from '../styles/Paper.module.scss'
-import { getDoomsday } from '../../apis/getDoomsday';
 import { useAuth } from '../../contexts/AuthContext';
 
 import Divider from '@mui/material/Divider';
@@ -63,9 +62,6 @@ const Cleans = ({ place, userMap }) => {
       // console.log(`CLEANs: ${snap.id} => ${data}`);
       if (!more && !tempLastClean) {
         if (!data.objection) {
-          const { howmany, doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
-          data.doomsday = doomsday
-          data.howmany = howmany
           if (currentUser && data.next === currentUser.uid) {
             data.myDies = true
           }

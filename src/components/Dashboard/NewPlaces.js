@@ -52,8 +52,7 @@ const NewPlaces = () => {
         // 마지막 청소
         const cl = await getLastClean(snap.id)
         if (cl) { // 청소가 없을 수도 있어
-          const { howmany, doomsday } = getDoomsday(new Date(cl.date.seconds * 1000), pl.days)
-          cl.doomsday = doomsday
+          const { howmany } = getDoomsday(new Date(cl.date.seconds * 1000), pl.days)
           cl.howmany = howmany
           if (currentUser && cl.next === currentUser.uid) { // 내 차례일때
             cl.myDies = true

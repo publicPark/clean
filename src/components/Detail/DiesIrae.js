@@ -5,9 +5,12 @@ import useNow from "../../apis/useNow";
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase'
 import { doc, getDoc } from "firebase/firestore";
+import { getDoomsday } from '../../apis/getDoomsday';
 
 const DiesIrae = ({ place, data }) => {
-  let { nowDistance, setThatTime } = useNow()
+  const { doomsday } = getDoomsday(new Date(data.date.seconds * 1000), place.days)
+  data.doomsday = doomsday
+  let { nowDistance, setThatTime, howmanyDoomsday:howmany } = useNow()
   const [str1, setStr1] = useState('')
   const [str2, setStr2] = useState('')
 
@@ -61,31 +64,31 @@ const DiesIrae = ({ place, data }) => {
         </div>
 
         <div>
-          {clean.howmany === 0 &&
+          {howmany === 0 &&
             <div className="accent">
               <span>{nowDistance} </span>
               <b>🚨 오늘 당장! </b>
             </div>
           }
-          {clean.howmany > 0 &&
-            (clean.howmany > 3 ?
+          {howmany > 0 &&
+            (howmany > 3 ?
             <>
               <span>😎 </span>
-              <b>{clean.howmany}</b>
+              <b>{howmany}</b>
               <span className="blur">일 남음</span>
             </>
             :
             <>
               <span>😨 </span>
-              <b>{clean.howmany}</b>
+              <b>{howmany}</b>
               <span className="blur">일 남음</span>
             </>
             )
           }
-          {clean.howmany < 0 &&
+          {howmany < 0 &&
             <div className="accent">
               <span>⌛ </span>
-              <b>{clean.howmany*-1}</b>
+              <b>{howmany*-1}</b>
               <span>일 지남</span>
             </div>
           }
