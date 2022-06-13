@@ -22,7 +22,7 @@ const pages = [
   //   link: '/'
   // },
   {
-    name: 'World',
+    name: '🌳 World',
     link: '/world'
   },
   {
@@ -30,7 +30,7 @@ const pages = [
     link: '/about'
   },
   {
-    name: 'Notice',
+    name: '👀 Notice',
     link: '/notice'
   },
 ];

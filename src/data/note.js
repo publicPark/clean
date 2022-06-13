@@ -1,6 +1,6 @@
 export const note = [
   {
-    title: 'Jun, 2022',
+    title: 'June, 2022',
     content: '이의있소'
   },
   {

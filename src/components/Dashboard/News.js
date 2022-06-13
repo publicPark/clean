@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 
-const News = ({ currentUser, maxCount=4 }) => {
+const News = ({ currentUser, maxCount=7 }) => {
   let navigate = useNavigate();
   const [cleans, setCleans] = useState([])
   const [loading, setLoading] = useState(true)
@@ -47,7 +47,7 @@ const News = ({ currentUser, maxCount=4 }) => {
 
   return (
     <>
-      <h2>따끈따끈 🔥 {maxCount}개의 청소소식</h2>
+      <h2>마을의 따끈따끈 🔥 청소 소식</h2>
       {loading && Array.from(new Array(4)).map((ghost, i) => <div key={ i }>
         <Divider sx={{ mt: 2, mb: 2 }} />
         <Box>

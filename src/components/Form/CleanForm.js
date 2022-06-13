@@ -129,10 +129,10 @@ const CleanForm = ({ currentUser }) => {
 
       // 알림 보내기
       await sendNoti(
-        'district-clean',
+        'clean',
         place.members,
         `/place/${place.id}`,
-        `${place.name}에서 ${userMap[currentUser.uid].name}님이 청소를 했습니다! 다음 차례는 ${userMap[next].name}!`
+        `${place.name}에서 ${userMap[currentUser.uid].name}님이 청소를 했습니다! 다음 차례는 ${userMap[next].name}! "${text.slice(0,10)}${text.length>10?'...':''}"`
       )
 
       setPending(false)

@@ -10,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import { blue, green, yellow } from '@mui/material/colors';
+import { blue, green, red, yellow } from '@mui/material/colors';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
@@ -23,6 +23,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import MyReadNews from '../Detail/MyReadNews';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -79,20 +81,20 @@ const MyNews = ({ maxCount=4 }) => {
   return (
     <div className={stylesPaper.Wrapper}>
       <div className={stylesPaper.Content}>
-        <h2>✨ 내게 들려온 소식 (공사 중)</h2>
-        <Typography
+        <h2>✨ 내게 들려온 소식</h2>
+        {/* <Typography
           component="span"
           variant="body2"
           color="text.primary"
         >
-          이 마을의 비밀요원은 공사 현장에 잠입 가능
-        </Typography>
+          지금은 청소, 박수, 한마디에 소식
+        </Typography> */}
         {loading && <CircularProgress color="primary" />}
       </div>
       {!loading && list && (
         list.length === 0 ? 
           <Demo
-            sx={{ p:2 }}
+            sx={{ p:3 }}
           >
             <Typography
               component="span"
@@ -106,7 +108,7 @@ const MyNews = ({ maxCount=4 }) => {
         <Demo>
           <List>
             {list.map((el, idx) => <ListItem key={idx}
-              onMouseEnter={ ()=>print(el) }
+              // onMouseEnter={ ()=>print(el) }
               secondaryAction={
                 <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el) }>
                   <CloseIcon />
@@ -126,6 +128,16 @@ const MyNews = ({ maxCount=4 }) => {
                   el.type==='district-clap' ?
                   <Avatar sx={{ bgcolor: yellow[600] }}>
                     <HandshakeIcon />
+                  </Avatar>
+                  :
+                  el.type==='clean' ?
+                  <Avatar sx={{ bgcolor: blue[600] }}>
+                    <CleaningServicesIcon />
+                  </Avatar>
+                  :
+                  el.type==='objection' ?
+                  <Avatar sx={{ bgcolor: red[600] }}>
+                    <CrisisAlertIcon />
                   </Avatar>
                   :
                   <Avatar sx={{ bgcolor: yellow[600] }}>

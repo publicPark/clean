@@ -22,7 +22,8 @@ const Dashboard = ({ }) => {
       {currentUser && <Invitations /> }
       <NewPlaces />
 
-      { currentUser && userDetail && userDetail.tester && <MyNews /> }
+      {currentUser && <MyNews />}
+      {/* && userDetail && userDetail.tester && */}
     </div>
   )
 }

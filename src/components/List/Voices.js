@@ -51,12 +51,15 @@ const Voices = ({ type = "all", place }) => {
     }
     
     if (place && place.members) {
-      let idx = -1
-      if (currentUser) idx = place.members.indexOf(currentUser.uid)
-      // console.log("testvoices", idx, place.members, currentUser.uid)
+      let index = -1
+      let array = place.members
+      if (currentUser) index = array.indexOf(currentUser.uid)
+      if (index > -1) {
+        array.splice(index, 1); // 2nd parameter means remove one item only
+      }
       await sendNoti(
         'voice-district',
-        place.members,
+        array,
         `/place/${place.id}#voices`,
         `${place.name}에서 '${say}' 라는 한마디가 나지막하게 들려온다. 찾아가보자!`
       )

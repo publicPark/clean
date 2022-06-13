@@ -71,7 +71,7 @@ const MyReadNews = ({ maxCount=2 }) => {
   return (
     <List>
       {list.map((el, idx) => <ListItem key={idx}
-        onMouseEnter={ ()=>print(el) }
+        // onMouseEnter={ ()=>print(el) }
         secondaryAction={
           <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el) }>
             <CloseIcon />

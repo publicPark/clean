@@ -112,12 +112,12 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
 
   const handleClap = async (val) => {
     await clap(data.id, val, currentUser.uid)
-    if(val){
+    if(val && data.who!==currentUser.uid){
       await sendNoti(
         'district-clap',
         [data.who],
         `/place/${place.id}`,
-        `${place.name}에서 "${data.text.slice(0,10)}${data.text.length>10?'...':''} - ${data.theday}" 청소에 박수를 받았어요!`
+        `${place.name}에서 ${data.theday} 기록된 "${data.text.slice(0,10)}${data.text.length>10?'...':''}" 청소에 👏 박수를 받았어요!`
       )
     }
     const res = await getClean(data.id)
@@ -137,6 +137,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
         from_name: userMap[currentUser.uid].name,
         message: data.createdFormatted,
       }, 'objection')
+
+      // 알림 보내기
+      await sendNoti(
+        'objection',
+        place.members,
+        `/place/${place.id}`,
+        `${place.name}에서 ${data.createdFormatted} 기록된 청소는 인정받지 못했습니다. 🚨 '${data.targetText}' 멤버는 깨끗하게 다시 청소해야합니다!`
+      )
     }
     
     getCleans()
