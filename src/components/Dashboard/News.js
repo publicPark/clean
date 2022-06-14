@@ -8,8 +8,10 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
+import  { useAuth } from '../../contexts/AuthContext'
 
-const News = ({ currentUser, maxCount=7 }) => {
+const News = ({ maxCount=7 }) => {
+  const { currentUser } = useAuth()
   let navigate = useNavigate();
   const [cleans, setCleans] = useState([])
   const [loading, setLoading] = useState(true)

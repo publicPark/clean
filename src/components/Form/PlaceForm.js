@@ -5,6 +5,8 @@ import stylesPaper from '../styles/Paper.module.scss'
 
 import { db } from '../../firebase'
 import { collection, addDoc, getDoc, doc, updateDoc } from "firebase/firestore"; 
+import ConfirmDialog from '../Utils/ConfirmDialog';
+import useNotification from '../../apis/useNotification';
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -17,7 +19,6 @@ import Collapse from '@mui/material/Collapse';
 import MuiAlert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import ConfirmDialog from '../Utils/ConfirmDialog';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -28,6 +29,7 @@ const PlaceForm = ({ currentUser }) => {
   let { id } = useParams();
   const { loading: loadingPlace, deletePlace } = usePlace()
   const [openDelete, setOpenDelete] = useState(false)
+  const { sendNoti } = useNotification()
 
   const [place, setPlace] = useState()
   const [amIFirst, setAmIFirst] = useState(false)
@@ -65,15 +67,47 @@ const PlaceForm = ({ currentUser }) => {
     try {
       setLoading(true)
       if (id) {
-        const docRef = doc(db, "places", id);
-        await updateDoc(docRef, {
-          name: text,
-          days: days,
-          description: text2,
-          penalty: text3,
-          modifier: currentUser.uid,
-          modified: new Date()
-        });
+        // 수정일 때
+        let arr_changed = []
+        if(place.name!==text){
+          arr_changed.push(`구역 이름이 변경되었어요! (${place.name} 👉 ${text})`)
+        }
+        if(place.description!==text2){
+          arr_changed.push(`⭐ 공지사항이 변경되었으니 살펴보세요!`)
+        }
+        if(place.days!==days){
+          arr_changed.push(`⏳ 최대 청소 주기가 변경되었어요! (${place.days}일 👉 ${days}일)`)
+        }
+        if(place.penalty!==text3){
+          arr_changed.push(`💰 벌칙이 변경되었으니 살펴보세요!`)
+        }
+        if(arr_changed.length>0){ // 변경사항이 있으면
+          let str_arr = ""
+          arr_changed.forEach(row => {
+            str_arr +=  "\n" + row
+          });
+          // 알림 보내기
+          await sendNoti(
+            'district-changed',
+            place.members,
+            `/place/${place.id}`,
+            `[구역 변경]${str_arr}`
+          )
+
+          const docRef = doc(db, "places", id);
+          await updateDoc(docRef, {
+            name: text,
+            days: days,
+            description: text2,
+            penalty: text3,
+            modifier: currentUser.uid,
+            modified: new Date()
+          });
+        }else{
+          setErr("변경 사항이 없습니다.")
+          setLoading(false)
+          return
+        }
       } else {
         let d = days
         if (!d) d = 14
@@ -202,7 +236,7 @@ const PlaceForm = ({ currentUser }) => {
                   />
                 </div>
 
-                <div className={styles.Label}>위 기간이 지났을 때 벌칙</div>
+                <div className={styles.Label}>💰 위 기간이 지났을 때 벌칙</div>
                 <div className={styles.Row}>
                   <TextareaAutosize className={styles.Textarea}
                     aria-label="penalty"
