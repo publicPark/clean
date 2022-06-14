@@ -70,28 +70,25 @@ const PlaceForm = ({ currentUser }) => {
         // 수정일 때
         let arr_changed = []
         if(place.name!==text){
-          arr_changed.push(`구역 이름이 변경되었어요! (${place.name} 👉 ${text})`)
+          arr_changed.push(`구역 이름이 변경되었어요! 기존: ${place.name}`)
         }
         if(place.description!==text2){
-          arr_changed.push(`⭐ 공지사항이 변경되었으니 살펴보세요!`)
+          arr_changed.push(`⭐ 공지사항이 변경되었어요!`)
         }
         if(place.days!==days){
-          arr_changed.push(`⏳ 최대 청소 주기가 변경되었어요! (${place.days}일 👉 ${days}일)`)
+          arr_changed.push(`⏳ 최대 청소 주기가 ${days}일로 변경되었어요! 기존: ${place.days}일`)
         }
         if(place.penalty!==text3){
-          arr_changed.push(`💰 벌칙이 변경되었으니 살펴보세요!`)
+          arr_changed.push(`💰 벌칙이 변경되었어요!`)
         }
         if(arr_changed.length>0){ // 변경사항이 있으면
-          let str_arr = ""
-          arr_changed.forEach(row => {
-            str_arr +=  "\n" + row
-          });
+          let str_arr = arr_changed.join("\n")
           // 알림 보내기
           await sendNoti(
             'district-changed',
             place.members,
             `/place/${id}`,
-            `[구역 변경]${str_arr}`
+            `${text}의 ${str_arr}`
           )
 
           const docRef = doc(db, "places", id);

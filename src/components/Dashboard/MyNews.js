@@ -152,6 +152,7 @@ const MyNews = ({ maxCount=4 }) => {
                     component="span"
                     variant="body2"
                     color="text.primary"
+                    whiteSpace="pre-line"  
                   >
                     { el.content }
                   </Typography>
