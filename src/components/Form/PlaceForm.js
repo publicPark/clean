@@ -90,7 +90,7 @@ const PlaceForm = ({ currentUser }) => {
           await sendNoti(
             'district-changed',
             place.members,
-            `/place/${place.id}`,
+            `/place/${id}`,
             `[구역 변경]${str_arr}`
           )
 
