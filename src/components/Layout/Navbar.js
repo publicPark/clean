@@ -69,6 +69,7 @@ const Navbar = () => {
               <Link to='/' className={ pathname==='/' ? styles.Now : undefined }>🏠</Link>
             </Typography>
 
+            {/* mobile */}
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
@@ -100,11 +101,20 @@ const Navbar = () => {
               >
                 {pages.map((page,i) => (
                   <MenuItem key={i} onClick={()=>moveTo(page.link)}>
-                    <Typography textAlign="center">{page.name}</Typography>
+                    <Typography textAlign="center"
+                      sx={{
+                        fontWeight: pathname === page.link ? 'bold' : '',
+                        opacity: pathname === page.link ? 1 : 0.8,
+                      }}
+                    >
+                      {page.name}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
+
+            {/* mobile */}
             <Typography
               variant="h6"
               noWrap
@@ -113,12 +123,18 @@ const Navbar = () => {
             >
               <Link to='/' className={ pathname==='/' ? styles.Now : undefined }>🏠</Link>
             </Typography>
+            
+            {/* pc */}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page,i) => (
                 <Button
                   key={i}
                   onClick={() => moveTo(page.link)}
-                  sx={{ color: 'white', display: 'block' }}
+                  sx={{
+                    color: 'white', display: 'block',
+                    fontWeight: pathname === page.link ? 'bold' : '',
+                    opacity: pathname === page.link ? 1 : 0.8,
+                  }}
                 >
                   {page.name}
                 </Button>
