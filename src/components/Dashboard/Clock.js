@@ -9,7 +9,13 @@ const Clock = () => {
   return (
     <>
       <h2>즐거운 청소!</h2>
-      <p><Link to="/about"><b>여긴 어떤 곳입니까?</b></Link></p>
+      <p>
+        여긴..
+        청소 당번이 누구고,<br />
+        언제까지 청소해야하는지<br />
+        알려주는 곳입니다.<br /><br />
+        <Link to="/about"><b>자세히..</b></Link>
+      </p>
       {/* <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3> */}
       <h2 className="accent">{format(now, 'HH:mm:ss')}</h2>
       {currentUser ?

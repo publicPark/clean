@@ -22,12 +22,12 @@ const pages = [
   //   link: '/'
   // },
   {
-    name: '🌳 World',
-    link: '/world'
-  },
-  {
     name: '👋 About',
     link: '/about'
+  },
+  {
+    name: '🌳 World',
+    link: '/world'
   },
   {
     name: '👀 Notice',
