@@ -10,7 +10,7 @@ const Bottom = ({ place, userMap }) => {
       <Typography sx={{ fontSize: 13 }} color="text.secondary">
         {place && place.modified &&
           <>
-            <span>{ `modified by ${userMap ? userMap[place.modifier].name : ''} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}` }</span>
+            <span>{ `modified by ${userMap && userMap[place.modifier] ? userMap[place.modifier].name : '도망자💀'} ${formatDistanceToNow(new Date(place.modified.seconds * 1000), { addSuffix: true })}` }</span>
             <br />
           </>
         }

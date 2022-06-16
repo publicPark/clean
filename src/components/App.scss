@@ -20,10 +20,11 @@
   height: 100vh;
   position: fixed;
   background-color: #fff;
-  background-image: url(../assets/mask2.png);
+  background-image: url(../assets/mask.png);
   background-position: center;
   background-size: contain;
-  background-color: var(--bg);
+  // background-color: var(--bg);
+  background-color: #f7f7f7;
 }
 .Front {
   position: relative;
