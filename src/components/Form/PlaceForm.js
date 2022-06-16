@@ -70,7 +70,7 @@ const PlaceForm = ({ currentUser }) => {
         // 수정일 때
         let arr_changed = []
         if(place.name!==text){
-          arr_changed.push(`구역 이름이 변경되었어요! 기존: ${place.name}`)
+          arr_changed.push(`이름이 변경되었어요! 기존: ${place.name}`)
         }
         if(place.description!==text2){
           arr_changed.push(`⭐ 공지사항이 변경되었어요!`)
@@ -88,7 +88,7 @@ const PlaceForm = ({ currentUser }) => {
             'district-changed',
             place.members,
             `/place/${id}`,
-            `${text}의 ${str_arr}`
+            `나의 구역 ${text}의 ${str_arr}`
           )
 
           const docRef = doc(db, "places", id);

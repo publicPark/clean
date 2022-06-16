@@ -58,7 +58,7 @@ const About = () => {
         <Box sx={{ width: '100%', mt: 2, bottom: 0}}>
           <Stack spacing={2}>
             <Paper sx={{ p: 1, fontSize: 'small' }}>
-              <span className="blur">청소당번 바톤터치, 평화로운 청소마을 그리고 심판의 날, 즐거운 청소, 즐청</span>
+              <span className="blur">청소당번 바톤터치, 평화로운 청소마을 그리고 심판의 날, 즐거운 청소, 즐청, 킨클린, KINclean</span>
             </Paper>
           </Stack>
         </Box>

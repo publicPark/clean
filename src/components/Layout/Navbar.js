@@ -57,7 +57,7 @@ const Navbar = () => {
   return (
     <>
       <Offset />
-      <AppBar position="fixed">
+      <AppBar color="primary" position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
