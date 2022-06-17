@@ -123,8 +123,8 @@ const NewPlaces = () => {
           <>
             <h4>
               이 마을의 비밀 요원인 당신은<br />
-              비밀 작전을 수행합니다.<br />
-              마지막 로드 시간은<br />
+              비밀 작전을 수행합니다<br />
+              마지막 작전 시간은<br />
               {lastTime.toLocaleString()}<br />
               오늘입니까?
             </h4>

@@ -27,9 +27,11 @@ const titles = {
 const Routers = () => {
   const { currentUser } = useAuth()
   const location = useLocation()
-  useEffect(() => { document.title = titles[location.pathname] ?? '즐청' },
-    [location],
-  )
+  useEffect(() => {
+    let t = titles[location.pathname] || '즐청'
+    document.querySelector('meta[property="og:title"]').setAttribute("content", t);
+    document.title = t
+  }, [location])
 
   return (
     <Routes>

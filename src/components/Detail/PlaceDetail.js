@@ -51,6 +51,7 @@ const PlaceDetail = ({ }) => {
         getUsers(d.members)
         // 타이틀 세팅
         document.title = d.name
+        document.querySelector('meta[property="og:title"]').setAttribute("content", d.name);
       }
       setLoading(false)
     },
