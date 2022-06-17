@@ -23,7 +23,7 @@ const Dashboard = ({ }) => {
       <NewPlaces />
 
       {currentUser && <MyNews />}
-      {/* && userDetail && userDetail.tester && */}
+      {/* currentUser && userDetail && userDetail.tester && */}
     </div>
   )
 }

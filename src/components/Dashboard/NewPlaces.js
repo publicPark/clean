@@ -16,16 +16,20 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import usePlace from "../../apis/usePlace";
+import useNow from "../../apis/useNow";
 
 const placesRef = collection(db, "places");
 const maxCount = 4
 
 const NewPlaces = () => {
-  const { currentUser } = useAuth()
+  const { currentUser, userDetail } = useAuth()
   const [loading, setLoading] = useState(true)
   const [list, setList] = useState([])
   const [showButton, setShowButton] = useState(false)
   const { getLastClean } = usePlace()
+  const [lastTime, setLastTime] = useState(new Date())
+  const { today, formatDate } = useNow()
+
 
   useEffect(() => {
     if (list && list.length > 0) setShowButton(false)
@@ -46,6 +50,8 @@ const NewPlaces = () => {
         setLoading(false)
         return
       }
+      // 마지막 로드 시간 저장
+      setLastTime(new Date())
       snapshot.forEach(async (snap) => {
         let pl = snap.data() // 구역
 
@@ -81,7 +87,7 @@ const NewPlaces = () => {
     });
 
     return () => unsubscribe()
-  }, [currentUser])
+  }, [currentUser, today])
 
   return (
     <>
@@ -111,6 +117,19 @@ const NewPlaces = () => {
             }
           </Stack>
         </div>
+
+        {
+          currentUser && userDetail && userDetail.tester &&
+          <>
+            <h4>
+              이 마을의 비밀 요원인 당신은<br />
+              비밀 작전을 수행합니다.<br />
+              마지막 로드 시간은<br />
+              {lastTime.toLocaleString()}<br />
+              오늘입니까?
+            </h4>
+          </>
+        }
       </div>
     </>
   )

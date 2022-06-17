@@ -114,7 +114,7 @@ const Cleans = ({ place, userMap }) => {
           
           {loading && <div><CircularProgress color="primary" /></div>}
           { nextCursor &&
-            <Button sx={{ m: 1.5 }} variant="outlined" color="secondary"
+            <Button sx={{ m: 1.5 }} variant="outlined" color="neutral"
               onClick={moreCleans}
             >
               more
