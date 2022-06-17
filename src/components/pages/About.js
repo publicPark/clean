@@ -1,7 +1,7 @@
 
 import stylesPaper from '../styles/Paper.module.scss'
 import { useState } from 'react';
-import imgA from './asdf.png';
+import imgA from '../../assets/asdf.png';
 import Icons from './Icons';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';

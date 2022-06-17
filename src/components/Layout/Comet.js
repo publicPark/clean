@@ -1,5 +1,5 @@
 import styles from './Layout.module.scss'
-import imgA from './comet.png';
+import imgA from '../../assets/comet.png';
 
 const Comet = () => <>
   <div className="Front">
