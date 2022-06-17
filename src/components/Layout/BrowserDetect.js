@@ -47,7 +47,7 @@ const BrowserDetect = () => {
   return (
     // nono &&
     <Collapse in={open} sx={{ p:1 }}>
-      <Alert severity={nono ? "error" : "success"}
+      <Alert severity={nono ? "error" : "info"}
         action={
           <IconButton
             aria-label="close"

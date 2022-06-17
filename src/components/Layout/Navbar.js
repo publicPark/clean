@@ -133,7 +133,7 @@ const Navbar = () => {
                   sx={{
                     color: 'white', display: 'block',
                     fontWeight: pathname === page.link ? 'bold' : '',
-                    opacity: pathname === page.link ? 1 : 0.8,
+                    opacity: pathname === page.link ? 1 : 0.9,
                   }}
                 >
                   {page.name}

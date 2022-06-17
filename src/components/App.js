@@ -12,8 +12,11 @@ function App({ user }) {
       primary: {
         main: '#ff4400',
       },
+      secondary: {
+        main: '#2e7d32',
+      },
       neutral: {
-        main: '#64748B',
+        main: '#757575',
         contrastText: '#fff',
       },
       mode: darkTheme ? 'dark' : 'light',

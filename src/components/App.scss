@@ -20,9 +20,11 @@
   height: 100vh;
   position: fixed;
   background-color: #fff;
-  background-image: url(../assets/mask.png);
   background-position: center;
-  background-size: contain;
+  // background-image: url(../assets/mask.png);
+  // background-size: contain;
+  background-image: url(../assets/mask-square.png);
+  background-size: 256px;
   // background-color: var(--bg);
   background-color: #f7f7f7;
 }
