@@ -88,7 +88,7 @@ const PlaceForm = ({ currentUser }) => {
             'district-changed',
             place.members,
             `/place/${id}`,
-            `나의 구역 ${text}의 ${str_arr}`
+            `내 구역 ${text}의 ${str_arr}`
           )
 
           const docRef = doc(db, "places", id);
