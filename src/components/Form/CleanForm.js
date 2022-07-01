@@ -14,6 +14,7 @@ import addDays from 'date-fns/addDays'
 import useEmail from "../../apis/useEmail"
 import useNotification from '../../apis/useNotification';
 import Description from '../Detail/Description';
+import { useAuth } from '../../contexts/AuthContext';
 
 import TextField from '@mui/material/TextField';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -32,7 +33,8 @@ import { Paper } from '@mui/material';
 import { Box } from '@mui/system';
 
 
-const CleanForm = ({ currentUser }) => {
+const CleanForm = ({ }) => {
+  const { currentUser, userDetail } = useAuth()
   let navigate = useNavigate();
   const { id } = useParams()
   const { loading, getLastClean, getPlace } = usePlace()
@@ -94,6 +96,11 @@ const CleanForm = ({ currentUser }) => {
       return
     }
     
+    if (userDetail.later && format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
+      handleErr("건강한 청소 문화를 위해 애쓰고 계신가요? 상습적인 늦은 기록은 우리를 병들게 합니다. 이미 여러번 늦게 기록했으므로 더이상 늦게 기록할 수 없습니다. 신뢰를 회복하세요!") // 
+      return
+    }
+
     // console.log('value test', value)
     // return
     try {
@@ -143,8 +150,12 @@ const CleanForm = ({ currentUser }) => {
     }
   }
 
+  const print = () => {
+    console.log(place)
+  }
+
   const initClean = async () => {
-    const d= await getPlace(id)
+    const d = await getPlace(id)
     setPlace(d)
     setPlayers(d.members)
     getUsers(d.members)
@@ -207,7 +218,7 @@ const CleanForm = ({ currentUser }) => {
       <div className={stylesPaper.Content}>
         <form className={styles.Form} onSubmit={ onSubmit }>
           <div className={styles.Title}>
-            {place && <h2>{place.name}</h2>}
+            {place && <h2 onDoubleClick={print}>{place.name}</h2>}
             <h1>깨끗하게 청소했나요?</h1>
           </div>
 
