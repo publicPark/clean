@@ -34,9 +34,10 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
   const [openRegret, setOpenRegret] = useState(false)
   const [openRegret2, setOpenRegret2] = useState(false)
   const [openObjection, setOpenObjection] = useState(false)
-  const { loading: loadingClean, deleteClean, regret, editText, clap, getClean, objection } = useClean()
+  const { loading: loadingClean, setLoading: setLoadingClean, deleteClean, regret, editText, clap, getClean, objection } = useClean()
 
   const formatClean = (c) => {
+    setLoadingClean(false)
     let newData = { ...c }
     let theday = new Date(clean.date.seconds * 1000)
     newData.theday = format(theday, "yyyy-MM-dd") // 청소했던 날
@@ -60,10 +61,10 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
       newData.targetText = '도망자💀'
     }
 
-    if (place && userMap && userMap[clean.next]) {
-      newData.nextText = userMap[clean.next].name
+    if (place && clean.objectionWho && userMap && userMap[clean.objectionWho]) {
+      newData.objectionWhoText = userMap[clean.objectionWho].name
     } else {
-      newData.nextText = '도망자💀'
+      newData.objectionWhoText = '도망자💀'
     }
 
     try {
@@ -312,9 +313,9 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               </div>
               {currentUser && place.members.includes(currentUser.uid) && !data.objection &&
                 <div>
-                  {index === 0 && // 다음 차례인 사람이 이의 신청 가능
-                    currentUser && data.next === currentUser.uid &&
-                    data.howold < 2 && (data.claps && !data.claps.includes(currentUser.uid)) &&
+                  {index === 0 && // 이의 신청 가능
+                    data.who !== currentUser.uid &&
+                    data.howold < 1 && (!data.claps?.includes(currentUser.uid)) &&
                     <Chip
                       sx={{ mr:1 }}
                       label="이의있습니다!"
@@ -322,7 +323,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                       onClick={()=>setOpenObjection(true)}
                     />
                   }
-                  {(!data.claps || (data.claps && !data.claps.includes(currentUser.uid))) &&
+                  {(!data.claps?.includes(currentUser.uid)) && data.who !== currentUser.uid &&
                     <Chip label="박수" variant="outlined" size="small" onClick={() => handleClap(true)} />
                   }
                 </div>
@@ -330,13 +331,19 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
               {data.objection &&
                 <Chip
                 label={<>
-                  <span className={currentUser && currentUser.uid === data.next ? 'accent3':''}>
-                    {data.nextText}
-                  </span>
-                  <span>의 이의 신청</span>
+                  {data.objectionWho &&
+                    <>
+                      <span className={currentUser && currentUser.uid === data.objectionWho ? 'accent3':''}>
+                        {data.objectionWhoText}
+                      </span>
+                      <span>의</span>
+                    </>
+                  }
+                  <span> 이의 신청</span>
                 </>}
                 variant="outlined" size="small" color="primary"
-                onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
+                onClick={index === 0 && currentUser &&
+                  data.objectionWho === currentUser.uid ? () => setOpenObjection(true) : undefined}
                 />
               }
             </>

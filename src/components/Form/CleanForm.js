@@ -96,7 +96,8 @@ const CleanForm = ({ }) => {
       return
     }
     
-    if (userDetail.later && format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
+    if (userDetail.later && 
+      format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
       handleErr("건강한 청소 문화를 위해 애쓰고 계신가요? 상습적인 늦은 기록은 우리를 병들게 합니다. 이미 여러번 늦게 기록했으므로 더이상 늦게 기록할 수 없습니다. 신뢰를 회복하세요!") // 
       return
     }
@@ -184,7 +185,7 @@ const CleanForm = ({ }) => {
       let judgement, howlong = 0;
       let lastday = endOfDay(new Date(clean.date.seconds * 1000))
       let doomsday = addDays(lastday, place.days)
-      howlong = differenceInDays(endOfDay(value), lastday) // 심판의 날이 얼마나 남았는지
+      howlong = differenceInDays(endOfDay(value), lastday) // 얼마나 오랜만에 청소했는지
       judgement = differenceInDays(endOfDay(value), doomsday) // 심판의 날이 얼마나 남았는지
       setJudgement(judgement)
       setHowlong(howlong)
