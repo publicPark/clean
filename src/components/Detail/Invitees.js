@@ -29,9 +29,13 @@ const Invitees = ({ people=[] }) => {
     }
   }, [people])
 
+  const print = () => {
+    console.log(userMap)
+  }
+
   return people.length>0 && (  
     <>
-      <Typography sx={{ fontSize: 13, pt: 3 }}>
+      <Typography sx={{ fontSize: 13, pt: 3 }} onDoubleClick={print}>
         📓 초대 명단
       </Typography>
       {/* {userMap && people.map((u) => {

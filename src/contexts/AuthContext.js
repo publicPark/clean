@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       name: u.displayName,
       photoURL: u.photoURL,
       email: u.email,
-      lastDate: new Date()
+      lastDate: new Date(),
     }
     if (userData) {
       obj = { ...userData, ...obj }
@@ -65,7 +65,9 @@ export const AuthProvider = ({ children }) => {
       if (!userData.originalName) {
         obj.originalName = u.displayName
       }
-    } 
+    }else{
+      obj.createDate = new Date()
+    }
     await setDoc(docRef, obj);
     setUserDetail(userData)
   }
