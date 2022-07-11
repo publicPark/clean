@@ -30,7 +30,7 @@ const useClean = () => {
     await updateDoc(docRef, {
       regret: val,
     });
-    setLoading(false)
+    // setLoading(false)
   }
 
   const editText = async (id, val) => {
@@ -40,7 +40,7 @@ const useClean = () => {
       text: val,
       modifiedDate: new Date()
     });
-    setLoading(false)
+    // setLoading(false)
   }
 
   const clap = async (id, val, uid) => {
@@ -57,20 +57,20 @@ const useClean = () => {
         claps: arrayRemove(uid),
       });
     }
-    setLoading(false)
+    // setLoading(false)
   }
 
-  const objection = async (id, val) => {
+  const objection = async (id, val, userId) => {
     const docRef = doc(db, "cleans", id);
     setLoading(true)
     await updateDoc(docRef, {
       objection: val,
+      objectionWho: userId
     });
-
-    setLoading(false)
+    // setLoading(false)
   }
 
-  return { loading, deleteClean, regret, editText, clap, getClean, objection }
+  return { loading, setLoading, deleteClean, regret, editText, clap, getClean, objection }
 }
 
 export default useClean

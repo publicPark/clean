@@ -44,7 +44,7 @@ const Routers = () => {
       <Route path="/world" element={<World />} />
       
       <Route path="place/:id" element={<PlaceDetail />} />
-      <Route path="cleaned/:id" element={<CleanForm currentUser={currentUser} />} />
+      <Route path="cleaned/:id" element={<CleanForm />} />
       <Route path="placejoin" element={<JoinForm currentUser={currentUser} />} />
 
       <Route path="profile" element={ currentUser ? <Profile /> : <NotFound status="auth" />} />
