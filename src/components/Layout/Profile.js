@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 
 const Profile = () => {
   const { currentUser, googleAuth, userSignOut } = useAuth()
@@ -62,7 +63,7 @@ const Profile = () => {
         onClose={handleCloseUserMenu}
       >
         {currentUser ?
-          <div>
+          <>
             <Link to='/profile'>
               <MenuItem>
                 <Typography textAlign="center">{ currentUser.displayName }</Typography>
@@ -71,16 +72,26 @@ const Profile = () => {
             <MenuItem onClick={handleSignOut}>
               <Typography textAlign="center">Logout</Typography>
             </MenuItem>
-          </div>
+          </>
           :
           <MenuItem onClick={handleGoogleAuth}>
             <Typography textAlign="center">구글로긴</Typography>
           </MenuItem>
         }
         
+        <Divider />
+
         <MenuItem onClick={toggleTheme}>
           <Typography textAlign="center">{ darkTheme? '🌜':'🌻' }</Typography>
         </MenuItem>
+        
+        {/* <Divider />
+        <MenuItem onClick={toggleTheme}>
+          <Typography textAlign="center">한국어</Typography>
+        </MenuItem>
+        <MenuItem onClick={toggleTheme}>
+          <Typography textAlign="center">English</Typography>
+        </MenuItem> */}
       </Menu>
     </Box>
   )
