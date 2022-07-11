@@ -215,7 +215,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
             <div className={styles.Blur}>
               <span className={data.objection ? styles.LineThrough : undefined}>cleaned <b>{data.theday}</b>
                 {/* {!data.objection && typeof data.howlong === 'number' && (
-                  data.howlong===0?<span> = 또청소!</span> :<span> = { data.howlong }일 만에!</span>  
+                  data.howlong===0?<span> (또청소)</span> :<span> ({ data.howlong }일 만에 청소)</span>  
                 )} */}
               </span>
               {data.objection && <b className='accent'> ❌ 무효!</b>}
@@ -317,7 +317,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                     data.howold < 2 && (data.claps && !data.claps.includes(currentUser.uid)) &&
                     <Chip
                       sx={{ mr:1 }}
-                      label="이의있습니다!"
+                      label="이의있음!"
                       variant="outlined" size="small"
                       onClick={()=>setOpenObjection(true)}
                     />
@@ -333,7 +333,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   <span className={currentUser && currentUser.uid === data.next ? 'accent3':''}>
                     {data.nextText}
                   </span>
-                  <span>의 이의 신청</span>
+                  <span>의 이의있음</span>
                 </>}
                 variant="outlined" size="small" color="primary"
                 onClick={index===0 && currentUser && data.next===currentUser.uid?()=>setOpenObjection(true):undefined}
