@@ -38,6 +38,7 @@ const useClean = () => {
     setLoading(true)
     await updateDoc(docRef, {
       text: val,
+      modifiedDate: new Date()
     });
     setLoading(false)
   }
