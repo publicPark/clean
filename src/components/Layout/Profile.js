@@ -63,16 +63,16 @@ const Profile = () => {
         onClose={handleCloseUserMenu}
       >
         {currentUser ?
-          <>
-            <Link to='/profile'>
+          [
+            <Link to='/profile' key='profile'>
               <MenuItem>
                 <Typography textAlign="center">{ currentUser.displayName }</Typography>
               </MenuItem>
-            </Link>
-            <MenuItem onClick={handleSignOut}>
+            </Link>,
+            <MenuItem onClick={handleSignOut} key='logout'>
               <Typography textAlign="center">Logout</Typography>
             </MenuItem>
-          </>
+          ]
           :
           <MenuItem onClick={handleGoogleAuth}>
             <Typography textAlign="center">구글로긴</Typography>
