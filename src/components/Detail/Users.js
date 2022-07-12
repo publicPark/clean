@@ -66,7 +66,7 @@ const Users = ({ place, users }) => {
               primary={u.name}
               secondary={
                 <>
-                  {u.name}
+                  { u.tester?'터줏대감':'주민'}
                 </>
               }
             />
