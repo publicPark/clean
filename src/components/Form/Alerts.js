@@ -33,7 +33,7 @@ const Alerts = ({
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, whiteSpace: 'pre-line' }}
         >{ errMsg }</Alert>
       </Collapse>
       
@@ -51,7 +51,7 @@ const Alerts = ({
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, whiteSpace: 'pre-line' }}
         >{ warnMsg }</Alert>
       </Collapse>
 
@@ -69,7 +69,7 @@ const Alerts = ({
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, whiteSpace: 'pre-line' }}
         >{ successMsg }</Alert>
       </Collapse>
     </Stack>
