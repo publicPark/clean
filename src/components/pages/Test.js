@@ -25,6 +25,7 @@ const Test = () => {
       return
     }
   }, [user, userDetail])
+
   return <>
     {userDetail && userDetail.tester &&
       <Stack spacing={2} sx={{
