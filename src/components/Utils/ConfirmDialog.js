@@ -6,6 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -13,14 +15,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 // callback이 있으면 confirm
 const AlertDialog = ({
-  msg1, msg2, open, setOpen, callback, confirmText="예"
+  msg1, msg2, open, setOpen, callback, confirmText = "예",
+  isForm, formLabel="입력하세요"
 }) => {
+  const [text, setText] = useState("")
+  const [err, setErr] = useState("")
+
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleYeah = () => {
-    callback();
+    setErr("")
+    if (isForm) {
+      if (!text) {
+        setErr(`${formLabel}!`)
+        return
+      }
+      callback(text);
+    } else {
+      callback();
+    }
     setOpen(false);
   }
 
@@ -36,12 +51,18 @@ const AlertDialog = ({
         <DialogTitle>{ msg1 }</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description" sx={{whiteSpace:'pre-line'}}>
-            { msg2 }
+            {msg2}
           </DialogContentText>
+          {isForm &&
+            <TextField id="standard-basic" label={formLabel} variant="standard"
+            sx={{mt:1}}
+            value={text} onChange={(e)=>setText(e.target.value)}
+            />
+          }
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>닫기</Button>
-          {callback && <Button onClick={handleYeah}>{confirmText}</Button>}
+          {callback && <Button onClick={handleYeah}>{ err ? err : confirmText}</Button>}
         </DialogActions>
       </Dialog>
     </div>

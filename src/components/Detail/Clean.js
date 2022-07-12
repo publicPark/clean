@@ -125,8 +125,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
     formatClean(res)
   }
 
-  const handleObjection = async (val) => {
-    await objection(data.id, val, currentUser.uid)
+  const handleObjection = async (val, objReason) => {
+    await objection(data.id, val, currentUser.uid, objReason)
 
     if (val) {
       // 메일 보내기
@@ -137,6 +137,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
         to_name: userMap[data.who].name,
         from_name: userMap[currentUser.uid].name,
         message: data.createdFormatted,
+        reason: objReason
       }, 'objection')
 
       // 알림 보내기
@@ -274,7 +275,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   msg2="반성 취소?"
                   open={openRegret2}
                   setOpen={setOpenRegret2}
-                  callback={()=>handleRegret(false)}
+                  callback={() => handleRegret(false)}
                 />
                 {data.amITarget && !data.regret &&
                   <Button variant="contained" onClick={ ()=>setOpenRegret(true) } disabled={ loadingClean?true:false }>벌칙을 수행하고 반성합니다</Button>
@@ -290,12 +291,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           }
 
           <ConfirmDialog
-            msg2={ data.objection?"정당하고 유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님!\n이의있습니다!\n거짓된 증언, 그리고 더러운 청소는\n이 마을을 위협하는 일입니다!"}
-            msg1={ data.objection?"이의 신청을 취소하시겠습니까?":"정말로 이의신청 하시겠습니까?" }
-            confirmText="그렇게 하겠습니다."
+            msg2={ data.objection?"정당하고 유효한 기록으로 다시 인정됩니다.":"존경하는 재판장님 이의있습니다!\n거짓된 증언, 그리고 더러운 청소는\n이 마을을 위협하는 일입니다!"}
+            msg1={ data.objection?"이의를 철회하시겠습니까?":"이의 신청서" }
+            confirmText={data.objection?"정말로 철회":"정말로 완료"}
             open={openObjection}
             setOpen={setOpenObjection}
-            callback={()=>data.objection?handleObjection(false):handleObjection(true)}
+            callback={(objReason)=>data.objection?handleObjection(false, objReason):handleObjection(true, objReason)}
+            isForm={data.objection?false:true}
+            formLabel={"상세 사유"}
           />
 
           <div className={`${styles.FlexSpace} ${styles.MarginTop}`}>
@@ -336,10 +339,10 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                       <span className={currentUser && currentUser.uid === data.objectionWho ? 'accent3':''}>
                         {data.objectionWhoText}
                       </span>
-                      <span>의</span>
+                      <span>님의</span>
                     </>
                   }
-                  <span> 이의있음</span>
+                  <span> 이의제기</span>
                 </>}
                 variant="outlined" size="small" color="primary"
                 onClick={index === 0 && currentUser &&
