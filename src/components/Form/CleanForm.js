@@ -97,17 +97,17 @@ const CleanForm = ({ }) => {
       return
     }
     
-    const now = new Date()
-    const lateDate = new Date(userDetail.lateDate.seconds * 1000)
-    if (userDetail.lateDate && 
-    isAfter(lateDate, now.setMonth(now.getMonth()-1)) &&
-    format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
-      const howlate = differenceInDays(lateDate, now)
-      console.log("howmanyDays", howlate)
-      handleErr(`늦은 기록은 건강한 청소 문화를 병들게 하죠.
-      아직 병이 낫지 않았어요.
-      ${howlate}일 후에 건강과 신뢰가 회복됩니다.`) // 
-      return
+    // 늦게 기록하고 전적 있으면
+    if (userDetail && userDetail.lateDate && format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")){
+      const now = new Date()
+      const lateDate = new Date(userDetail.lateDate.seconds * 1000)
+      if (isAfter(lateDate, now.setMonth(now.getMonth()-1))){
+        const howlate = differenceInDays(lateDate, now)
+        handleErr(`늦은 기록은 건강한 청소 문화를 병들게 하죠.
+        아직 병이 낫지 않았어요.
+        ${howlate}일 후에 건강과 신뢰가 회복됩니다.`) // 
+        return
+      }
     }
 
     try {
@@ -199,7 +199,7 @@ const CleanForm = ({ }) => {
 
     if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
       let msg = `청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요! 
-      한 달에 한 번만 늦게 기록할 수 있어요`
+      경고를 받으면 한 달 동안은 늦게 기록할 수 없어요!`
       setWarnMsg(msg);
     } else {
       setWarnMsg('')

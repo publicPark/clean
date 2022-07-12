@@ -26,7 +26,7 @@ const Description = ({ description, checked, handleChange }) => {
                   checked={checked}
                   onChange={handleChange}
                 />
-              } label="아래 적힌 공지사항을 읽고 🚨 체크하세요 " />
+              } label="아래 적힌 공지사항을 읽고 동의하면 체크하세요 " />
               <Divider sx={{ mt: 1, mb: 2 }} />
             </>
           }

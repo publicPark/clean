@@ -145,7 +145,8 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
         'objection',
         place.members,
         `/place/${place.id}`,
-        `${place.name}에서 ${data.createdFormatted} 기록된 청소는 인정받지 못했습니다. 🚨 '${data.targetText}' 멤버는 깨끗하게 다시 청소해야합니다!`
+        `${objReason} 
+        ${place.name}에서 ${data.createdFormatted} 기록된 청소는 인정받지 못했습니다. 🚨 '${data.targetText}' 멤버는 깨끗하게 다시 청소해야합니다!`
       )
     }
     
