@@ -9,6 +9,7 @@ import Alerts from './Alerts'
 import usePlace from "../../apis/usePlace";
 import endOfDay from 'date-fns/endOfDay'
 import format from 'date-fns/format'
+import isAfter from 'date-fns/isAfter'
 import differenceInDays from 'date-fns/differenceInDays'
 import addDays from 'date-fns/addDays'
 import useEmail from "../../apis/useEmail"
@@ -96,14 +97,19 @@ const CleanForm = ({ }) => {
       return
     }
     
-    if (userDetail.later && 
-      format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
-      handleErr("건강한 청소 문화를 위해 애쓰고 계신가요? 상습적인 늦은 기록은 우리를 병들게 합니다. 이미 여러번 늦게 기록했으므로 더이상 늦게 기록할 수 없습니다. 신뢰를 회복하세요!") // 
+    const now = new Date()
+    const lateDate = new Date(userDetail.lateDate.seconds * 1000)
+    if (userDetail.lateDate && 
+    isAfter(lateDate, now.setMonth(now.getMonth()-1)) &&
+    format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
+      const howlate = differenceInDays(lateDate, now)
+      console.log("howmanyDays", howlate)
+      handleErr(`늦은 기록은 건강한 청소 문화를 병들게 하죠.
+      아직 병이 낫지 않았어요.
+      ${howlate}일 후에 건강과 신뢰가 회복됩니다.`) // 
       return
     }
 
-    // console.log('value test', value)
-    // return
     try {
       setPending(true)
       let obj = {
@@ -192,7 +198,8 @@ const CleanForm = ({ }) => {
     }
 
     if (format(new Date(value), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) {
-      let msg = '청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요!'
+      let msg = `청소 날짜를 늦게 기록하면 다음 사람에게 피해를 줄 수 있어요! 
+      한 달에 한 번만 늦게 기록할 수 있어요`
       setWarnMsg(msg);
     } else {
       setWarnMsg('')
