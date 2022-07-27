@@ -253,7 +253,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
           </div>
           
           {/* 심판 받아야하는 경우 */}
-          {data.judgement > 0 &&
+          {data.judgement > 0 && !data.objection &&
             <div>
               <div className={styles.Penalty}>
                 <b className={ data.regret?styles.LineThrough:undefined}>
