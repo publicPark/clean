@@ -98,9 +98,7 @@ const MyNews = ({ maxCount=10 }) => {
   }
 
   const deleteNews = (noti) => {
-    let remove = false
-    if(noti.to.length===1) remove = true
-    deleteNoti(noti, currentUser.uid, remove)
+    deleteNoti(noti, currentUser.uid, false)
   }
 
   const deleteOldNews = (noti) => {

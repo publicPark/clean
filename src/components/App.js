@@ -4,6 +4,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { AuthProvider } from '../contexts/AuthContext';
 import Layout from './Layout';
 
+// 배포 환경에서 console.log, console.warn 지우기
+if (process.env.NODE_ENV === "production") {
+  console.log = function no_console() {};
+  console.warn = function no_console() {};
+}
+
 function App({ user }) {
   const { darkTheme } = useTheme()
   
