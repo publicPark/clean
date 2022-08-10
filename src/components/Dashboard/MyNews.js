@@ -20,17 +20,17 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
-import MyReadNews from '../Detail/MyReadNews';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import CheckIcon from '@mui/icons-material/Check';
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const MyNews = ({ maxCount=4 }) => {
+const MyNews = ({ maxCount=10 }) => {
   const { currentUser } = useAuth()
   let navigate = useNavigate();
   const [list, setList] = useState([])
@@ -39,9 +39,13 @@ const MyNews = ({ maxCount=4 }) => {
 
   useEffect(() => {
     const cRef = collection(db, "notifications");
+    let today = new Date()
+    today.setMonth(today.getMonth()-1) // 한달전
     let q = query(cRef,
       where("to", "array-contains", currentUser.uid),
-      orderBy("date", "desc")
+      where("date", ">=", today),
+      orderBy("date", "desc"),
+      limit(maxCount)
     );
     setLoading(true)
     const unsubscribe = onSnapshot(q, async (querySnapshot) => {
@@ -59,7 +63,28 @@ const MyNews = ({ maxCount=4 }) => {
       console.log("querySnapshot in mynews", error)
     });
 
-    return () => unsubscribe()
+    // 오래된 노티 불러오기
+    let q2 = query(cRef,
+      where("date", "<", today),
+      orderBy("date", "desc")
+    );
+    setLoading(true)
+    const unsubscribe2 = onSnapshot(q2, async (querySnapshot) => {
+      console.log("MyOldNews", querySnapshot.size)
+      querySnapshot.forEach((snap) => {
+        let d = snap.data()
+        d.id = snap.id
+        deleteOldNews(d)
+      });
+    },
+    (error) => {
+      console.log("querySnapshot in my old news", error)
+    });
+
+    return () => {
+      unsubscribe()
+      unsubscribe2()
+    }
   }, [])
 
   const print = (val) => {
@@ -78,17 +103,21 @@ const MyNews = ({ maxCount=4 }) => {
     deleteNoti(noti, currentUser.uid, remove)
   }
 
+  const deleteOldNews = (noti) => {
+    deleteNoti(noti, currentUser.uid, true)
+  }
+
   return (
     <div className={stylesPaper.Wrapper}>
       <div className={stylesPaper.Content}>
         <h2>✨ 내게 들려온 소식</h2>
-        {/* <Typography
+        <Typography
           component="span"
           variant="body2"
           color="text.primary"
         >
-          지금은 청소, 박수, 한마디에 소식
-        </Typography> */}
+          최근 한달 동안의 소식
+        </Typography>
         {loading && <CircularProgress color="primary" />}
       </div>
       {!loading && list && (
@@ -101,21 +130,45 @@ const MyNews = ({ maxCount=4 }) => {
               variant="body2"
               color="text.primary"
             >
-              새로운 소식은 깨끗해요 ✨
+              깨끗해요 ✨
             </Typography>
           </Demo>
         :
         <Demo>
           <List>
             {list.map((el, idx) => <ListItem key={idx}
-              // onMouseEnter={ ()=>print(el) }
+              onMouseEnter={ ()=>print(el) }
               secondaryAction={
                 <IconButton edge="end" aria-label="delete" onClick={ () => deleteNews(el) }>
                   <CloseIcon />
                 </IconButton>
               }
               disablePadding
-            >
+            > 
+            {el.toRead && el.toRead.includes(currentUser.uid)?
+              <ListItemButton
+                alignItems="flex-start"
+                onClick={() => goTo(el)} >
+                <ListItemAvatar>
+                  <Avatar>
+                    <CheckIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={<>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    { el.content }
+                  </Typography>
+                  </>}
+                  secondary={formatDistanceToNow(new Date(el.date.seconds * 1000), { addSuffix: true })} 
+                />
+              </ListItemButton>
+              :
               <ListItemButton
                 alignItems="flex-start"
                 onClick={() => goTo(el)} >
@@ -160,15 +213,12 @@ const MyNews = ({ maxCount=4 }) => {
                   secondary={formatDistanceToNow(new Date(el.date.seconds * 1000), { addSuffix: true })} 
                 />
               </ListItemButton>
-            </ListItem> )}
-            
+            }
+            </ListItem>
+            )}
           </List>
         </Demo>
       )}
-
-      <div>
-        <MyReadNews/>
-      </div>
     </div>
   )
 }

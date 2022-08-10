@@ -23,18 +23,12 @@ const useNotification = () => {
   }
 
   // 삭제
-  const deleteNoti = async (noti, userId, remove = false, read = false) => {
+  const deleteNoti = async (noti, userId, remove = false) => {
     setLoading(true)
     const docRef = doc(db, "notifications", noti.id);
     let obj = {}
-    if (read) {
-      obj = {
-        toRead: arrayRemove(userId)
-      }
-    } else {
-      obj = {
-        to: arrayRemove(userId)
-      }
+    obj = {
+      to: arrayRemove(userId)
     }
     if (remove) {
       await deleteDoc(docRef)
@@ -49,7 +43,7 @@ const useNotification = () => {
     setLoading(true)
     const docRef = doc(db, "notifications", id);
     await updateDoc(docRef, {
-      to: arrayRemove(userId),
+      // to: arrayRemove(userId),
       toRead: arrayUnion(userId)
     });
     setLoading(false)
