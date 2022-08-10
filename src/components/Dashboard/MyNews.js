@@ -70,7 +70,7 @@ const MyNews = ({ maxCount=10 }) => {
     );
     setLoading(true)
     const unsubscribe2 = onSnapshot(q2, async (querySnapshot) => {
-      console.log("MyOldNews", querySnapshot.size)
+      // console.log("AllOldNews", querySnapshot.size)
       querySnapshot.forEach((snap) => {
         let d = snap.data()
         d.id = snap.id
@@ -78,7 +78,7 @@ const MyNews = ({ maxCount=10 }) => {
       });
     },
     (error) => {
-      console.log("querySnapshot in my old news", error)
+      console.log("querySnapshot in all old news", error)
     });
 
     return () => {
@@ -99,7 +99,7 @@ const MyNews = ({ maxCount=10 }) => {
 
   const deleteNews = (noti) => {
     let remove = false
-    if(noti.to.length===1 && noti.toRead.length===0) remove = true
+    if(noti.to.length===1) remove = true
     deleteNoti(noti, currentUser.uid, remove)
   }
 
