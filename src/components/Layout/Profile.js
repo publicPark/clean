@@ -62,18 +62,19 @@ const Profile = () => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {currentUser ?
-          <>
-            <Link to='/profile'>
-              <MenuItem>
-                <Typography textAlign="center">{ currentUser.displayName }</Typography>
-              </MenuItem>
-            </Link>
-            <MenuItem onClick={handleSignOut}>
-              <Typography textAlign="center">Logout</Typography>
+        {currentUser && 
+          <Link to='/profile'>
+            <MenuItem>
+              <Typography textAlign="center">{ currentUser.displayName }</Typography>
             </MenuItem>
-          </>
-          :
+          </Link>
+        }
+        {currentUser && 
+          <MenuItem onClick={handleSignOut}>
+            <Typography textAlign="center">Logout</Typography>
+          </MenuItem>
+        }
+        {!currentUser && 
           <MenuItem onClick={handleGoogleAuth}>
             <Typography textAlign="center">구글로긴</Typography>
           </MenuItem>
