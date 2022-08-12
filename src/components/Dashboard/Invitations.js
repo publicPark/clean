@@ -16,7 +16,7 @@ const Invitations = () => {
   useEffect(() => {
     let q = query(placesRef, where("test", "==",  true));
     if (currentUser) {
-     q = query(placesRef, where("membersInvited", "array-contains", currentUser.uid));
+      q = query(placesRef, where("membersInvited", "array-contains", currentUser.uid));
     }
     setLoading(true)
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -40,7 +40,7 @@ const Invitations = () => {
       <div className={stylesPaper.Content}>
         <h2>초대장이 도착했어요 💌</h2>
         <Stack spacing={1}>
-          {list.map((el,i) => <div key="i">
+          {list.map((el,i) => <div key={i}>
             <Invitation data={ el }/>
           </div>)}
         </Stack>
