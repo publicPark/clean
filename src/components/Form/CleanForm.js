@@ -138,7 +138,7 @@ const CleanForm = ({ }) => {
       
       const nextDueDate = new Date(value).addDays(parseInt(place.days));
       const strNextDueDate = format(nextDueDate, 'yyyyMMdd');
-      const calendar_url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name)}! 청소할 마지막 기회 🚨&dates=${strNextDueDate}/${strNextDueDate}`;
+      const calendar_url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name+'! 청소할 마지막 기회 🚨')}&dates=${strNextDueDate}/${strNextDueDate}`;
 
       // 메일 보내기
       await sendEmail({
