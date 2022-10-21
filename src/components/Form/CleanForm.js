@@ -103,7 +103,7 @@ const CleanForm = ({ }) => {
       const lateDate = new Date(userDetail.lateDate.seconds * 1000)
       if (isAfter(lateDate, now.setMonth(now.getMonth()-1))){
         const howlate = differenceInDays(lateDate, now)
-        handleErr(`늦은 기록은 건강한 청소 문화를 병들게 하죠.
+        handleErr(`늦은 기록은 건강한 청소 문화를 병들게 하곤 해요.
         아직 병이 낫지 않았어요.
         ${howlate}일 후에 건강과 신뢰가 회복됩니다.`) // 
         return
@@ -130,6 +130,16 @@ const CleanForm = ({ }) => {
 
       console.log("Document written with ID: ", docRef.id);
 
+      Date.prototype.addDays = function(days) {
+        let date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      }
+      
+      const nextDueDate = new Date(value).addDays(parseInt(place.days));
+      const strNextDueDate = format(nextDueDate, 'yyyyMMdd');
+      const calendar_url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name)}! 청소할 마지막 기회 🚨&dates=${strNextDueDate}/${strNextDueDate}`;
+
       // 메일 보내기
       await sendEmail({
         place_name: place.name,
@@ -138,6 +148,7 @@ const CleanForm = ({ }) => {
         to_name: userMap[next].name,
         from_name: userMap[currentUser.uid].name,
         message: text,
+        calendar_url
         // reply_to: userMap[currentUser.uid].email,
       }, 'clean')
 
