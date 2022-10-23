@@ -31,7 +31,7 @@ const PlaceSimple = ({ place, hideDies }) => {
     if (place.lastClean) {
       const nextDueDate = new Date(place.lastClean.date.seconds*1000).addDays(parseInt(place.days));
       const strNextDueDate = format(nextDueDate, 'yyyyMMdd');
-      setCalendarUrl(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name+' 마지막 🚨')}&dates=${strNextDueDate}/${strNextDueDate}`);
+      setCalendarUrl(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name+' Dies irae 🚨')}&dates=${strNextDueDate}/${strNextDueDate}`);
     }
   }, [])
 
@@ -75,7 +75,7 @@ const PlaceSimple = ({ place, hideDies }) => {
       {place.lastClean && place.lastClean.myDies &&
         <CardActions>
           <a href={ calendarUrl } target="_blank" rel="noreferrer">
-            <Button size="small">내 캘린더에 추가</Button>
+            <Button size="small">내 캘린더에 Dies irae 추가</Button>
           </a>
         </CardActions>
       }
