@@ -65,14 +65,14 @@ const PlaceSimple = ({ place, hideDies }) => {
           
         </CardContent>
       </CardActionArea>
-      {/* {place.lastClean.myDies &&
+      {/* {place.lastClean && place.lastClean.myDies &&
         <CardActions>
             <Link to={`/cleaned/${place.id}`}>
               <Button size="small">청소했어요!</Button>
             </Link>
         </CardActions>
       } */}
-      {place.lastClean.myDies &&
+      {place.lastClean && place.lastClean.myDies &&
         <CardActions>
           <a href={ calendarUrl } target="_blank" rel="noreferrer">
             <Button size="small">내 캘린더에 추가</Button>
