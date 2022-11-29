@@ -167,16 +167,16 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                   aria-label="좀 더 넓은 메모"
                   minRows={3}
                   placeholder="메모"
-                  style={{ width: 200, resize: 'none' }}
+                  style={{ width: 250, resize: 'none' }}
                   value={memo} onChange={(e) => { setMemo(e.target.value) }}
                 />
                 {data.amIWriter && <>
-                  <IconButton aria-label="delete" size="small"
+                  <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}
                     onClick={ ()=>setMemoForm((cur)=>!cur) }
                   >
                     <CancelIcon fontSize="inherit" />
                   </IconButton>
-                  <IconButton aria-label="delete" size="small"
+                  <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}
                     onClick={ handleEdit }
                   >
                     <SaveIcon fontSize="inherit" />
@@ -189,14 +189,14 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 className={`${styles.Memo} ${data.amIWriter ? styles.Pointer : undefined}`} 
                 onClick={() => setMemoForm((cur) => data.amIWriter ? !cur : cur)}
               >
-                <Typography variant="body2" sx={{whiteSpace:'pre-line'}}>
+                <Typography variant="body2" sx={{whiteSpace:'pre-line', wordBreak:'break-all'}}>
                   <span className='blur'>"</span>
                   <i>{data.text}</i>
                   <span className='blur'> "</span>
                 </Typography>
               </div>
             }
-            <div>
+            {!memoForm && <div>
               <ConfirmDialog
                 msg1="Do you really want to delete?"
                 msg2="삭제하시겠습니까?"
@@ -213,6 +213,7 @@ const Clean = ({ clean, place, getCleans, index, userMap }) => {
                 </IconButton>
               }
             </div>
+            }
           </div>
           <div className={`${styles.MarginTop} ${styles.Dates}`}>
             <div className={styles.Blur}>
