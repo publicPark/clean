@@ -33,7 +33,6 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { Paper } from '@mui/material';
 import { Box } from '@mui/system';
 
-
 const CleanForm = ({ }) => {
   const { currentUser, userDetail } = useAuth()
   let navigate = useNavigate();
@@ -130,16 +129,6 @@ const CleanForm = ({ }) => {
 
       console.log("Document written with ID: ", docRef.id);
 
-      Date.prototype.addDays = function(days) {
-        let date = new Date(this.valueOf());
-        date.setDate(date.getDate() + days);
-        return date;
-      }
-      
-      const nextDueDate = new Date(value).addDays(parseInt(place.days));
-      const strNextDueDate = format(nextDueDate, 'yyyyMMdd');
-      const calendar_url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(place.name+'! 청소할 마지막 기회 🚨')}&dates=${strNextDueDate}/${strNextDueDate}`;
-
       // 메일 보내기
       await sendEmail({
         place_name: place.name,
@@ -148,7 +137,6 @@ const CleanForm = ({ }) => {
         to_name: userMap[next].name,
         from_name: userMap[currentUser.uid].name,
         message: text,
-        calendar_url
         // reply_to: userMap[currentUser.uid].email,
       }, 'clean')
 

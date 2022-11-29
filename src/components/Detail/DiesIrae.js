@@ -93,7 +93,7 @@ const DiesIrae = ({ place, data }) => {
             </div>
           }
         </div>
-      </Stack>  
+      </Stack>
     </>
   )
 }
