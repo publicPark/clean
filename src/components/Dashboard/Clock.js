@@ -13,7 +13,7 @@ const Clock = () => {
         여긴 
         청소 당번이 누구인지,<br />
         언제까지 청소해야 하는지<br />
-        알려주는 곳입니다<br /><br />
+        알려주는 곳<br /><br />
         <Link to="/about"><b>자세히 알아보기</b></Link>
       </p>
       {/* <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3> */}
