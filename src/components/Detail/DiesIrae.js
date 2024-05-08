@@ -21,7 +21,6 @@ const DiesIrae = ({ place, data }) => {
     const docRef = doc(db, "users", newData.next);
     const userDocSnap = await getDoc(docRef);
     newData.nextData = userDocSnap.data()
-    console.log("test", newData.doomsday, format(newData.doomsday, "yyyy-MM-dd"), howmany)
 
     setThatTime(newData.doomsday)
     setStr1(format(newData.doomsday, "yyyy-MM-dd"))
