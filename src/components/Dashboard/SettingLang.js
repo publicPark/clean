@@ -3,13 +3,17 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
-import { langList, isLangSupported } from "../../data/dictionaries/dictionary";
+import {
+  langList,
+  isLangSupported,
+  getLangObject,
+} from "../../data/dictionaries/dictionary";
 import styles from "./SettingLang.module.scss";
 
 const options = langList;
 const SettingLang = () => {
   const { lang, changeLang } = useTheme();
-  const foundLangObj = langList.find((item) => item.code === lang);
+  const foundLangObj = getLangObject(lang);
   const [value, setValue] = useState(foundLangObj);
   const [inputValue, setInputValue] = useState("");
 
@@ -46,7 +50,7 @@ const SettingLang = () => {
           id="select-lang"
           options={options}
           getOptionLabel={(option) =>
-            option ? `${option.icon} ${option.text} (${option.code}) ` : ""
+            option ? `${option.icon} ${option.label} (${option.code}) ` : ""
           }
           getOptionDisabled={(option) => !isLangSupported(option.code)}
           sx={{ width: 300 }}

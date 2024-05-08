@@ -13,12 +13,14 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { useLang } from "../../hook/useLang";
+import { getLangObject } from "../../data/dictionaries/dictionary";
 
 const Profile = () => {
   const { currentUser, googleAuth, userSignOut } = useAuth();
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { darkTheme, toggleTheme } = useTheme();
-  const { dict } = useLang("nav");
+  const { darkTheme, toggleTheme, lang } = useTheme();
+  const { dict } = useLang("profile");
+  const langObj = getLangObject(lang);
   const handleGoogleAuth = (e) => {
     googleAuth();
     handleCloseUserMenu();
@@ -79,12 +81,12 @@ const Profile = () => {
               </MenuItem>
             </Link>,
             <MenuItem onClick={handleSignOut} key="logout">
-              <Typography textAlign="center">Logout</Typography>
+              <Typography textAlign="center">{dict.logout}</Typography>
             </MenuItem>,
           ]
         ) : (
           <MenuItem onClick={handleGoogleAuth}>
-            <Typography textAlign="center">구글로긴</Typography>
+            <Typography textAlign="center">{dict.googleLogin}</Typography>
           </MenuItem>
         )}
         <Divider />
@@ -94,7 +96,7 @@ const Profile = () => {
         <Divider />
         <Link to="/lang" key="lang">
           <MenuItem>
-            <Typography textAlign="center">🇰🇷</Typography>
+            <Typography textAlign="center">{langObj.icon}</Typography>
           </MenuItem>
         </Link>
       </Menu>

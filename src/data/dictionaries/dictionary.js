@@ -4,49 +4,49 @@ import { ko } from "./ko.js";
 export const langList = [
   {
     code: "en",
-    text: "English",
+    label: "English",
     icon: "🇬🇧",
     description: "Language settings",
   },
   {
     code: "ko",
-    text: "한국어",
+    label: "한국어",
     icon: "🇰🇷",
     description: "언어 설정",
   },
   {
     code: "es",
-    text: "Español",
+    label: "Español",
     icon: "🇪🇸",
     description: "Configuración de idioma",
   },
   {
     code: "fr",
-    text: "Français",
+    label: "Français",
     icon: "🇫🇷",
     description: "Paramètres de langue",
   },
   {
     code: "de",
-    text: "Deutsch",
+    label: "Deutsch",
     icon: "🇩🇪",
     description: "Spracheinstellungen",
   },
   {
     code: "ja",
-    text: "日本語",
+    label: "日本語",
     icon: "🇯🇵",
     description: "言語設定",
   },
   {
     code: "tr",
-    text: "Türkçe",
+    label: "Türkçe",
     icon: "🇹🇷",
     description: "Dil ayarları",
   },
 ];
 
-export const defaultLang = "en";
+export const defaultLang = "ko";
 export const dictionaries = {
   en,
   ko,
@@ -63,4 +63,13 @@ export function getDictionary(lang, part) {
 
   if (part) return dictionaries[lang][part];
   else return dictionaries[lang];
+}
+
+export function getLangObject(lang) {
+  console.log(
+    "getLangObject",
+    lang,
+    langList.find((item) => item.code === lang)
+  );
+  return langList.find((item) => item.code === lang);
 }
