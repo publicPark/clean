@@ -66,10 +66,5 @@ export function getDictionary(lang, part) {
 }
 
 export function getLangObject(lang) {
-  console.log(
-    "getLangObject",
-    lang,
-    langList.find((item) => item.code === lang)
-  );
   return langList.find((item) => item.code === lang);
 }
