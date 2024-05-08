@@ -17,6 +17,7 @@ if (storedTheme) {
 }
 
 const storedLang = window.localStorage.getItem("lang");
+console.log("storedLang", storedLang);
 if (!storedLang) {
   let sysLang = "";
   if (navigator.language != null) {
@@ -37,6 +38,7 @@ export function ThemeProvider({ children }) {
   }
 
   function changeLang(val) {
+    console.log("changeLang", val);
     window.localStorage.setItem("lang", val);
     setLang(val);
   }

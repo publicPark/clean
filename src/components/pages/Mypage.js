@@ -3,7 +3,7 @@ import ProfileForm from "../Form/ProfileForm";
 import Places from "../List/Places";
 import PlaceButtons from "../Dashboard/PlaceButtons";
 
-const Profile = () => {
+const Mypage = () => {
   return (
     <div className={stylesPaper.Flex}>
       <div className={stylesPaper.Wrapper}>
@@ -23,4 +23,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Mypage;

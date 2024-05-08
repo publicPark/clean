@@ -3,7 +3,8 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
-import { langList } from "../../data/dictionaries/dictionary";
+import { langList, isLangSupported } from "../../data/dictionaries/dictionary";
+import styles from "./SettingLang.module.scss";
 
 const options = langList;
 const SettingLang = () => {
@@ -23,7 +24,16 @@ const SettingLang = () => {
           margin: "auto",
         }}
       >
+        <div className={styles.wrapper}>
+          {langList.map((l) => (
+            <span className={l.code === value.code && styles.bold}>
+              {l.description}{" "}
+            </span>
+          ))}
+        </div>
+
         <Autocomplete
+          fullWidth
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
@@ -35,9 +45,12 @@ const SettingLang = () => {
           }}
           id="select-lang"
           options={options}
-          getOptionLabel={(option) => `${option.text}`}
+          getOptionLabel={(option) =>
+            option ? `${option.icon} ${option.text} (${option.code}) ` : ""
+          }
+          getOptionDisabled={(option) => !isLangSupported(option.code)}
           sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="👀" />}
+          renderInput={(params) => <TextField {...params} label="" fullWidth />}
         />
       </Stack>
     </>

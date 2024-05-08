@@ -1,4 +1,4 @@
-import Profile from "./pages/Profile";
+import Mypage from "./pages/Mypage";
 import Test from "./pages/Test";
 import Notice from "./pages/Notice";
 import Invite from "./Detail/Invite";
@@ -16,7 +16,7 @@ import CleanForm from "./Form/CleanForm";
 import { useAuth } from "../contexts/AuthContext";
 import { useEffect } from "react";
 import World from "./pages/World";
-import SettingLang from "./pages/SettingLang";
+import Lang from "./pages/Lang";
 
 const titles = {
   "/": "즐청: 즐거운 청소",
@@ -45,7 +45,7 @@ const Routers = () => {
       <Route path="/test" element={<Test />} />
       <Route path="/notice" element={<Notice />} />
       <Route path="/world" element={<World />} />
-      <Route path="/lang" element={<SettingLang />} />
+      <Route path="/lang" element={<Lang />} />
 
       <Route path="place/:id" element={<PlaceDetail />} />
       <Route path="cleaned/:id" element={<CleanForm />} />
@@ -56,7 +56,7 @@ const Routers = () => {
 
       <Route
         path="profile"
-        element={currentUser ? <Profile /> : <NotFound status="auth" />}
+        element={currentUser ? <Mypage /> : <NotFound status="auth" />}
       />
       <Route
         path="invite/:id"

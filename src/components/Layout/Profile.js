@@ -97,12 +97,6 @@ const Profile = () => {
             <Typography textAlign="center">🇰🇷</Typography>
           </MenuItem>
         </Link>
-        {/* <MenuItem onClick={changeLang("ko")}>
-          <Typography textAlign="center">한국어 {lang}</Typography>
-        </MenuItem>
-        <MenuItem onClick={changeLang("en")}>
-          <Typography textAlign="center">English</Typography>
-        </MenuItem> */}
       </Menu>
     </Box>
   );
