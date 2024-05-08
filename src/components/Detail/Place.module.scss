@@ -41,7 +41,7 @@
 }
 .Label {
   color: var(--text-color2);
-  font-size: 14px;
+  font-size: 1rem;
 }
 .Penalty {
   text-align: left;
@@ -64,10 +64,10 @@
   position: relative;
 }
 .Crown {
-  position: absolute; 
-  width:24px; 
-  text-align:center;
-  left: 5px;
-  top: -10px;
-  z-index:1;
+  position: absolute;
+  width: 1.6rem;
+  text-align: center;
+  left: 0.5rem;
+  top: -0.8rem;
+  z-index: 1;
 }

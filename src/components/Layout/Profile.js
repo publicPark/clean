@@ -12,12 +12,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
+import { useLang } from "../../hook/useLang";
 
 const Profile = () => {
   const { currentUser, googleAuth, userSignOut } = useAuth();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const { darkTheme, toggleTheme } = useTheme();
-
+  const { dict } = useLang("nav");
   const handleGoogleAuth = (e) => {
     googleAuth();
     handleCloseUserMenu();
@@ -47,7 +48,7 @@ const Profile = () => {
             onClick={handleOpenUserMenu}
             color="secondary"
           >
-            클릭! CLICK!
+            {dict.setting}
           </Button>
         )}
       </Tooltip>
@@ -86,18 +87,20 @@ const Profile = () => {
             <Typography textAlign="center">구글로긴</Typography>
           </MenuItem>
         )}
-
         <Divider />
-
         <MenuItem onClick={toggleTheme}>
           <Typography textAlign="center">{darkTheme ? "🌜" : "🌻"}</Typography>
         </MenuItem>
-
-        {/* <Divider />
-        <MenuItem onClick={toggleTheme}>
-          <Typography textAlign="center">한국어</Typography>
+        <Divider />
+        <Link to="/lang" key="lang">
+          <MenuItem>
+            <Typography textAlign="center">🇰🇷</Typography>
+          </MenuItem>
+        </Link>
+        {/* <MenuItem onClick={changeLang("ko")}>
+          <Typography textAlign="center">한국어 {lang}</Typography>
         </MenuItem>
-        <MenuItem onClick={toggleTheme}>
+        <MenuItem onClick={changeLang("en")}>
           <Typography textAlign="center">English</Typography>
         </MenuItem> */}
       </Menu>

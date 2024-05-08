@@ -1,12 +1,9 @@
-import { useAuth } from "../../contexts/AuthContext"
-import stylesPaper from '../styles/Paper.module.scss'
-import ProfileForm from '../Form/ProfileForm';
+import stylesPaper from "../styles/Paper.module.scss";
+import ProfileForm from "../Form/ProfileForm";
 import Places from "../List/Places";
 import PlaceButtons from "../Dashboard/PlaceButtons";
 
 const Profile = () => {
-  const { currentUser:user } = useAuth()
-
   return (
     <div className={stylesPaper.Flex}>
       <div className={stylesPaper.Wrapper}>
@@ -23,7 +20,7 @@ const Profile = () => {
         <Places />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

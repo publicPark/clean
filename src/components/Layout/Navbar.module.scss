@@ -23,12 +23,12 @@
   justify-content: space-between;
 
   > * + * {
-    margin-left: 10px;
+    margin-left: 0.8rem;
   }
 }
 
 .ButtonTheme {
-  font-size: 27px;
+  font-size: 2rem;
   background-color: transparent;
   border: none;
   transition: 0.3s;
