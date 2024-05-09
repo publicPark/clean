@@ -9,10 +9,12 @@ import {
   getLangObject,
 } from "../../data/dictionaries/dictionary";
 import styles from "./SettingLang.module.scss";
+import { useLang } from "../../hook/useLang";
 
 const options = langList;
 const SettingLang = () => {
   const { lang, changeLang } = useTheme();
+  const { dict } = useLang();
   const foundLangObj = getLangObject(lang);
   const [value, setValue] = useState(foundLangObj);
   const [inputValue, setInputValue] = useState("");
@@ -61,6 +63,7 @@ const SettingLang = () => {
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="" fullWidth />}
         />
+        <div className={styles.wrapper}>{dict.lang}</div>
       </Stack>
     </>
   );
