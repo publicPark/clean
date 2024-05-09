@@ -29,8 +29,11 @@ const SettingLang = () => {
         }}
       >
         <div className={styles.wrapper}>
-          {langList.map((l) => (
-            <span className={l.code === value.code && styles.bold}>
+          {langList.map((l, i) => (
+            <span
+              key={i}
+              className={l.code === foundLangObj.code ? styles.bold : undefined}
+            >
               {l.description}{" "}
             </span>
           ))}
@@ -41,7 +44,9 @@ const SettingLang = () => {
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
-            changeLang(newValue.code);
+            if (newValue) {
+              changeLang(newValue.code);
+            }
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {

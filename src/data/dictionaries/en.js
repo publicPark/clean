@@ -2,10 +2,10 @@ export const en = {
   profile: {
     setting: "setting",
     logout: "logout",
-    googleLogin: "google login",
+    googleLogin: "Google login",
   },
   nav: {
-    about: "hello",
+    about: "about",
     world: "world",
     notice: "notice",
   },
