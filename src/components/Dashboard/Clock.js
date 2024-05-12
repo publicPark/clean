@@ -2,7 +2,6 @@ import format from "date-fns/format";
 import { Link } from "react-router-dom";
 import useNow from "../../apis/useNow";
 import { useAuth } from "../../contexts/AuthContext";
-import SettingLang from "./SettingLang";
 
 const Clock = () => {
   const { currentUser } = useAuth();
@@ -23,14 +22,12 @@ const Clock = () => {
       </p>
       {/* <h3 className={ stylesPaper.Blur }>{format(now, "yyyy-MM-dd")}</h3> */}
       {/* <h2 className="accent">{format(now, 'HH:mm:ss')}</h2> */}
-      {currentUser ? (
+      {currentUser && (
         <>
           <p>
             <b className="accent3">{currentUser.displayName}</b> 하이
           </p>
         </>
-      ) : (
-        <SettingLang />
       )}
     </>
   );
